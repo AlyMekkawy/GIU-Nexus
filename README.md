@@ -16,19 +16,13 @@ GIU Nexus is a full-stack job and internship platform designed for university st
 
 ### Backend
 
-- (Node.js / Express or Django / Flask depending on your implementation)  
-- REST API  
-- Database integration (PostgreSQL / MongoDB)  
+- (Node.js / Express)  
+- Database integration (MongoDB)  
 - Hugging Face Inference API for AI features  
 
 ### Frontend
 
-- React  
-- TypeScript (if used)  
-- Vite / Create React App  
-- React Router  
-- Axios / TanStack Query  
-- Tailwind CSS (optional)  
+- React   
 
 ## Repository Layout
 
