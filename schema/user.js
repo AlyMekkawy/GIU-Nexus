@@ -1,6 +1,18 @@
 const mongoose = require("mongoose")
+const { randomUUID } = require("crypto")
 
 const userSchema = new mongoose.Schema({
+    /*
+     * UUID was not explicitly required in doc, but best practice is to have it.
+     * Avoids exposing MongoDB's internal _id and helps if we ever migrate databases.
+     */
+    userId: {
+        type: String,
+        required: true,
+        default: () => randomUUID(),
+        unique: true,
+        immutable: true
+    },
     name: {
         type: String,
         required: [true, "Name is required"],
@@ -9,31 +21,34 @@ const userSchema = new mongoose.Schema({
         maxlength: [50, "Names cannot exceed 50 characters"],
     },
     email:{
-        required: [true, "Email is required"],
         type: String,
+        required: [true, "Email is required"],
         trim: true,
         lowercase: true,
         unique: true,
-        match: [/^[^\s@]+@[^\s@]+.[^\s@]+$/, "Please provide a valid email address"]
+        maxLength: 50,
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please provide a valid email address"]
     },
+    /*
+     * Stores the user's password hash.
+     * The API accepts a plaintext password; it is validated by the auth layer then saved in database.
+     * Waiting for a response from the TA regarding this design decision.
+     */
     password:{
         type: String,
-        trim: true,
-        minlength: [8, "Password must have at least 8 characters"],
-        maxlength: [64, "Password cannot exceed 64 characters"],
-        required: [true, "Password is required"],
+        required: true,
+        select: false
     },
     role:{
         type: String,
         enum: ["jobSeeker", "recruiter","admin"],
         default: "jobSeeker",
         required: [true, "Role is required"],
-        trim: true,
     },
     profilePicture:{
         type: String,
         trim: true,
-        required: [false, "Profile picture is not required"],
+        maxLength: 1000
     },
     createdAt: {
         type: Date,
@@ -42,16 +57,43 @@ const userSchema = new mongoose.Schema({
     bio:{
         type: String,
         trim:true,
-        maxlength:[500,"Bio cannot exceed 500 characters"],
-        default: ""
+        maxlength:[500,"Bio cannot exceed 500 characters"]
     },
     skills:{
         type: [String],
         default: []
     },
-    status:{
+    /*
+     * Recruiters are the only role who will have a status. Other roles will have status as 'undefined'
+     * Other roles will not have this attribute.
+     */
+    status: {
         type: String,
-        enum: ["pending","approved","rejected"],
-        default: "pending"
+        enum: ["pending", "approved", "rejected"],
+        required: function () {
+            return this.role === "recruiter"
+        },
+        default: function () {
+            return this.role === "recruiter" ? "pending" : undefined
+        },
+        validate: {
+            validator: function (value) {
+                if (this.role === "recruiter") {
+                    return value !== undefined;
+                }
+                return value === undefined;
+            },
+            message: "Status should only exist for recruiters",
+        }
     }
 })
+
+// Ensure `status` is only stored for recruiter accounts.
+userSchema.pre("validate", function (next) {
+    if (this.role !== "recruiter") {
+        this.status = undefined
+    }
+    next()
+})
+
+module.exports = mongoose.model("User", userSchema)
