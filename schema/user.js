@@ -41,6 +41,17 @@ const userSchema = new mongoose.Schema({
     },
     bio:{
         type: String,
-        //TODO: complete in the same format as previous fields
+        trim:true,
+        maxlength:[500,"Bio cannot exceed 500 characters"],
+        default: ""
+    },
+    skills:{
+        type: [String],
+        default: []
+    },
+    status:{
+        type: String,
+        enum: ["pending","approved","rejected"],
+        default: "pending"
     }
 })
