@@ -32,3 +32,18 @@ GIU Nexus is a full-stack job and internship platform designed for university st
 .
 ├── backend/   # API, business logic, AI integration
 └── frontend/  # React application, UI, routing
+```
+## Team Members
+
+| Member Number | Name                   | ID       | Tutorial |
+|---------------|------------------------|----------|----------|
+| 1             | Aly Moataz Elmekawy    | 16004662 | T17      |
+| 2             | Adham Walaa Elewa      | 16007992 | T17      |
+| 3             | Tarek Wael Aboelsaeoud | 16002769 | T17      |
+| 4             | Youssef Amr Soliman    | 16005107 | T12      |
+| 5             | Mahmoud Wael           | 16001987 | T8       |
+| 6             | David Ramy             | 16009980 | T12      |
+| 7             | Khaled Ahmed Elmasry   | 16002932 | T11      |
+| 8             | Khaled Waleed Abbas    | 16001074 | T19      |
+| 9             | Samir Waleed           | 16001872 | T8       |
+| 10            | Sam Shady Bostawros    | 16004357 | T12      |
