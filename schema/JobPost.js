@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const jobPostSchema = new mongoose.Schema({
+  title: {
 totalSlots: {
     type: Number,
     required: true,
@@ -12,6 +13,22 @@ totalSlots: {
     trim: true
   },
 
+  company: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  description: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  requirements: {
+    type: [String],
+    required: true,
+    default: []
   type: {
     type: String,
     enum: ["full-time", "part-time", "internship"],
