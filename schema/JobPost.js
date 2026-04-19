@@ -18,7 +18,8 @@ const jobPostSchema = new mongoose.Schema({
     },
     requirements: {
         type: [String],
-        default: [] //required: true not needed if we use default: [] since it will always have a value, even if it's an empty array
+        required: true,
+        default: []
     },
     location: {
         type: String,
@@ -31,7 +32,14 @@ const jobPostSchema = new mongoose.Schema({
         required: true
     },
     salary: {
-        type: Number
+      type: Number,
+      required: false,
+      validate: {
+        validator: function(value) {
+          return value >= 0;
+        },
+        message: "Salary must be a positive number"
+      }
     },
     category: {
         type: String,
