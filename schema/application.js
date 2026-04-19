@@ -14,7 +14,9 @@ const ApplicationSchema = new mongoose.Schema({
   },
   coverLetter: {
     type: String,
-    required: false
+    required: false,
+    trim: true,
+    maxLength: 4098
   },
   status: {
     type: String,

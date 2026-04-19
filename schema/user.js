@@ -1,18 +1,6 @@
 const mongoose = require("mongoose")
-const { randomUUID } = require("crypto")
 
 const userSchema = new mongoose.Schema({
-    /*
-     * UUID was not explicitly required in doc, but best practice is to have it.
-     * Avoids exposing MongoDB's internal _id and helps if we ever migrate databases.
-     */
-    userId: {
-        type: String,
-        required: true,
-        default: () => randomUUID(),
-        unique: true,
-        immutable: true
-    },
     name: {
         type: String,
         required: [true, "Name is required"],
@@ -78,22 +66,14 @@ const userSchema = new mongoose.Schema({
         },
         validate: {
             validator: function (value) {
-                if (this.role === "recruiter") {
-                    return value !== undefined;
+                if (value === undefined || value === null) {
+                    return this.role !== "recruiter"
                 }
-                return value === undefined;
+                return this.role === "recruiter"
             },
-            message: "Status should only exist for recruiters",
+            message: "Status is only applicable to recruiters",
         }
     }
-})
-
-// Ensure `status` is only stored for recruiter accounts.
-userSchema.pre("validate", function (next) {
-    if (this.role !== "recruiter") {
-        this.status = undefined
-    }
-    next()
 })
 
 module.exports = mongoose.model("User", userSchema)
