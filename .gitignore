@@ -1,13 +1,13 @@
 # node modules folder ignored (requirement for project)
-node_modules/
-dist/
-build/
+/node_modules/
+/dist/
+/build/
 # environment variables file ignored (requirement for project)
 .env
 .env.*
 # IDE specific files ignored
 # Webstorm IDE files (if anyone uses another IDE, please add the relevant files to this list)
-.idea/
+/.idea/
 *.iml
 *.iws
 *.ipr

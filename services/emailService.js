@@ -1,0 +1,3 @@
+/*
+    Nodemailer helper
+ */

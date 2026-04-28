@@ -30,9 +30,46 @@ GIU Nexus is a full-stack job and internship platform designed for university st
 
 ```text
 .
-├── backend/   # API, business logic, AI integration
-└── frontend/  # React application, UI, routing
+├── config/       # Database and app configuration
+├── controllers/  # Request handlers and business logic
+├── middleware/   # Auth, validation, and error handling
+├── models/       # Mongoose models and schemas
+├── routes/       # API route definitions and versioning
+├── schema/       # Validation schemas and shared types
+├── services/     # External services (AI, email, etc.)
+├── server.js     # App entry point
+├── package.json  # Project metadata and scripts
+└── package-lock.json
 ```
+
+## .env
+
+Example (replace values with your own):
+
+```env
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/giu-nexus
+JWT_SECRET=replace_with_a_long_random_string
+JWT_EXPIRES_IN=7d
+HF_API_TOKEN=replace_with_your_huggingface_token
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=587
+EMAIL_USER=replace_with_smtp_username
+EMAIL_PASS=replace_with_smtp_password
+EMAIL_FROM="GIU Nexus <noreply@example.com>"
+```
+
+- `PORT`: Port for the Express server.
+- `MONGO_URI`: MongoDB connection string.
+- `JWT_SECRET`: Secret used to sign JWTs.
+- `JWT_EXPIRES_IN`: JWT lifetime (e.g., `7d`, `1h`).
+- `HF_API_TOKEN`: Hugging Face Inference API token.
+- `EMAIL_HOST`: SMTP host for sending emails.
+- `EMAIL_PORT`: SMTP port (often `587` or `465`).
+- `EMAIL_USER`: SMTP username.
+- `EMAIL_PASS`: SMTP password or app password.
+- `EMAIL_FROM`: Default sender address.
+
 ## Team Members
 
 | Member Number | Name                   | ID       | Tutorial |
