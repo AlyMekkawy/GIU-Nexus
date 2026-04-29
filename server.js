@@ -28,7 +28,16 @@ app.get('/', (req, res) => {
 app.use(errorHandler);
 
 // ── Connect to DB, then start server ─────────────────────────────
-connectDB();
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`Server running on http://127.0.0.1:${PORT}`);
-});
+async function startServer() {
+    try {
+        await connectDB();
+        app.listen(PORT, '127.0.0.1', () => {
+            console.log(`Server running on http://127.0.0.1:${PORT}`);
+        });
+    } catch (error) {
+        console.error('Failed to connect to the database:', error);
+        process.exit(1);
+    }
+}
+
+startServer();
