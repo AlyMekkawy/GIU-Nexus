@@ -12,7 +12,7 @@ const getJobs = async (req, res, next) => {
     if (req.query.category) filters.category = req.query.category;
     if (req.query.status) filters.status = req.query.status;
 
-    const search = req.query.search;
+    const search = req.query.search || req.query.keyword;
     if (search) {
       const regex = new RegExp(search, "i");
       filters.$or = [{ title: regex }, { company: regex }, { description: regex }];
@@ -27,11 +27,10 @@ const getJobs = async (req, res, next) => {
     ]);
 
     res.status(200).json({
-      page,
-      limit,
+      success: true,
       total,
-      totalPages: Math.ceil(total / limit),
-      items: jobs
+      page,
+      jobs: jobs
     });
   } catch (error) {
     next(error);
