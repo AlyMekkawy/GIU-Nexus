@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
         return res.status(400).json({ success: false, message: messages.join(', ') });
     }
 
-    // Mongoose duplicate key error (e.g. unique ISBN)
+    // Mongoose duplicate key error
     if (err.code === 11000) {
         const field = Object.keys(err.keyValue)[0];
         return res.status(400).json({
