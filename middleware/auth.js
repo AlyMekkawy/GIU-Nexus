@@ -1,23 +1,51 @@
-const mongoose = require('mongoose');
+const jwt  = require('jsonwebtoken');
+const User = require('../models/user');
 
-/*
-    THIS IS A TEMPORARY STUB THAT IS NOT MEANT TO REPLACE THE JWT AUTHENTICATION.
-    THIS WILL BE REPLACED ONCE WE IMPLEMENT JWT AUTHENTICATION.
-    THE PURPOSE OF THIS IS TO ALLOW US TO TEST THE PROTECTED ROUTES WITHOUT HAVING TO IMPLEMENT JWT FIRST.
-    The middleware will check for a custom header 'x-demo-user-id' to simulate an authenticated user.
-*/
+// ── protect ───────────────────────────────────────────────────────────────────
+// Verifies the Bearer token, fetches the full user from the DB, and attaches
+// it to req.user.  Every protected route must use this middleware first.
+const protect = async (req, res, next) => {
+    const authHeader = req.headers.authorization;
 
-const requireAuth = (req, res, next) => {
-    // Temporary stub: attach a demo user id for local testing.
-    const demoUserId = req.header('x-demo-user-id');
-    if (!demoUserId) {
-        return res.status(401).json({ success: false, message: 'Missing x-demo-user-id header' });
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ success: false, message: 'Not authorised – no token provided' });
     }
-    if (!mongoose.Types.ObjectId.isValid(demoUserId)) {
-        return res.status(400).json({ success: false, message: 'Invalid x-demo-user-id format' });
+
+    const token = authHeader.split(' ')[1];
+
+    let decoded;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+        const message = err.name === 'TokenExpiredError'
+            ? 'Not authorised – token has expired'
+            : 'Not authorised – invalid token';
+        return res.status(401).json({ success: false, message });
     }
-    req.user = { id: demoUserId };
-    return next();
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+        return res.status(401).json({ success: false, message: 'Not authorised – user no longer exists' });
+    }
+
+    req.user = user;
+    next();
 };
 
-module.exports = requireAuth;
+// ── authorize ─────────────────────────────────────────────────────────────────
+// Factory that returns a middleware restricting access to the given roles.
+// Must always be chained AFTER protect.
+// Usage: router.post('/', protect, authorize('recruiter', 'admin'), handler)
+const authorize = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({
+                success: false,
+                message: `Forbidden – role '${req.user.role}' is not allowed to perform this action`,
+            });
+        }
+        next();
+    };
+};
+
+module.exports = { protect, authorize };
