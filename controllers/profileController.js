@@ -26,7 +26,6 @@ const getProfile = async (req, res, next) => {
     } catch (error) {
         return next(error);
     }
-
 };
 const updateProfile=async(req,res,next)=>{
     try{
