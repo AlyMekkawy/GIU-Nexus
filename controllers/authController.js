@@ -8,11 +8,13 @@ const signToken = (id) =>
 
 // Helper — builds the user object returned in every auth response
 const userPayload = (user) => ({
-    _id:    user._id,
-    name:   user.name,
-    email:  user.email,
-    role:   user.role,
+    _id:            user._id,
+    name:           user.name,
+    email:          user.email,
+    role:           user.role,
     ...(user.role === 'recruiter' && { status: user.status }),
+    profilePicture: user.profilePicture || '',
+    skills:         user.skills || [],
 });
 
 // ── POST /api/v1/auth/register ────────────────────────────────────────────────
@@ -73,4 +75,39 @@ const register = async (req, res, next) => {
     }
 };
 
-module.exports = { register };
+// ── POST /api/v1/auth/login ───────────────────────────────────────────────────
+const login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: 'Email and password are required' });
+        }
+
+        // Find user and explicitly include the password field
+        const user = await User.findOne({ email }).select('+password');
+
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Invalid email or password' });
+        }
+
+        // Compare plaintext password against the stored hash
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: 'Invalid email or password' });
+        }
+
+        const token = signToken(user._id);
+
+        res.status(200).json({
+            success: true,
+            token,
+            user: userPayload(user),
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { register, login };
