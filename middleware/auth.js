@@ -11,7 +11,10 @@ const requireAuth = (req, res, next) => {
     // Temporary stub: attach a demo user id for local testing.
     const demoUserId = req.header('x-demo-user-id');
     if (!demoUserId) {
-        return res.status(401).json({ success: false, message: 'Missing user id' });
+        return res.status(401).json({ success: false, message: 'Missing x-demo-user-id header' });
+    }
+    if (!mongoose.Types.ObjectId.isValid(demoUserId)) {
+        return res.status(400).json({ success: false, message: 'Invalid x-demo-user-id format' });
     }
     req.user = { id: demoUserId };
     return next();
