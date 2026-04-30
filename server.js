@@ -18,6 +18,7 @@ app.use(express.json());
 
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/jobs',   jobRoutes);
+app.use('/api/v1/profile', profileRoutes);
 
 // Health-check
 app.get('/', (req, res) => {
