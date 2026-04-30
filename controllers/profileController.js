@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/user');
 
 const getProfile = async (req, res, next) => {
@@ -6,6 +7,10 @@ const getProfile = async (req, res, next) => {
 
         if (!userId) {
             return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ success: false, message: 'Invalid user id format' });
         }
 
         const user = await User.findById(userId).select('name email bio skills profilePicture role status');
