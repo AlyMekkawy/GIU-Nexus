@@ -16,10 +16,25 @@ const getUsers = async (req, res) => {
 
 const updateUserStatus = async (req, res) => {
     const { status } = req.body;
+    const allowedStatuses = ['pending', 'approved', 'rejected'];
+
+    if (!status || !allowedStatuses.includes(status)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid status. Allowed values are pending, approved, rejected.'
+        });
+    }
 
     const user = await User.findById(req.params.id);
     if (!user) {
         return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if (user.role !== 'recruiter') {
+        return res.status(400).json({
+            success: false,
+            message: 'Status can only be updated for recruiter users.'
+        });
     }
 
     user.status = status;
