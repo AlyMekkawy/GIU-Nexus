@@ -1,10 +1,16 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt    = require('jsonwebtoken');
 const User   = require('../models/user');
+const { addToBlacklist } = require('../config/tokenBlacklist');
 
-// Helper — signs a JWT with the user's _id and role as the payload
+// Helper — signs a JWT with _id, role, and a unique jti for blacklisting
 const signToken = (user) =>
-    jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
+    jwt.sign(
+        { id: user._id, role: user.role, jti: crypto.randomUUID() },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRE }
+    );
 
 // Helper — builds the user object returned in every auth response
 const userPayload = (user) => ({
@@ -110,4 +116,31 @@ const login = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login };
+// ── POST /api/v1/auth/logout ──────────────────────────────────────────────────
+const logout = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ success: false, message: 'Not authorised – no token provided' });
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.JWT_SECRET);
+        } catch (err) {
+            return res.status(401).json({ success: false, message: 'Not authorised – invalid token' });
+        }
+
+        // Add the token's unique ID to the blacklist
+        addToBlacklist(decoded.jti);
+
+        res.status(200).json({ success: true, message: 'Logged out successfully' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { register, login, logout };
