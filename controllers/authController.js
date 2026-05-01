@@ -2,17 +2,19 @@ const bcrypt = require('bcryptjs');
 const jwt    = require('jsonwebtoken');
 const User   = require('../models/user');
 
-// Helper — signs a JWT with the user's _id as the payload
-const signToken = (id) =>
-    jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
+// Helper — signs a JWT with the user's _id and role as the payload
+const signToken = (user) =>
+    jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
 
 // Helper — builds the user object returned in every auth response
 const userPayload = (user) => ({
-    _id:    user._id,
-    name:   user.name,
-    email:  user.email,
-    role:   user.role,
+    _id:            user._id,
+    name:           user.name,
+    email:          user.email,
+    role:           user.role,
     ...(user.role === 'recruiter' && { status: user.status }),
+    profilePicture: user.profilePicture || '',
+    skills:         user.skills || [],
 });
 
 // ── POST /api/v1/auth/register ────────────────────────────────────────────────
@@ -57,7 +59,7 @@ const register = async (req, res, next) => {
             role,
         });
 
-        const token = signToken(user._id);
+        const token = signToken(user);
 
         res.status(201).json({
             success: true,
@@ -73,4 +75,39 @@ const register = async (req, res, next) => {
     }
 };
 
-module.exports = { register };
+// ── POST /api/v1/auth/login ───────────────────────────────────────────────────
+const login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: 'Email and password are required' });
+        }
+
+        // Find user and explicitly include the password field
+        const user = await User.findOne({ email }).select('+password');
+
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Invalid email or password' });
+        }
+
+        // Compare plaintext password against the stored hash
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: 'Invalid email or password' });
+        }
+
+        const token = signToken(user);
+
+        res.status(200).json({
+            success: true,
+            token,
+            user: userPayload(user),
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { register, login };
