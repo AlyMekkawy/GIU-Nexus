@@ -2,9 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt    = require('jsonwebtoken');
 const User   = require('../models/user');
 
-// Helper — signs a JWT with the user's _id as the payload
-const signToken = (id) =>
-    jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
+// Helper — signs a JWT with the user's _id and role as the payload
+const signToken = (user) =>
+    jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
 
 // Helper — builds the user object returned in every auth response
 const userPayload = (user) => ({
@@ -59,7 +59,7 @@ const register = async (req, res, next) => {
             role,
         });
 
-        const token = signToken(user._id);
+        const token = signToken(user);
 
         res.status(201).json({
             success: true,
@@ -98,7 +98,7 @@ const login = async (req, res, next) => {
             return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
-        const token = signToken(user._id);
+        const token = signToken(user);
 
         res.status(200).json({
             success: true,
