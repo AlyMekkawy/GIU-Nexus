@@ -9,9 +9,7 @@ const profileRoutes     = require('./routes/profileRoutes');
 const userRoutes        = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
-const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
-const xss = require('xss-clean');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -23,12 +21,6 @@ app.use(helmet());
 
 // Body parser
 app.use(express.json());
-
-// Sanitize data against NoSQL query injection
-app.use(mongoSanitize());
-
-// Sanitize data against XSS
-app.use(xss());
 
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/auth',    authRoutes);
