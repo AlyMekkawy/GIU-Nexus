@@ -160,35 +160,76 @@ const forgotPassword = async (req, res, next) => {
             return res.status(200).json({ success: true, message: 'Password reset email sent' });
         }
 
-        // Generate a cryptographically random reset token
-        const rawToken = crypto.randomBytes(32).toString('hex');
 
-        // Hash it before storing (so a DB leak doesn't expose valid tokens)
-        user.resetPasswordToken  = crypto.createHash('sha256').update(rawToken).digest('hex');
-        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+        // Generate a 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Hash it before storing
+        user.resetPasswordOtp = crypto.createHash('sha256').update(otp).digest('hex');
+        user.resetPasswordOtpExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
         await user.save({ validateBeforeSave: false });
-
-        // Build the reset link with the RAW (unhashed) token
-        const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${rawToken}`;
 
         try {
             await sendEmail({
                 to: user.email,
-                subject: 'GIU Nexus — Password Reset',
-                text: `You requested a password reset. Use this link within 10 minutes:\n\n${resetUrl}\n\nIf you did not request this, ignore this email.`,
-                html: `<p>You requested a password reset. Click the link below within <strong>10 minutes</strong>:</p>
-                       <a href="${resetUrl}">${resetUrl}</a>
-                       <p>If you did not request this, ignore this email.</p>`,
+                subject: 'GIU Nexus — Password Reset OTP',
+                text: `You requested a password reset. Your OTP is: ${otp}\n\nIt expires in 10 minutes. If you did not request this, ignore this email.`,
+                html: `<p>You requested a password reset. Your OTP is:</p>
+                       <h2>${otp}</h2>
+                       <p>It expires in <strong>10 minutes</strong>. If you did not request this, ignore this email.</p>`,
             });
         } catch (emailErr) {
-            // Roll back the token if email fails
-            user.resetPasswordToken  = undefined;
-            user.resetPasswordExpire = undefined;
+            // Roll back the OTP if email fails
+            user.resetPasswordOtp = undefined;
+            user.resetPasswordOtpExpire = undefined;
             await user.save({ validateBeforeSave: false });
             return res.status(500).json({ success: false, message: 'Email could not be sent' });
         }
 
         res.status(200).json({ success: true, message: 'Password reset email sent' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+// ── POST /api/v1/auth/verify-otp ──────────────────────────────────────────────
+const verifyOtp = async (req, res, next) => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+            return res.status(400).json({ success: false, message: 'Email and OTP are required' });
+        }
+
+        // Hash the incoming OTP to compare with DB
+        const hashedOtp = crypto.createHash('sha256').update(otp.toString()).digest('hex');
+
+        const user = await User.findOne({
+            email,
+            resetPasswordOtp: hashedOtp,
+            resetPasswordOtpExpire: { $gt: Date.now() },
+        }).select('+resetPasswordOtp +resetPasswordOtpExpire');
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+        }
+
+        // Generate the actual reset token now that OTP is verified
+        const rawToken = crypto.randomBytes(32).toString('hex');
+        user.resetPasswordToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+        // Clear OTP fields
+        user.resetPasswordOtp = undefined;
+        user.resetPasswordOtpExpire = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        res.status(200).json({ 
+            success: true, 
+            message: 'OTP verified successfully',
+            resetToken: rawToken
+        });
     } catch (err) {
         next(err);
     }
@@ -245,4 +286,6 @@ const resetPassword = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login, logout, forgotPassword, resetPassword };
+
+module.exports = { register, login, logout, forgotPassword, verifyOtp, resetPassword };
+
