@@ -9,15 +9,11 @@ const profileRoutes     = require('./routes/profileRoutes');
 const userRoutes        = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
-const helmet = require('helmet');
-
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
 
 // ── Middleware ────────────────────────────────────────────────────
-// Set security HTTP headers
-app.use(helmet());
 
 // Body parser
 app.use(express.json());
