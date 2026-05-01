@@ -5,19 +5,18 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "express-mongo-sanitize": "^2.2.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.4.1",
-    "nodemailer": "^8.0.7",
-    "xss-clean": "^0.1.4"
+    "nodemailer": "^8.0.7"
   },
   "name": "giu-nexus",
   "version": "1.0.0",
   "description": "GIU Nexus is a full-stack job and internship platform designed for university students and recruiters. It integrates AI to automate skill extraction, job classification, and recommendation workflows, reducing manual effort on both sides.",
   "main": "JobPost.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
