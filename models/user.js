@@ -73,7 +73,15 @@ const userSchema = new mongoose.Schema({
             },
             message: "Status is only applicable to recruiters",
         }
-    }
+    },
+    resetPasswordToken: {
+        type: String,
+        select: false,
+    },
+    resetPasswordExpire: {
+        type: Date,
+        select: false,
+    },
 })
 
 module.exports = mongoose.model("User", userSchema)
