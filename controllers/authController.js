@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const jwt    = require('jsonwebtoken');
 const User   = require('../models/user');
 const { addToBlacklist } = require('../config/tokenBlacklist');
+const sendEmail = require('../services/emailService');
 
 // Helper — signs a JWT with _id, role, and a unique jti for blacklisting
 const signToken = (user) =>
@@ -143,4 +144,105 @@ const logout = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login, logout };
+// ── POST /api/v1/auth/forgot-password ─────────────────────────────────────────
+const forgotPassword = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ success: false, message: 'Email is required' });
+        }
+
+        const user = await User.findOne({ email });
+
+        // Always respond 200 to avoid email enumeration
+        if (!user) {
+            return res.status(200).json({ success: true, message: 'Password reset email sent' });
+        }
+
+        // Generate a cryptographically random reset token
+        const rawToken = crypto.randomBytes(32).toString('hex');
+
+        // Hash it before storing (so a DB leak doesn't expose valid tokens)
+        user.resetPasswordToken  = crypto.createHash('sha256').update(rawToken).digest('hex');
+        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+        await user.save({ validateBeforeSave: false });
+
+        // Build the reset link with the RAW (unhashed) token
+        const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${rawToken}`;
+
+        try {
+            await sendEmail({
+                to: user.email,
+                subject: 'GIU Nexus — Password Reset',
+                text: `You requested a password reset. Use this link within 10 minutes:\n\n${resetUrl}\n\nIf you did not request this, ignore this email.`,
+                html: `<p>You requested a password reset. Click the link below within <strong>10 minutes</strong>:</p>
+                       <a href="${resetUrl}">${resetUrl}</a>
+                       <p>If you did not request this, ignore this email.</p>`,
+            });
+        } catch (emailErr) {
+            // Roll back the token if email fails
+            user.resetPasswordToken  = undefined;
+            user.resetPasswordExpire = undefined;
+            await user.save({ validateBeforeSave: false });
+            return res.status(500).json({ success: false, message: 'Email could not be sent' });
+        }
+
+        res.status(200).json({ success: true, message: 'Password reset email sent' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ── PATCH /api/v1/auth/reset-password/:token ──────────────────────────────────
+const resetPassword = async (req, res, next) => {
+    try {
+        const password = req.body?.password;
+
+        if (!password) {
+            return res.status(400).json({ success: false, message: 'New password is required' });
+        }
+
+        // Password strength rules (same as register)
+        const passwordErrors = [];
+        if (password.length < 8)             passwordErrors.push('at least 8 characters');
+        if (!/[A-Z]/.test(password))         passwordErrors.push('one uppercase letter');
+        if (!/[a-z]/.test(password))         passwordErrors.push('one lowercase letter');
+        if (!/[0-9]/.test(password))         passwordErrors.push('one digit');
+        if (!/[^A-Za-z0-9]/.test(password))  passwordErrors.push('one special character (!@#$%...)');
+
+        if (passwordErrors.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Password must contain: ${passwordErrors.join(', ')}`,
+            });
+        }
+
+        // Hash the incoming raw token and look it up
+        const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+        const user = await User.findOne({
+            resetPasswordToken: hashedToken,
+            resetPasswordExpire: { $gt: Date.now() },
+        }).select('+resetPasswordToken +resetPasswordExpire');
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired reset token' });
+        }
+
+        // Update password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+
+        // Clear reset fields
+        user.resetPasswordToken  = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        res.status(200).json({ success: true, message: 'Password has been reset' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { register, login, logout, forgotPassword, resetPassword };
