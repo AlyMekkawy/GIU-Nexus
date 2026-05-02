@@ -1,4 +1,5 @@
 const express = require('express');
+
 const { authLimiter } = require('../middleware/rateLimiter');
 
 const { register, login, logout, forgotPassword, resetPassword, verifyOtp } = require('../controllers/authController');
