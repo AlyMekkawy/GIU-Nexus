@@ -160,6 +160,7 @@ const forgotPassword = async (req, res, next) => {
             return res.status(200).json({ success: true, message: 'Password reset email sent' });
         }
 
+
         // Generate a 6-digit OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -190,6 +191,7 @@ const forgotPassword = async (req, res, next) => {
         next(err);
     }
 };
+
 
 // ── POST /api/v1/auth/verify-otp ──────────────────────────────────────────────
 const verifyOtp = async (req, res, next) => {
@@ -284,4 +286,6 @@ const resetPassword = async (req, res, next) => {
     }
 };
 
+
 module.exports = { register, login, logout, forgotPassword, verifyOtp, resetPassword };
+
