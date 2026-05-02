@@ -29,13 +29,32 @@ const getProfile = async (req, res, next) => {
 };
 const updateProfile=async(req,res,next)=>{
     try{
-      const { name, bio, profilePicture } = req.body;
+      const { name, bio, profilePicture, skills } = req.body;
+      
+      // Build update object with only provided fields
+      const updateData = {};
+      if (name !== undefined) updateData.name = name;
+      if (bio !== undefined) updateData.bio = bio;
+      if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
+      if (skills !== undefined) updateData.skills = skills;
+
       const updatedUser=await User.findByIdAndUpdate(
         req.user.id,
-        {name,bio,profilePicture},{new: true, runValidators: true}
-
+        updateData,
+        { new: true, runValidators: true }
       ).select('-password');
-       res.status(200).json({ success: true, user: updatedUser });
+
+      // Return only the updated fields
+      const updatedFields = {};
+      Object.keys(updateData).forEach(key => {
+        updatedFields[key] = updatedUser[key];
+      });
+
+      res.status(200).json({ 
+        success: true, 
+        message: 'Profile updated successfully',
+        updatedFields 
+      });
     }
     catch(err){
         next(err);
