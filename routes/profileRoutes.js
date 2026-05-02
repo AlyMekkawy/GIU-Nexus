@@ -1,6 +1,6 @@
 const express = require('express');
-const { protect } = require('../middleware/auth');
-const { getProfile, updateProfile, changePassword } = require('../controllers/profileController');
+const { protect, authorize } = require('../middleware/auth');
+const { getProfile, updateProfile, changePassword, extractSkills } = require('../controllers/profileController');
 const router = express.Router();
 
 // GET /api/v1/profile - private (any authenticated user)
@@ -11,5 +11,8 @@ router.patch('/', protect, updateProfile);
 
 // PATCH /api/v1/profile/change-password - private (any authenticated user)
 router.patch('/change-password', protect, changePassword);
+
+// POST /api/v1/profile/extract-skills - private (jobSeeker only)
+router.post('/extract-skills', protect, authorize('jobSeeker'), extractSkills);
 
 module.exports = router;
