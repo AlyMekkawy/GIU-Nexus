@@ -1,5 +1,6 @@
 const jwt  = require('jsonwebtoken');
 const User = require('../models/user');
+const { isBlacklisted } = require('../config/tokenBlacklist');
 
 // ── protect ───────────────────────────────────────────────────────────────────
 // Verifies the Bearer token, fetches the full user from the DB, and attaches
@@ -21,6 +22,11 @@ const protect = async (req, res, next) => {
             ? 'Not authorised – token has expired'
             : 'Not authorised – invalid token';
         return res.status(401).json({ success: false, message });
+    }
+
+    // Reject tokens that have been invalidated by logout
+    if (decoded.jti && isBlacklisted(decoded.jti)) {
+        return res.status(401).json({ success: false, message: 'Not authorised – token has been revoked' });
     }
 
     const user = await User.findById(decoded.id);

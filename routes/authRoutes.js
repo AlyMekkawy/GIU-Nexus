@@ -1,5 +1,6 @@
 const express = require('express');
-const { register, login } = require('../controllers/authController');
+
+const { register, login, logout, forgotPassword, resetPassword, verifyOtp } = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -8,5 +9,17 @@ router.post('/register', register);
 
 // POST /api/v1/auth/login — Public
 router.post('/login', login);
+
+// POST /api/v1/auth/logout — Private
+router.post('/logout', logout);
+
+// POST /api/v1/auth/forgot-password — Public
+router.post('/forgot-password', forgotPassword);
+
+// POST /api/v1/auth/verify-otp — Public
+router.post('/verify-otp', verifyOtp);
+
+// PATCH /api/v1/auth/reset-password/:token — Public
+router.patch('/reset-password/:token', resetPassword);
 
 module.exports = router;
