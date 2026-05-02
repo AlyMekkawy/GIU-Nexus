@@ -82,6 +82,7 @@ const userSchema = new mongoose.Schema({
         type: Date,
         select: false,
     },
+
     resetPasswordOtp: {
         type: String,
         select: false,
@@ -90,6 +91,7 @@ const userSchema = new mongoose.Schema({
         type: Date,
         select: false,
     },
+
 })
 
 module.exports = mongoose.model("User", userSchema)
