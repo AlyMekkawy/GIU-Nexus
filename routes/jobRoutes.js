@@ -20,7 +20,13 @@ const router = express.Router();
  *         name: keyword
  *         schema:
  *           type: string
- *         description: Search keyword for job title or related fields.
+ *         description: Search keyword for job title, company, or description. Alias of `search`.
+ *         example: react
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search keyword for job title, company, or description.
  *         example: react
  *       - in: query
  *         name: location
@@ -34,6 +40,12 @@ const router = express.Router();
  *           type: string
  *         description: Filter by job type.
  *         example: internship
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Filter by job category.
+ *         example: Backend
  *       - in: query
  *         name: status
  *         schema:
