@@ -18,11 +18,13 @@ const PORT = process.env.PORT || 3000;
 // Body parser
 app.use(express.json());
 
+
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/applications', applicationRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/jobs', jobRoutes);
 app.use('/api/v1/profile', profileRoutes);
+app.use('/api/v1/users', userRoutes);
 
 // Health-check
 app.get('/', (req, res) => {
