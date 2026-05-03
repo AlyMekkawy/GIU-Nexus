@@ -52,10 +52,11 @@ const router = express.Router();
  *                       example: "https://example.com/uploads/profile.jpg"
  *                     role:
  *                       type: string
- *                       example: "user"
+ *                       example: "jobSeeker"
  *                     status:
  *                       type: string
- *                       example: "active"
+ *                       description: Present only for recruiter accounts.
+ *                       example: "pending"
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *         content:
@@ -69,6 +70,32 @@ const router = express.Router();
  *                 message:
  *                   type: string
  *                   example: "Not authorized, token failed"
+ *       400:
+ *         description: Invalid user id format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid user id format"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
  */
 // GET /api/v1/profile - private (any authenticated user)
 router.get('/', protect, getProfile);
@@ -105,6 +132,12 @@ router.get('/', protect, getProfile);
  *                 type: string
  *                 description: URL to profile image
  *                 example: "https://example.com/uploads/profile.jpg"
+ *               skills:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Updated skills list
+ *                 example: ["Node.js", "Express", "MongoDB"]
  *     responses:
  *       200:
  *         description: Profile updated successfully
@@ -116,36 +149,27 @@ router.get('/', protect, getProfile);
  *                 success:
  *                   type: boolean
  *                   example: true
- *                 user:
+ *                 message:
+ *                   type: string
+ *                   example: "Profile updated successfully"
+ *                 updatedFields:
  *                   type: object
+ *                   description: Only the fields that were provided in the request.
  *                   properties:
- *                     _id:
- *                       type: string
- *                       example: "65f1c7e7a29f4c001234abcd"
  *                     name:
  *                       type: string
  *                       example: "John Doe"
- *                     email:
- *                       type: string
- *                       format: email
- *                       example: "john@example.com"
  *                     bio:
  *                       type: string
  *                       example: "Backend developer with experience in Node.js, Express, and MongoDB."
+ *                     profilePicture:
+ *                       type: string
+ *                       example: "https://example.com/uploads/profile.jpg"
  *                     skills:
  *                       type: array
  *                       items:
  *                         type: string
  *                       example: ["Node.js", "Express", "MongoDB"]
- *                     profilePicture:
- *                       type: string
- *                       example: "https://example.com/uploads/profile.jpg"
- *                     role:
- *                       type: string
- *                       example: "user"
- *                     status:
- *                       type: string
- *                       example: "active"
  *       400:
  *         description: Invalid profile update data
  *         content:
@@ -176,7 +200,81 @@ router.get('/', protect, getProfile);
 // PATCH /api/v1/profile - private (any authenticated user)
 router.patch('/', protect, updateProfile);
 
-
+/**
+ * @openapi
+ * /api/v1/profile/change-password:
+ *   patch:
+ *     summary: Change logged-in user's password
+ *     description: >
+ *       Private route. Allows any authenticated user to change their own password
+ *       while logged in. This is separate from the forgot-password flow because it
+ *       requires the user to know their current password.
+ *     tags:
+ *       - Profile
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - currentPassword
+ *               - newPassword
+ *             properties:
+ *               currentPassword:
+ *                 type: string
+ *                 format: password
+ *                 description: Must match the user's currently stored password hash
+ *                 example: "OldPassword123"
+ *               newPassword:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 8
+ *                 description: New password. Must be at least 8 characters and include upper/lowercase letters, a digit, and a special character.
+ *                 example: "NewPassword123!"
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Password updated successfully"
+ *       400:
+ *         description: Missing fields or password validation failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Password must contain: at least 8 characters, one uppercase letter, one lowercase letter, one digit, one special character (!@#$%...)"
+ *       401:
+ *         description: Unauthorized or current password is incorrect
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Current password is incorrect"
+ */
 // PATCH /api/v1/profile/change-password - private (any authenticated user)
 router.patch('/change-password', protect, changePassword);
 
