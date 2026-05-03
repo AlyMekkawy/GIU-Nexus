@@ -14,7 +14,8 @@
   "description": "GIU Nexus is a full-stack job and internship platform designed for university students and recruiters. It integrates AI to automate skill extraction, job classification, and recommendation workflows, reducing manual effort on both sides.",
   "main": "JobPost.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
