@@ -51,6 +51,34 @@ const getJobs = async (req, res, next) => {
   }
 };
 
+const deleteJob = async (req, res, next) => {
+  try {
+    const job = await JobPost.findById(req.params.id);
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found"
+      });
+    }
+
+    if (req.user.role !== 'admin' && job.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorised to delete this job"
+      });
+    }
+
+    await job.deleteOne();
+
+    return res.status(200).json({
+      success: true,
+      message: "Job deleted"
+      });
+  } catch (error) {
+    next(error);
+  }
+};
 const updateJob = async (req, res, next) => {
   try {
     const jobId = req.params.id;
@@ -209,8 +237,10 @@ const getRecommendedJobs = async (req, res, next) => {
   }
 };
 
+
 module.exports = {
   getJobs,
+  deleteJob,
   updateJob,
   getRecommendedJobs
 };
