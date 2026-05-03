@@ -58,6 +58,8 @@ const updateProfile=async(req,res,next)=>{
               resource_type: "image",
           });
           updateData.profilePicture = uploadResult.url;
+      }
+
       if (Object.keys(updateData).length === 0) {
           return res.status(400).json({ success: false, message: 'No fields to update' });
       }
@@ -92,8 +94,7 @@ const updateProfile=async(req,res,next)=>{
         message: 'Profile updated successfully',
         updatedFields 
       });
-    }
-    catch(err){
+    } catch(err){
         next(err);
     }
 };
