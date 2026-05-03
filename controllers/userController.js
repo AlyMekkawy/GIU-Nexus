@@ -34,7 +34,7 @@ const deleteUser = async (req,res,next) =>{
         }
 
         // Delete all job posts created by this user
-        // This ensures data integrity by removing orphaned records (jobpost)
+        // deleting jobposts of the user
         await JobPost.deleteMany({ createdBy: req.params.id });
 
         // Now delete the user
