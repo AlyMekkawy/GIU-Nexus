@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const bcrypt=require('bcryptjs');
+const uploadToCloudinary = require("../services/uploadToCloudinary");
+
 const getProfile = async (req, res, next) => {
     try {
         const userId = req.user?.id;
@@ -27,6 +29,7 @@ const getProfile = async (req, res, next) => {
         return next(error);
     }
 };
+
 const updateProfile=async(req,res,next)=>{
     try{
       const { name, bio, profilePicture, skills } = req.body;
@@ -38,11 +41,23 @@ const updateProfile=async(req,res,next)=>{
       if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
       if (skills !== undefined) updateData.skills = skills;
 
+      if (req.file?.path) {
+          const uploadResult = await uploadToCloudinary(req.file.path, {
+              folder: "profile-pictures",
+              resource_type: "image",
+          });
+          updateData.profilePicture = uploadResult.url;
+      }
+
       const updatedUser=await User.findByIdAndUpdate(
         req.user.id,
         updateData,
         { new: true, runValidators: true }
       ).select('-password');
+
+      if (!updatedUser) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
 
       // Return only the updated fields
       const updatedFields = {};
@@ -60,6 +75,7 @@ const updateProfile=async(req,res,next)=>{
         next(err);
     }
 };
+
 const changePassword=async(req, res, next)=>{
     try{
         const { currentPassword, newPassword } = req.body;
@@ -112,4 +128,3 @@ module.exports = {
     updateProfile,
     changePassword,
 };
-
