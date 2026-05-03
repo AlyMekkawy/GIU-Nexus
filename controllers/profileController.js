@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const bcrypt=require('bcryptjs');
+
+const uploadToCloudinary = require("../services/uploadToCloudinary");
+
 const hf = require('../services/hfService');
 const getProfile = async (req, res, next) => {
     try {
@@ -28,6 +31,7 @@ const getProfile = async (req, res, next) => {
         return next(error);
     }
 };
+
 const updateProfile=async(req,res,next)=>{
     try{
       const userId = req.user?.id;
@@ -48,6 +52,12 @@ const updateProfile=async(req,res,next)=>{
       if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
       if (skills !== undefined) updateData.skills = skills;
 
+      if (req.file?.path) {
+          const uploadResult = await uploadToCloudinary(req.file.path, {
+              folder: "profile-pictures",
+              resource_type: "image",
+          });
+          updateData.profilePicture = uploadResult.url;
       if (Object.keys(updateData).length === 0) {
           return res.status(400).json({ success: false, message: 'No fields to update' });
       }
@@ -87,6 +97,7 @@ const updateProfile=async(req,res,next)=>{
         next(err);
     }
 };
+
 const changePassword=async(req, res, next)=>{
     try{
         const { currentPassword, newPassword } = req.body;
