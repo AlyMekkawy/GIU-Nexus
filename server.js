@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 3000;
 // Body parser
 app.use(express.json());
 
+
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/auth',    authRoutes);
 app.use('/api/v1/jobs',    jobRoutes);
