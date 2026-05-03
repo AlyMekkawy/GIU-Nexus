@@ -3,8 +3,10 @@ const User = require('../models/user')
 const getUsers = async (req, res, next) => {
     try {
         const { role, status } = req.query
-        const page = parseInt(req.query.page) || 1
-        const limit = parseInt(req.query.limit) || 20
+        const parsedPage = parseInt(req.query.page, 10)
+        const parsedLimit = parseInt(req.query.limit, 10)
+        const page = Number.isNaN(parsedPage) ? 1 : Math.max(parsedPage, 1)
+        const limit = Number.isNaN(parsedLimit) ? 20 : Math.min(Math.max(parsedLimit, 1), 100)
 
         const filter = {}
         if (role) filter.role = role
