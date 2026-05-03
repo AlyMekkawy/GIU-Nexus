@@ -32,7 +32,16 @@ exports.updateApplicationStatus = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Application not found' });
     }
 
+    if (!application.job) {
+      return res.status(404).json({
+        success: false,
+        message: 'Job for this application no longer exists',
+      });
+    }
+
     if (application.job.createdBy.toString() !== req.user._id.toString()) {
+        console.log(application.job.createdBy.toString())
+        console.log(req.user._id.toString())
       return res.status(403).json({
         success: false,
         message: 'Not authorised to update this application',
