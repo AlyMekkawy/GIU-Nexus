@@ -33,6 +33,26 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
 
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     summary: Health check
+ *     description: Confirms that the API process is running.
+ *     tags:
+ *       - System
+ *     responses:
+ *       200:
+ *         description: Service is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Nexus API running."
+ */
 // Health-check
 app.get('/', (req, res) => {
     res.json({ message: 'Nexus API running.' });

@@ -23,13 +23,8 @@ const swaggerOptions = {
                 },
             },
         },
-        security: [
-            {
-                bearerAuth: [],
-            },
-        ],
     },
-    apis: ["./routes/*.js"], // Path to the API route files
+    apis: ["./routes/*.js", "./server.js"], // Path to the API route files
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
