@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express   = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 const connectDB = require('./config/db');
 
 const applicationRoutes = require('./routes/applicationRoutes');
@@ -17,6 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 // Body parser
 app.use(express.json());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/auth',    authRoutes);
