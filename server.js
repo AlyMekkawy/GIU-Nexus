@@ -1,26 +1,32 @@
 require('dotenv').config();
-const express   = require('express');
+const express = require('express');
 const connectDB = require('./config/db');
 
 const applicationRoutes = require('./routes/applicationRoutes');
-const authRoutes        = require('./routes/authRoutes');
-const jobRoutes         = require('./routes/jobRoutes');
-const profileRoutes     = require('./routes/profileRoutes');
-const userRoutes        = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const userRoutes = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 
 // ── Middleware ────────────────────────────────────────────────────
+
+// Body parser
 app.use(express.json());
 
+
 // ── Routes ────────────────────────────────────────────────────────
-app.use('/api/v1/auth',    authRoutes);
-app.use('/api/v1/jobs',    jobRoutes);
+app.use('/api/v1/applications', applicationRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/jobs', jobRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/applications', applicationRoutes)
+app.use('/api/v1/users', userRoutes);
+
 
 // Health-check
 app.get('/', (req, res) => {
