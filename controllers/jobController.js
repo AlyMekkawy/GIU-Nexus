@@ -237,10 +237,35 @@ const getRecommendedJobs = async (req, res, next) => {
   }
 };
 
+const getJobApplicants = async (req, res, next) => {
+  try {
+    const { jobId } = req.params;
+
+    // Verify the job exists and belongs to this recruiter
+    const job = await JobPost.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ success: false, message: 'Job not found' });
+    }
+    if (job.recruiter.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Not authorized — you do not own this job' });
+    }
+
+    const applications = await Application.find({ jobPost: jobId })
+      .populate('user', 'name email skills')
+      .select('status coverLetter appliedAt user')
+      .lean();
+
+    res.status(200).json({ success: true, applications });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 module.exports = {
   getJobs,
   deleteJob,
   updateJob,
-  getRecommendedJobs
+  getRecommendedJobs,
+  getJobApplicants
 };
