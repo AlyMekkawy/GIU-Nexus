@@ -1,5 +1,5 @@
 const JobPost = require("../models/JobPost");
-const Application = require("../models/Application");
+const Application = require("../models/application");
 const hf = require("../services/hfService");
 const mongoose = require("mongoose");
 
