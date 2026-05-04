@@ -398,6 +398,32 @@ const getSavedJobs = async (req, res, next) => {
   }
 };
 
+// ── GET /api/v1/jobs/my-jobs ─────────────────────────────────────
+// Recruiter only. Returns jobs created by the logged-in recruiter.
+const getMyJobs = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Not authorised – no token provided" });
+    }
+
+    if (req.user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: `Forbidden – role '${req.user.role}' is not allowed to access this resource`
+      });
+    }
+
+    const jobs = await JobPost.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      jobs
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   getJobs,
   createJob,
@@ -405,5 +431,6 @@ module.exports = {
   deleteJob,
   updateJob,
   getRecommendedJobs,
-  getSavedJobs
+  getSavedJobs,
+  getMyJobs
 };
