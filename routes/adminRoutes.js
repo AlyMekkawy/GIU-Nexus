@@ -9,4 +9,4 @@ router.use(protect, restrictTo('admin'));
 
 router.get('/stats', getPlatformStats);
 
-export default router;
+module.exports = router;
