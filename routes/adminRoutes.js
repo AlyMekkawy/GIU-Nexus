@@ -1,11 +1,11 @@
-const express = 'express';
-const { getPlatformStats } = ('../controllers/adminController.js');
-const { protect, restrictTo } = ('../middleware/authMiddleware.js');
+const express = require('express');
+const { getPlatformStats } = require('../controllers/adminController.js');
+const { protect, restrictTo } = require('../middleware/authMiddleware.js');
 
 const router = express.Router();
 
 // All admin routes require authentication + admin role
-router.use(protect, restrictTo('admin'));
+router.use(protect, authorize('admin'));
 
 router.get('/stats', getPlatformStats);
 
