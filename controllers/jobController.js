@@ -242,6 +242,10 @@ const getJobApplicants = async (req, res, next) => {
   try {
     const { jobId } = req.params;
 
+    if (!jobId || !mongoose.isValidObjectId(jobId)) {
+      return res.status(400).json({ success: false, message: "Invalid job id" });
+    }
+
     // Verify the job exists and belongs to this recruiter
     const job = await JobPost.findById(jobId);
     if (!job) {
@@ -270,3 +274,4 @@ module.exports = {
   getRecommendedJobs,
   getJobApplicants
 };
+
