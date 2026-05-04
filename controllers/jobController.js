@@ -14,6 +14,133 @@ const cosineSimilarity = (vecA, vecB) => {
   return dotProduct / (magnitudeA * magnitudeB);
 };
 
+// ─────────────────────────────────────────────
+// Helper – AI category classification
+// ─────────────────────────────────────────────
+async function classifyJobCategory(description) {
+  try {
+    const result = await hf.zeroShotClassification({
+      model: "facebook/bart-large-mnli",
+      inputs: [description],
+      parameters: {
+        candidate_labels: [
+          "Frontend",
+          "Backend",
+          "AI/ML",
+          "DevOps",
+          "Data Engineering",
+          "Other",
+        ],
+      },
+    });
+    return Array.isArray(result) && result[0] && Array.isArray(result[0].labels)
+      ? result[0].labels[0]
+      : "Other";
+  } catch (err) {
+    console.error("[HF] Job classification failed:", err.message);
+    return "Other";
+  }
+}
+
+// ─────────────────────────────────────────────
+// POST /api/v1/jobs
+// Access: Recruiter (status: "approved")
+// ─────────────────────────────────────────────
+const createJob = async (req, res, next) => {
+  try {
+    if (req.user.status !== "approved") {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Your account is pending approval. Wait for admin approval before posting jobs.",
+      });
+    }
+
+    const {
+      title,
+      company,
+      description,
+      requirements,
+      location,
+      type,
+      salary,
+      totalSlots,
+    } = req.body;
+
+    if (!title || !company || !description || !requirements || !location || !type) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "title, company, description, requirements, location, and type are all required.",
+      });
+    }
+
+    const allowedTypes = ["full-time", "part-time", "internship"];
+    if (!allowedTypes.includes(type)) {
+      return res.status(400).json({
+        success: false,
+        message: `type must be one of: ${allowedTypes.join(", ")}`,
+      });
+    }
+
+    const category = await classifyJobCategory(description);
+
+    const job = await JobPost.create({
+      title,
+      company,
+      description,
+      requirements,
+      location,
+      type,
+      salary,
+      totalSlots: totalSlots ?? 1,
+      category,
+      status: "open",
+      createdBy: req.user._id,
+    });
+
+    return res.status(201).json({
+      success: true,
+      job,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ─────────────────────────────────────────────
+// GET /api/v1/jobs/:id
+// Access: Public
+// ─────────────────────────────────────────────
+const getJobById = async (req, res, next) => {
+  try {
+    const job = await JobPost.findById(req.params.id).populate(
+      "createdBy",
+      "name email"
+    );
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      job,
+    });
+  } catch (err) {
+    if (err.name === "CastError") {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
+    }
+    next(err);
+  }
+};
+
 const getJobs = async (req, res, next) => {
   try {
     const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
@@ -240,6 +367,8 @@ const getRecommendedJobs = async (req, res, next) => {
 
 module.exports = {
   getJobs,
+  createJob,
+  getJobById,
   deleteJob,
   updateJob,
   getRecommendedJobs
