@@ -1,4 +1,5 @@
 const JobPost = require("../models/JobPost");
+const User = require("../models/user");
 const hf = require("../services/hfService");
 const mongoose = require("mongoose");
 
@@ -364,6 +365,38 @@ const getRecommendedJobs = async (req, res, next) => {
   }
 };
 
+// ── GET /api/v1/jobs/saved ────────────────────────────────────────
+// Job Seeker only. Returns all saved jobs for the logged-in user.
+const getSavedJobs = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Not authorised – no token provided" });
+    }
+
+    if (req.user.role !== "jobSeeker") {
+      return res.status(403).json({
+        success: false,
+        message: `Forbidden – role '${req.user.role}' is not allowed to access this resource`
+      });
+    }
+
+    const user = await User.findById(req.user._id).populate({
+      path: "savedJobs",
+      options: { sort: { createdAt: -1 } }
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      jobs: user.savedJobs || []
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
 
 module.exports = {
   getJobs,
@@ -371,5 +404,6 @@ module.exports = {
   getJobById,
   deleteJob,
   updateJob,
-  getRecommendedJobs
+  getRecommendedJobs,
+  getSavedJobs
 };
