@@ -1,8 +1,8 @@
-import User from '../models/User.js';
-import JobPost from '../models/JobPost.js';
-import Application from '../models/Application.js';
+const User = ('../models/User.js');
+const JobPost = ('../models/JobPost.js');
+const Application = ('../models/Application.js');
 
-export const getPlatformStats = async (req, res, next) => {
+exports.getPlatformStats = async (req, res, next) => {
   try {
     const [usersByRole, jobsByStatus, appsByStatus, topJobs] = await Promise.all([
       // Users grouped by role
@@ -22,7 +22,7 @@ export const getPlatformStats = async (req, res, next) => {
 
       // Top jobs by application count
       Application.aggregate([
-        { $group: { _id: '$jobPost', applicationCount: { $sum: 1 } } },
+        { $group: { _id: '$job', applicationCount: { $sum: 1 } } },
         { $sort: { applicationCount: -1 } },
         { $limit: 5 },
         {

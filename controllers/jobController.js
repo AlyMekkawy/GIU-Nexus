@@ -1,4 +1,5 @@
 const JobPost = require("../models/JobPost");
+const Application = require("../models/Application");
 const hf = require("../services/hfService");
 const mongoose = require("mongoose");
 
@@ -246,11 +247,11 @@ const getJobApplicants = async (req, res, next) => {
     if (!job) {
       return res.status(404).json({ success: false, message: 'Job not found' });
     }
-    if (job.recruiter.toString() !== req.user._id.toString()) {
+    if (job.createdBy.toString() !== req.user._id.toString()) {
       return res.status(403).json({ success: false, message: 'Not authorized — you do not own this job' });
     }
 
-    const applications = await Application.find({ jobPost: jobId })
+    const applications = await Application.find({ job: jobId })
       .populate('user', 'name email skills')
       .select('status coverLetter appliedAt user')
       .lean();
