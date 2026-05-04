@@ -1,6 +1,6 @@
 const express = require('express');
 const { getPlatformStats } = require('../controllers/adminController.js');
-const { protect, restrictTo } = require('../middleware/authMiddleware.js');
+const { protect, restrictTo } = require('../middleware/auth.js');
 
 const router = express.Router();
 
