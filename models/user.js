@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
+    savedJobs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "JobPost",
+        }
+    ],
     /*
      * Recruiters are the only role who will have a status. Other roles will have status as 'undefined'
      * Other roles will not have this attribute.
@@ -93,5 +99,7 @@ const userSchema = new mongoose.Schema({
     },
 
 })
+
+userSchema.path("savedJobs").default(() => [])
 
 module.exports = mongoose.model("User", userSchema)
