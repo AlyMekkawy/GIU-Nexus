@@ -1,4 +1,5 @@
 const JobPost = require("../models/JobPost");
+const Application = require("../models/application");
 const User = require("../models/user");
 const hf = require("../services/hfService");
 const mongoose = require("mongoose");
@@ -365,6 +366,34 @@ const getRecommendedJobs = async (req, res, next) => {
   }
 };
 
+const getJobApplicants = async (req, res, next) => {
+  try {
+    const { jobId } = req.params;
+
+    if (!jobId || !mongoose.isValidObjectId(jobId)) {
+      return res.status(400).json({ success: false, message: "Invalid job id" });
+    }
+
+    // Verify the job exists and belongs to this recruiter
+    const job = await JobPost.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ success: false, message: 'Job not found' });
+    }
+    if (job.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Not authorized — you do not own this job' });
+    }
+
+    const applications = await Application.find({ job: jobId })
+      .populate('user', 'name email skills')
+      .select('status coverLetter appliedAt user')
+      .lean();
+
+    res.status(200).json({ success: true, applications });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // ── GET /api/v1/jobs/saved ────────────────────────────────────────
 // Job Seeker only. Returns all saved jobs for the logged-in user.
 const getSavedJobs = async (req, res, next) => {
@@ -431,6 +460,8 @@ module.exports = {
   deleteJob,
   updateJob,
   getRecommendedJobs,
+  getJobApplicants
   getSavedJobs,
   getMyJobs
 };
+
