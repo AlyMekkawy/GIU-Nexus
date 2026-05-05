@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { getAdminStats } = require('../controllers/userController');
-
-router.get('/admin/stats', protect, authorize('admin'), getAdminStats);
 
 //getting user from id
 const {getUserByID, deleteUser} = require("../controllers/userController");
