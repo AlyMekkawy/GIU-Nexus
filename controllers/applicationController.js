@@ -1,6 +1,6 @@
-const Application = require('../models/Application');
+const Application = require('../models/application');
 
-exports.getMyApplications = async (req, res, next) => {
+const getMyApplications = async (req, res, next) => {
   try {
     const applications = await Application.find({ user: req.user._id })
       .populate('job', 'title company type status');
@@ -14,7 +14,7 @@ exports.getMyApplications = async (req, res, next) => {
   }
 };
 
-exports.updateApplicationStatus = async (req, res, next) => {
+const updateApplicationStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
 
@@ -88,5 +88,7 @@ const getAllApplications = async (req, res, next) => {
 };
 
 module.exports = {
+    getMyApplications,
+    updateApplicationStatus,
     getAllApplications
 };
