@@ -99,4 +99,45 @@ const updateUserStatus = async (req, res, next) => {
     }
 }
 
-module.exports = { getUsers, updateUserStatus, getUserByID, deleteUser }
+const getAdminStats = async (req, res, next) => {
+    try {
+        const fourWeeksAgo = new Date();
+        fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
+
+        const jobsPerWeek = await JobPost.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: fourWeeksAgo }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%U",
+                            date: "$createdAt"
+                        }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]);
+
+        res.status(200).json({
+            success: true,
+            jobsPerWeek
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { 
+    getUsers, 
+    updateUserStatus, 
+    getUserByID, 
+    deleteUser,
+    getAdminStats
+}
