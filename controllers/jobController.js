@@ -50,6 +50,13 @@ async function classifyJobCategory(description) {
 // ─────────────────────────────────────────────
 const createJob = async (req, res, next) => {
   try {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(403).json({
+        success: false,
+        message: "Request body cannot be empty",
+      });
+    }
+
     if (req.user.status !== "approved") {
       return res.status(403).json({
         success: false,
@@ -82,6 +89,14 @@ const createJob = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message: `type must be one of: ${allowedTypes.join(", ")}`,
+      });
+    }
+
+    const allowedLocations = ['City', 'Remote'];
+    if (!allowedLocations.includes(location)) {
+      return res.status(400).json({
+        success: false,
+        message: `location must be one of: ${allowedLocations.join(", ")}`,
       });
     }
 
@@ -128,9 +143,30 @@ const getJobById = async (req, res, next) => {
       });
     }
 
+    const {
+      _id,
+      title,
+      description,
+      requirements,
+      category,
+      status,
+      createdBy,
+    } = job;
+
     return res.status(200).json({
       success: true,
-      job,
+      job: {
+        _id,
+        title,
+        description,
+        requirements,
+        category,
+        status,
+        createdBy: {
+          name: createdBy.name,
+          email: createdBy.email,
+        },
+      },
     });
   } catch (err) {
     if (err.name === "CastError") {
@@ -460,7 +496,7 @@ module.exports = {
   deleteJob,
   updateJob,
   getRecommendedJobs,
-  getJobApplicants
+  getJobApplicants,
   getSavedJobs,
   getMyJobs
 };
