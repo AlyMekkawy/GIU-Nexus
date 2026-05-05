@@ -1,3 +1,4 @@
+const Application = require('../models/Application'); // adjust path if needed
 const User = require('../models/user');
 const JobPost = require('../models/JobPost');
 
@@ -99,4 +100,43 @@ const updateUserStatus = async (req, res, next) => {
     }
 }
 
-module.exports = { getUsers, updateUserStatus, getUserByID, deleteUser }
+const getAdminStats = async (req, res, next) => {
+    try {
+        const now = new Date();
+
+        const fourWeeksAgo = new Date();
+        fourWeeksAgo.setDate(now.getDate() - 28);
+
+        const applicationsPerWeek = await Application.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: fourWeeksAgo }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%U",
+                            date: "$createdAt"
+                        }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
+            }
+        ]);
+
+        res.status(200).json({
+            success: true,
+            applicationsPerWeek
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getUsers, updateUserStatus, getUserByID, deleteUser, getAdminStats }
