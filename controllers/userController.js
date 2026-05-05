@@ -2,6 +2,8 @@ const Application = require('../models/Application'); // adjust path if needed
 const User = require('../models/user');
 const JobPost = require('../models/JobPost');
 
+router.get('/admin/stats', getAdminStats); //added router
+
 const getUserByID = async (req,res,next)=>{
     try {
         const user = await User.findById(req.params.id);
@@ -139,4 +141,61 @@ const getAdminStats = async (req, res, next) => {
     }
 };
 
-module.exports = { getUsers, updateUserStatus, getUserByID, deleteUser, getAdminStats }
+const getAdminStats = async (req, res, next) => {
+    try {
+        const now = new Date();
+
+        const fourWeeksAgo = new Date();
+        fourWeeksAgo.setDate(now.getDate() - 28);
+
+        const jobsPerWeek = await JobPost.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: fourWeeksAgo }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%U",
+                            date: "$createdAt"
+                        }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
+            }
+        ]);
+
+        res.status(200).json({
+            success: true,
+            jobsPerWeek
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { 
+    getUsers, 
+    updateUserStatus, 
+    getUserByID, 
+    deleteUser,
+    getAdminStats
+}
+
+/*
+EXPECTED OUTPUT:
+{
+  "success": true,
+  "jobsPerWeek": [
+    { "_id": "2026-14", "count": 3 },
+    { "_id": "2026-15", "count": 6 }
+  ]
+}
+
+*/
