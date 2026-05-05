@@ -88,7 +88,7 @@ const getAllApplications = async (req, res, next) => {
 };
 
 module.exports = {
-    getAllApplications,
+    getMyApplications,
     updateApplicationStatus,
-    getMyApplications
+    getAllApplications
 };
