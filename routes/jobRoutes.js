@@ -1,6 +1,8 @@
 const express = require("express");
 
-const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs } = require("../controllers/jobController");
+
+const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants } = require("../controllers/jobController");
+
 const { protect, authorize } = require("../middleware/auth");
 
 const router = express.Router();
@@ -31,5 +33,8 @@ router.delete("/:id", protect, authorize("recruiter", "admin"), deleteJob);
 
 // Recruiter only: PATCH /api/v1/jobs/:id
 router.patch("/:id", protect, updateJob);
+
+// Recruiter only: GET /api/v1/jobs/:jobId/applicants
+router.get("/:jobId/applicants", protect, authorize("recruiter"), getJobApplicants);
 
 module.exports = router;
