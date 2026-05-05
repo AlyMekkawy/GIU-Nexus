@@ -1,5 +1,6 @@
 const JobPost = require("../models/JobPost");
 const Application = require("../models/application");
+const User = require("../models/user");
 const hf = require("../services/hfService");
 const mongoose = require("mongoose");
 
@@ -13,6 +14,133 @@ const cosineSimilarity = (vecA, vecB) => {
 
   if (magnitudeA === 0 || magnitudeB === 0) return 0;
   return dotProduct / (magnitudeA * magnitudeB);
+};
+
+// ─────────────────────────────────────────────
+// Helper – AI category classification
+// ─────────────────────────────────────────────
+async function classifyJobCategory(description) {
+  try {
+    const result = await hf.zeroShotClassification({
+      model: "facebook/bart-large-mnli",
+      inputs: [description],
+      parameters: {
+        candidate_labels: [
+          "Frontend",
+          "Backend",
+          "AI/ML",
+          "DevOps",
+          "Data Engineering",
+          "Other",
+        ],
+      },
+    });
+    return Array.isArray(result) && result[0] && Array.isArray(result[0].labels)
+      ? result[0].labels[0]
+      : "Other";
+  } catch (err) {
+    console.error("[HF] Job classification failed:", err.message);
+    return "Other";
+  }
+}
+
+// ─────────────────────────────────────────────
+// POST /api/v1/jobs
+// Access: Recruiter (status: "approved")
+// ─────────────────────────────────────────────
+const createJob = async (req, res, next) => {
+  try {
+    if (req.user.status !== "approved") {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Your account is pending approval. Wait for admin approval before posting jobs.",
+      });
+    }
+
+    const {
+      title,
+      company,
+      description,
+      requirements,
+      location,
+      type,
+      salary,
+      totalSlots,
+    } = req.body;
+
+    if (!title || !company || !description || !requirements || !location || !type) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "title, company, description, requirements, location, and type are all required.",
+      });
+    }
+
+    const allowedTypes = ["full-time", "part-time", "internship"];
+    if (!allowedTypes.includes(type)) {
+      return res.status(400).json({
+        success: false,
+        message: `type must be one of: ${allowedTypes.join(", ")}`,
+      });
+    }
+
+    const category = await classifyJobCategory(description);
+
+    const job = await JobPost.create({
+      title,
+      company,
+      description,
+      requirements,
+      location,
+      type,
+      salary,
+      totalSlots: totalSlots ?? 1,
+      category,
+      status: "open",
+      createdBy: req.user._id,
+    });
+
+    return res.status(201).json({
+      success: true,
+      job,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ─────────────────────────────────────────────
+// GET /api/v1/jobs/:id
+// Access: Public
+// ─────────────────────────────────────────────
+const getJobById = async (req, res, next) => {
+  try {
+    const job = await JobPost.findById(req.params.id).populate(
+      "createdBy",
+      "name email"
+    );
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      job,
+    });
+  } catch (err) {
+    if (err.name === "CastError") {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
+    }
+    next(err);
+  }
 };
 
 const getJobs = async (req, res, next) => {
@@ -266,12 +394,74 @@ const getJobApplicants = async (req, res, next) => {
   }
 };
 
+// ── GET /api/v1/jobs/saved ────────────────────────────────────────
+// Job Seeker only. Returns all saved jobs for the logged-in user.
+const getSavedJobs = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Not authorised – no token provided" });
+    }
+
+    if (req.user.role !== "jobSeeker") {
+      return res.status(403).json({
+        success: false,
+        message: `Forbidden – role '${req.user.role}' is not allowed to access this resource`
+      });
+    }
+
+    const user = await User.findById(req.user._id).populate({
+      path: "savedJobs",
+      options: { sort: { createdAt: -1 } }
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      jobs: user.savedJobs || []
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+// ── GET /api/v1/jobs/my-jobs ─────────────────────────────────────
+// Recruiter only. Returns jobs created by the logged-in recruiter.
+const getMyJobs = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Not authorised – no token provided" });
+    }
+
+    if (req.user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: `Forbidden – role '${req.user.role}' is not allowed to access this resource`
+      });
+    }
+
+    const jobs = await JobPost.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      jobs
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
 
 module.exports = {
   getJobs,
+  createJob,
+  getJobById,
   deleteJob,
   updateJob,
   getRecommendedJobs,
   getJobApplicants
+  getSavedJobs,
+  getMyJobs
 };
 
