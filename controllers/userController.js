@@ -1,8 +1,8 @@
-const Application = require('../models/Application'); // adjust path if needed
+//deleted a not needed import
 const User = require('../models/user');
 const JobPost = require('../models/JobPost');
 
-router.get('/admin/stats', getAdminStats); //added router
+//no router needed
 
 const getUserByID = async (req,res,next)=>{
     try {
@@ -101,7 +101,8 @@ const updateUserStatus = async (req, res, next) => {
         next(error)
     }
 }
-
+/*
+BAD FUNCTION... Don't USE:
 const getAdminStats = async (req, res, next) => {
     try {
         const now = new Date();
@@ -139,7 +140,7 @@ const getAdminStats = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-};
+};*/
 
 const getAdminStats = async (req, res, next) => {
     try {
