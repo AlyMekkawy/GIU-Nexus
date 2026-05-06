@@ -43,9 +43,8 @@ app.use(errorHandler);
 async function startServer() {
     try {
         await connectDB();
-        app.listen(PORT, HOST, () => {
-            const displayHost = HOST === '0.0.0.0' ? 'localhost' : HOST;
-            console.log(`Server running on http://${displayHost}:${PORT}`);
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Server running on port: ${PORT}`);
         });
     } catch (error) {
         console.error('Failed to connect to the database:', error);
