@@ -12,6 +12,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 
 // ── Middleware ────────────────────────────────────────────────────
@@ -42,8 +43,9 @@ app.use(errorHandler);
 async function startServer() {
     try {
         await connectDB();
-        app.listen(PORT, '127.0.0.1', () => {
-            console.log(`Server running on http://127.0.0.1:${PORT}`);
+        app.listen(PORT, HOST, () => {
+            const displayHost = HOST === '0.0.0.0' ? 'localhost' : HOST;
+            console.log(`Server running on http://${displayHost}:${PORT}`);
         });
     } catch (error) {
         console.error('Failed to connect to the database:', error);
