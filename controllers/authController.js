@@ -13,13 +13,22 @@ const signToken = (user) =>
         { expiresIn: process.env.JWT_EXPIRE }
     );
 
+// Helper — builds the user object returned in register response
+const registerPayload = (user) => ({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+});
+
 // Helper — builds the user object returned in every auth response
 const userPayload = (user) => ({
     _id:            user._id,
     name:           user.name,
     email:          user.email,
     role:           user.role,
-    status:         user.status,
+    status:         user.status ?? (user.role === 'recruiter' ? 'pending' : 'approved'),
     profilePicture: user.profilePicture || '',
     skills:         user.skills || [],
 });
@@ -65,6 +74,7 @@ const register = async (req, res, next) => {
             email,
             password: hashedPassword,
             role,
+            status: role === 'recruiter' ? 'pending' : 'approved',
         });
 
         const token = signToken(user);
@@ -72,7 +82,7 @@ const register = async (req, res, next) => {
         res.status(201).json({
             success: true,
             token,
-            user: userPayload(user),
+            user: registerPayload(user),
         });
     } catch (err) {
         // Duplicate email — surface a friendly message instead of the raw driver error
