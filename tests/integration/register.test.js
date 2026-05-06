@@ -45,7 +45,7 @@ afterEach(async () => {
 
 describe('Auth register', () => {
     describe('Success', () => {
-        it('creates jobSeeker with 201, token, user object, and no status', async () => {
+        it('creates jobSeeker with 201, token, user object, and approved status', async () => {
             const payload = buildPayload({ role: 'jobSeeker' });
 
             const response = await request(app)
