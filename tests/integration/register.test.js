@@ -60,9 +60,9 @@ describe('Auth register', () => {
                     name: payload.name,
                     email: payload.email.toLowerCase(),
                     role: 'jobSeeker',
+                    status: 'approved',
                 })
             );
-            expect(response.body.user).not.toHaveProperty('status');
             expect(response.body.user).not.toHaveProperty('password');
 
             const savedUser = await User.findOne({ email: payload.email }).select('+password');

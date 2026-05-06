@@ -64,20 +64,9 @@ const userSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["pending", "approved", "rejected"],
-        required: function () {
-            return this.role === "recruiter"
-        },
+        required: true,
         default: function () {
-            return this.role === "recruiter" ? "pending" : undefined
-        },
-        validate: {
-            validator: function (value) {
-                if (value === undefined || value === null) {
-                    return this.role !== "recruiter"
-                }
-                return this.role === "recruiter"
-            },
-            message: "Status is only applicable to recruiters",
+            return this.role === "recruiter" ? "pending" : "approved"
         }
     },
     resetPasswordToken: {
