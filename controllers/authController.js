@@ -19,7 +19,7 @@ const userPayload = (user) => ({
     name:           user.name,
     email:          user.email,
     role:           user.role,
-    ...(user.role === 'recruiter' && { status: user.status }),
+    status:         user.status,
     profilePicture: user.profilePicture || '',
     skills:         user.skills || [],
 });
@@ -86,7 +86,7 @@ const register = async (req, res, next) => {
 // ── POST /api/v1/auth/login ───────────────────────────────────────────────────
 const login = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body || {};
 
         if (!email || !password) {
             return res.status(400).json({ success: false, message: 'Email and password are required' });
@@ -289,4 +289,3 @@ const resetPassword = async (req, res, next) => {
 
 
 module.exports = { register, login, logout, forgotPassword, verifyOtp, resetPassword };
-
