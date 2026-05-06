@@ -4,7 +4,10 @@ const Application = require('../models/application');
 
 exports.getPlatformStats = async (req, res, next) => {
   try {
-    const [usersByRole, jobsByStatus, appsByStatus, topJobs] = await Promise.all([
+    const fourWeeksAgo = new Date();
+    fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
+
+    const [usersByRole, jobsByStatus, appsByStatus, topJobs, appsPerWeek] = await Promise.all([
       // Users grouped by role
       User.aggregate([
         { $group: { _id: '$role', count: { $sum: 1 } } }
@@ -42,6 +45,24 @@ exports.getPlatformStats = async (req, res, next) => {
             applicationCount: 1
           }
         }
+      ]),
+
+      // Applications per week over the last 4 weeks
+      Application.aggregate([
+        { $match: { appliedAt: { $gte: fourWeeksAgo } } },
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: '%Y-%U',
+                date: '$appliedAt',
+                timezone: 'UTC'
+              }
+            },
+            count: { $sum: 1 }
+          }
+        },
+        { $sort: { _id: 1 } }
       ])
     ]);
 
@@ -55,7 +76,8 @@ exports.getPlatformStats = async (req, res, next) => {
         usersByRole: formatCounts(usersByRole),
         jobsByStatus: formatCounts(jobsByStatus),
         appsByStatus: formatCounts(appsByStatus),
-        topJobs
+        topJobs,
+        appsPerWeek: appsPerWeek.map(({ _id, count }) => ({ week: _id, count }))
       }
     });
   } catch (error) {
