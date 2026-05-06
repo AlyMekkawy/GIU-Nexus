@@ -20,9 +20,9 @@ const errorHandler = (err, req, res, next) => {
 
     // Mongoose bad ObjectId — treat as resource not found
     if (err.name === 'CastError') {
-        return res.status(404).json({
+        return res.status(400).json({
             success: false,
-            message: `Resource not found with id: ${err.value}`,
+            message: `Invalid value for field: ${err.path}`,
         });
     }
 
