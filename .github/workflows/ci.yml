@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - bonus/ci-cd
   pull_request:
     branches:
       - main
