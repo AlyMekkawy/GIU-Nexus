@@ -26,6 +26,11 @@ const errorHandler = (err, req, res, next) => {
         });
     }
 
+    // Body parser errors (invalid JSON)
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        return res.status(400).json({ success: false, message: 'Invalid JSON payload' });
+    }
+
     // Default server error
     res.status(500).json({
         success: false,
