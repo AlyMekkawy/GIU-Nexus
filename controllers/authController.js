@@ -27,7 +27,8 @@ const userPayload = (user) => ({
 // ── POST /api/v1/auth/register ────────────────────────────────────────────────
 const register = async (req, res, next) => {
     try {
-        const { name, email, password, role } = req.body;
+        const body = req.body || {};
+        const { name, email, password, role } = body;
 
         // Basic presence check (Mongoose validates types/lengths)
         if (!name || !email || !password || !role) {
