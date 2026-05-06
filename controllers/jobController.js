@@ -489,6 +489,98 @@ const getMyJobs = async (req, res, next) => {
   }
 };
 
+// ── POST /api/v1/jobs/:id/save ────────────────────────────────────
+const toggleSaveJob = async (req, res, next) => {
+  try {
+    const jobId = req.params.id;
+    if (!mongoose.isValidObjectId(jobId)) {
+      return res.status(400).json({ success: false, message: "Invalid job id" });
+    }
+
+    const job = await JobPost.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    if (job.status !== "open") {
+      return res.status(400).json({ success: false, message: "Cannot save a closed job" });
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const isSaved = user.savedJobs.includes(jobId);
+
+    if (isSaved) {
+      user.savedJobs.pull(jobId);
+      await user.save();
+      return res.status(200).json({ success: true, message: "Job removed from saved", saved: false });
+    } else {
+      user.savedJobs.push(jobId);
+      await user.save();
+      return res.status(200).json({ success: true, message: "Job saved", saved: true });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ── POST /api/v1/jobs/:jobId/apply ──────────────────────────────────
+const applyToJob = async (req, res, next) => {
+  try {
+    const { jobId } = req.params;
+    const { coverLetter } = req.body || {};
+
+    if (!mongoose.isValidObjectId(jobId)) {
+      return res.status(400).json({ success: false, message: "Invalid job id" });
+    }
+
+    if (coverLetter !== undefined) {
+      if (typeof coverLetter !== "string") {
+        return res.status(400).json({ success: false, message: "coverLetter must be a string" });
+      }
+      if (coverLetter.trim().length > 4098) {
+        return res.status(400).json({ success: false, message: "coverLetter exceeds maximum length" });
+      }
+    }
+
+    const job = await JobPost.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    if (job.status !== "open") {
+      return res.status(400).json({ success: false, message: "Cannot apply to a closed job" });
+    }
+
+    const application = new Application({
+      user: req.user._id,
+      job: jobId,
+      coverLetter: typeof coverLetter === "string" ? coverLetter.trim() : undefined
+    });
+
+    await application.save();
+
+    return res.status(201).json({
+      success: true,
+      application: {
+        _id: application._id,
+        user: application.user,
+        job: application.job,
+        status: application.status,
+        appliedAt: application.appliedAt
+      }
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ success: false, message: "You have already applied to this job" });
+    }
+    next(error);
+  }
+};
+
 module.exports = {
   getJobs,
   createJob,
@@ -498,6 +590,7 @@ module.exports = {
   getRecommendedJobs,
   getJobApplicants,
   getSavedJobs,
-  getMyJobs
+  getMyJobs,
+  toggleSaveJob,
+  applyToJob
 };
-
