@@ -6,12 +6,12 @@ const swaggerOptions = {
         info: {
             title: "GIU-Nexus API",
             version: "1.0.0",
-            description: "API documentation for GIU-Nexus, a job board platform with AI-powered features.",
+            description: "API documentation for GIU-Nexus, a job board platform with AI-powered features. Team Aly Elmekawy 🤙🤙",
         },
         servers: [
             {
-                url: `http://127.0.0.1:${process.env.PORT || 3000}`,
-                description: "Local development server",
+                url: `https://giu-nexus.up.railway.app`,
+                description: "Backend server",
             },
         ],
         components: {
