@@ -7,6 +7,8 @@ const jobRoutes = require('./routes/jobRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const userRoutes = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
+const swaggerSpec = require('./config/swagger');
+const {serve, setup} = require("swagger-ui-express");
 
 const app = express();
 
@@ -20,6 +22,7 @@ app.use('/api/v1/jobs', jobRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api-docs', serve, setup(swaggerSpec));
 
 // Health-check
 app.get('/', (req, res) => {
