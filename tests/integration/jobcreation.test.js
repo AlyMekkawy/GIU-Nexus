@@ -319,15 +319,15 @@ describe('Job creation', () => {
             await expectMissingField({ description: '' });
         });
 
-        it('empty requirements array is accepted by current validation', async () => {
+        it('empty requirements array is rejected by current validation', async () => {
             const { token } = await getAuthHeader({ role: 'recruiter', status: 'approved' });
             const response = await request(app)
                 .post(jobsUrl)
                 .set('Authorization', `Bearer ${token}`)
                 .send(buildJobPayload({ requirements: [] }));
 
-            expect(response.statusCode).toBe(201);
-            expect(response.body.success).toBe(true);
+            expect(response.statusCode).toBe(400);
+            expect(response.body.success).toBe(false);
         });
 
         it('empty location returns 400', async () => {

@@ -139,7 +139,7 @@ router.post('/register', authLimiter, register);
  *               password:
  *                 type: string
  *                 format: password
- *                 example: "secret123"
+ *                 example: "Secret123!"
  *     responses:
  *       200:
  *         description: Login successful
@@ -430,9 +430,38 @@ router.post('/verify-otp', verifyOtp);
  *                 success:
  *                   type: boolean
  *                   example: true
- *                 message:
+ *                 token:
  *                   type: string
- *                   example: "Password has been reset"
+ *                   description: Signed JWT
+ *                   example: "signed.jwt.token"
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "65f1c7e7a29f4c001234abcd"
+ *                     name:
+ *                       type: string
+ *                       example: "Sara Ahmed"
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       example: "sara@example.com"
+ *                     role:
+ *                       type: string
+ *                       example: "jobSeeker"
+ *                     status:
+ *                       type: string
+ *                       description: Present only for recruiter accounts.
+ *                       example: "approved"
+ *                     profilePicture:
+ *                       type: string
+ *                       example: ""
+ *                     skills:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example: []
  *       400:
  *         description: Token is invalid or has expired, or password validation failed
  *         content:
