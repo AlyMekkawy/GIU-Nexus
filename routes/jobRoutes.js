@@ -122,7 +122,7 @@ router.get("/", getJobs);
  * /api/v1/jobs:
  *   post:
  *     summary: Create a job post
- *     description: Recruiter-only route to create a new job posting.
+ *     description: Recruiter-only route. Recruiter account must have status "approved". The AI model automatically assigns category before the document is saved.
  *     tags:
  *       - Jobs
  *     security:
@@ -136,6 +136,8 @@ router.get("/", getJobs);
  *             required:
  *               - title
  *               - company
+ *               - description
+ *               - requirements
  *               - location
  *               - type
  *             properties:
@@ -145,18 +147,28 @@ router.get("/", getJobs);
  *               company:
  *                 type: string
  *                 example: "TechCo"
- *               location:
- *                 type: string
- *                 example: "Cairo"
- *               type:
- *                 type: string
- *                 example: "internship"
  *               description:
  *                 type: string
  *                 example: "Work on APIs and integrations."
- *               category:
+ *               requirements:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["Node.js", "MongoDB", "REST APIs"]
+ *               location:
  *                 type: string
- *                 example: "Backend"
+ *                 enum: ["City", "Remote"]
+ *                 example: "Remote"
+ *               type:
+ *                 type: string
+ *                 enum: ["full-time", "part-time", "internship"]
+ *                 example: "internship"
+ *               salary:
+ *                 type: number
+ *                 example: 8000
+ *               totalSlots:
+ *                 type: number
+ *                 example: 3
  *     responses:
  *       201:
  *         description: Job created successfully
@@ -165,7 +177,7 @@ router.get("/", getJobs);
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
- *         description: Forbidden. Recruiter role required.
+ *         description: Forbidden. Recruiter role required or account pending approval.
  */
 // Recruiter only: POST /api/v1/jobs
 router.post("/", protect, authorize("recruiter"), createJob);
