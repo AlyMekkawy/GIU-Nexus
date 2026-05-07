@@ -32,7 +32,6 @@ app.use('/api/v1/applications', applicationRoutes)
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
-
 /**
  * @openapi
  * /:
@@ -53,6 +52,7 @@ app.use('/api/v1/admin', adminRoutes);
  *                   type: string
  *                   example: "Nexus API running."
  */
+
 // Health-check
 app.get('/', (req, res) => {
     res.json({ message: 'Nexus API running.' });
