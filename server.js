@@ -1,5 +1,7 @@
 require('dotenv').config();
-const express = require('express');
+const express   = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 const connectDB = require('./config/db');
 
 const adminRoutes = require('./routes/adminRoutes.js');
@@ -19,7 +21,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 // Body parser
 app.use(express.json());
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/applications', applicationRoutes);
@@ -30,6 +32,26 @@ app.use('/api/v1/applications', applicationRoutes)
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     summary: Health check
+ *     description: Confirms that the API process is running.
+ *     tags:
+ *       - System
+ *     responses:
+ *       200:
+ *         description: Service is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Nexus API running."
+ */
 
 // Health-check
 app.get('/', (req, res) => {
