@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+    "@huggingface/inference": "^4.13.15",
+    "bcryptjs": "^3.0.3",
+    "ci": "^2.3.0",
+    "cloudinary": "^2.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.4.1",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "name": "giu-nexus",
+  "version": "1.0.0",
+  "description": "GIU Nexus is a full-stack job and internship platform designed for university students and recruiters. It integrates AI to automate skill extraction, job classification, and recommendation workflows, reducing manual effort on both sides.",
+  "main": "JobPost.js",
+  "scripts": {
+    "test": "npm test --runInBand",
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlyMekkawy/GIU-Nexus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AlyMekkawy/GIU-Nexus/issues"
+  },
+  "homepage": "https://github.com/AlyMekkawy/GIU-Nexus#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
