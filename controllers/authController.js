@@ -291,7 +291,13 @@ const resetPassword = async (req, res, next) => {
         user.resetPasswordExpire = undefined;
         await user.save({ validateBeforeSave: false });
 
-        res.status(200).json({ success: true, message: 'Password has been reset' });
+        const token = signToken(user);
+
+        res.status(200).json({
+            success: true,
+            token,
+            user: userPayload(user),
+        });
     } catch (err) {
         next(err);
     }
