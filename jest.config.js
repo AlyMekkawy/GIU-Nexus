@@ -1,5 +1,5 @@
 module.exports = {
     testEnvironment: 'node',
     setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-    verbose: true
+    verbose: false
 };

@@ -17,7 +17,7 @@ beforeAll(async () => {
             return;
         }
         consoleErrorSpy.mockRestore();
-        console.error(...args);
+        //console.error(...args);
         consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
