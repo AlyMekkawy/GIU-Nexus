@@ -22,7 +22,13 @@ app.use('/api/v1/jobs', jobRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
-app.use('/api-docs', serve, setup(swaggerSpec));
+app.use("/api-docs", serve,
+    setup(swaggerSpec, {
+        swaggerOptions: {
+            supportedSubmitMethods: [], //hides the 'try it out' button because its lowkey not working and the documentation should just be read-only anyway
+        },
+    })
+);
 
 // Health-check
 app.get('/', (req, res) => {
