@@ -13,13 +13,22 @@ const signToken = (user) =>
         { expiresIn: process.env.JWT_EXPIRE }
     );
 
+// Helper — builds the user object returned in register response
+const registerPayload = (user) => ({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+});
+
 // Helper — builds the user object returned in every auth response
 const userPayload = (user) => ({
     _id:            user._id,
     name:           user.name,
     email:          user.email,
     role:           user.role,
-    ...(user.role === 'recruiter' && { status: user.status }),
+    status:         user.status ?? (user.role === 'recruiter' ? 'pending' : 'approved'),
     profilePicture: user.profilePicture || '',
     skills:         user.skills || [],
 });
@@ -27,7 +36,8 @@ const userPayload = (user) => ({
 // ── POST /api/v1/auth/register ────────────────────────────────────────────────
 const register = async (req, res, next) => {
     try {
-        const { name, email, password, role } = req.body;
+        const body = req.body || {};
+        const { name, email, password, role } = body;
 
         // Basic presence check (Mongoose validates types/lengths)
         if (!name || !email || !password || !role) {
@@ -64,6 +74,7 @@ const register = async (req, res, next) => {
             email,
             password: hashedPassword,
             role,
+            status: role === 'recruiter' ? 'pending' : 'approved',
         });
 
         const token = signToken(user);
@@ -71,7 +82,7 @@ const register = async (req, res, next) => {
         res.status(201).json({
             success: true,
             token,
-            user: userPayload(user),
+            user: registerPayload(user),
         });
     } catch (err) {
         // Duplicate email — surface a friendly message instead of the raw driver error
@@ -85,7 +96,7 @@ const register = async (req, res, next) => {
 // ── POST /api/v1/auth/login ───────────────────────────────────────────────────
 const login = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body || {};
 
         if (!email || !password) {
             return res.status(400).json({ success: false, message: 'Email and password are required' });
@@ -288,4 +299,3 @@ const resetPassword = async (req, res, next) => {
 
 
 module.exports = { register, login, logout, forgotPassword, verifyOtp, resetPassword };
-

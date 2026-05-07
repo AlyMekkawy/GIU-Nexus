@@ -57,27 +57,12 @@ const userSchema = new mongoose.Schema({
             ref: "JobPost",
         }
     ],
-    /*
-     * Recruiters are the only role who will have a status. Other roles will have status as 'undefined'
-     * Other roles will not have this attribute.
-     */
     status: {
         type: String,
         enum: ["pending", "approved", "rejected"],
-        required: function () {
-            return this.role === "recruiter"
-        },
+        required: true,
         default: function () {
-            return this.role === "recruiter" ? "pending" : undefined
-        },
-        validate: {
-            validator: function (value) {
-                if (value === undefined || value === null) {
-                    return this.role !== "recruiter"
-                }
-                return this.role === "recruiter"
-            },
-            message: "Status is only applicable to recruiters",
+            return this.role === "recruiter" ? "pending" : "approved"
         }
     },
     resetPasswordToken: {

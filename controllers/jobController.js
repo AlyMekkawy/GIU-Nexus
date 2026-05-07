@@ -4,17 +4,7 @@ const User = require("../models/user");
 const hf = require("../services/hfService");
 const mongoose = require("mongoose");
 
-// ── Helper: Cosine Similarity ──────────────────────────────────────
-const cosineSimilarity = (vecA, vecB) => {
-  if (!vecA || !vecB || vecA.length === 0 || vecB.length === 0) return 0;
-  
-  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
-  const magnitudeA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
-  const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
 
-  if (magnitudeA === 0 || magnitudeB === 0) return 0;
-  return dotProduct / (magnitudeA * magnitudeB);
-};
 
 // ─────────────────────────────────────────────
 // Helper – AI category classification
@@ -23,7 +13,7 @@ async function classifyJobCategory(description) {
   try {
     const result = await hf.zeroShotClassification({
       model: "facebook/bart-large-mnli",
-      inputs: [description],
+      inputs: description, // not [description]
       parameters: {
         candidate_labels: [
           "Frontend",
@@ -35,15 +25,29 @@ async function classifyJobCategory(description) {
         ],
       },
     });
-    return Array.isArray(result) && result[0] && Array.isArray(result[0].labels)
-      ? result[0].labels[0]
-      : "Other";
+
+    //console.log("[HF] zero-shot result:", JSON.stringify(result, null, 2));
+
+    return Array.isArray(result) && result[0]?.label
+        ? result[0].label
+        : "Other";
   } catch (err) {
     console.error("[HF] Job classification failed:", err.message);
     return "Other";
   }
 }
 
+// ── Helper: Cosine Similarity ──────────────────────────────────────
+const cosineSimilarity = (vecA, vecB) => {
+  if (!vecA || !vecB || vecA.length === 0 || vecB.length === 0) return 0;
+
+  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+  const magnitudeA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
+  const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+
+  if (magnitudeA === 0 || magnitudeB === 0) return 0;
+  return dotProduct / (magnitudeA * magnitudeB);
+};
 // ─────────────────────────────────────────────
 // POST /api/v1/jobs
 // Access: Recruiter (status: "approved")
@@ -118,7 +122,15 @@ const createJob = async (req, res, next) => {
 
     return res.status(201).json({
       success: true,
-      job,
+      job: {
+        _id: job._id,
+        title: job.title,
+        category: job.category,
+        status: job.status,
+        salary: job.salary,
+        totalSlots: job.totalSlots,
+        createdBy: job.createdBy,
+      },
     });
   } catch (err) {
     next(err);
