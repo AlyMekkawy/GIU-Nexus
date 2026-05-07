@@ -55,7 +55,7 @@ const cosineSimilarity = (vecA, vecB) => {
 const createJob = async (req, res, next) => {
   try {
     if (!req.body || Object.keys(req.body).length === 0) {
-      return res.status(403).json({
+      return res.status(400).json({
         success: false,
         message: "Request body cannot be empty",
       });
@@ -65,7 +65,7 @@ const createJob = async (req, res, next) => {
       return res.status(403).json({
         success: false,
         message:
-          "Your account is pending approval. Wait for admin approval before posting jobs.",
+            "Your account is pending approval. Wait for admin approval before posting jobs.",
       });
     }
 
@@ -84,7 +84,14 @@ const createJob = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message:
-          "title, company, description, requirements, location, and type are all required.",
+            "title, company, description, requirements, location, and type are all required.",
+      });
+    }
+
+    if (!Array.isArray(requirements) || requirements.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "requirements must be a non-empty array of strings.",
       });
     }
 
@@ -96,7 +103,7 @@ const createJob = async (req, res, next) => {
       });
     }
 
-    const allowedLocations = ['City', 'Remote'];
+    const allowedLocations = ["City", "Remote"];
     if (!allowedLocations.includes(location)) {
       return res.status(400).json({
         success: false,

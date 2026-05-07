@@ -51,7 +51,7 @@ router.get('/my', protect, authorize('jobSeeker'), getMyApplications);
  * /api/v1/applications/{id}/status:
  *   patch:
  *     summary: Update application status
- *     description: Recruiter-only route to update a specific application's status.
+ *     description: Recruiter-only route. Recruiter must own the job the application belongs to. Updates the review status of an application.
  *     tags:
  *       - Applications
  *     security:
@@ -85,12 +85,40 @@ router.get('/my', protect, authorize('jobSeeker'), getMyApplications);
  *     responses:
  *       200:
  *         description: Application status updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 application:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "665fa1112c1e4a0012b34569"
+ *                     status:
+ *                       type: string
+ *                       example: "shortlisted"
  *       400:
  *         description: Invalid status or request
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
- *         description: Forbidden. Recruiter role required.
+ *         description: Forbidden. Recruiter role required or recruiter does not own the related job.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Not authorised to update this application"
  */
 router.patch('/:id/status', protect, authorize('recruiter'), updateApplicationStatus);
 

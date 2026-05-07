@@ -119,53 +119,70 @@ router.get("/", getJobs);
 
 /**
  * @openapi
- * /api/v1/jobs:
+ * /api/v1/jobs/{id}/save:
  *   post:
- *     summary: Create a job post
- *     description: Recruiter-only route to create a new job posting.
+ *     summary: Toggle saved job
+ *     description: Job seeker-only route. Toggles the saved state for a job. If already saved, it is removed; if not saved, it is added. Only open jobs can be saved.
  *     tags:
  *       - Jobs
  *     security:
  *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - title
- *               - company
- *               - location
- *               - type
- *             properties:
- *               title:
- *                 type: string
- *                 example: "Backend Intern"
- *               company:
- *                 type: string
- *                 example: "TechCo"
- *               location:
- *                 type: string
- *                 example: "Cairo"
- *               type:
- *                 type: string
- *                 example: "internship"
- *               description:
- *                 type: string
- *                 example: "Work on APIs and integrations."
- *               category:
- *                 type: string
- *                 example: "Backend"
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Job id
  *     responses:
- *       201:
- *         description: Job created successfully
+ *       200:
+ *         description: Saved state toggled successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Job saved"
+ *                 saved:
+ *                   type: boolean
+ *                   example: true
+ *             examples:
+ *               saved:
+ *                 summary: Job added to saved list
+ *                 value:
+ *                   success: true
+ *                   message: "Job saved"
+ *                   saved: true
+ *               removed:
+ *                 summary: Job removed from saved list
+ *                 value:
+ *                   success: true
+ *                   message: "Job removed from saved"
+ *                   saved: false
  *       400:
- *         description: Invalid job data
+ *         description: Invalid request or job cannot be saved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Cannot save a closed job"
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
- *         description: Forbidden. Recruiter role required.
+ *         description: Forbidden. Job seeker role required.
+ *       404:
+ *         description: Job not found
  */
 // Recruiter only: POST /api/v1/jobs
 router.post("/", protect, authorize("recruiter"), createJob);
@@ -175,7 +192,7 @@ router.post("/", protect, authorize("recruiter"), createJob);
  * /api/v1/jobs/recommended:
  *   get:
  *     summary: Get recommended jobs
- *     description: Job seeker-only route returning AI-recommended jobs for the logged-in user.
+ *     description: Job seeker-only route returning jobs ranked by cosine similarity between the user's skills and job requirements, computed via HuggingFace sentence embeddings.
  *     tags:
  *       - Jobs
  *     security:
@@ -183,6 +200,35 @@ router.post("/", protect, authorize("recruiter"), createJob);
  *     responses:
  *       200:
  *         description: Recommended jobs returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 jobs:
+ *                   type: array
+ *                   description: Jobs sorted by similarity score, highest first.
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "665f9a7b2c1e4a0012b34567"
+ *                       title:
+ *                         type: string
+ *                         example: "Backend Intern"
+ *                       company:
+ *                         type: string
+ *                         example: "TechCo"
+ *                       category:
+ *                         type: string
+ *                         example: "Backend"
+ *                       score:
+ *                         type: number
+ *                         example: 0.87
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
@@ -197,7 +243,7 @@ router.get("/recommended", protect, authorize('jobSeeker'), getRecommendedJobs);
  * /api/v1/jobs/saved:
  *   get:
  *     summary: Get saved jobs
- *     description: Job seeker-only route returning jobs saved by the logged-in user.
+ *     description: Job seeker-only route returning all jobs the logged-in user has saved/bookmarked.
  *     tags:
  *       - Jobs
  *     security:
@@ -205,6 +251,34 @@ router.get("/recommended", protect, authorize('jobSeeker'), getRecommendedJobs);
  *     responses:
  *       200:
  *         description: Saved jobs returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 jobs:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "665f9a7b2c1e4a0012b34567"
+ *                       title:
+ *                         type: string
+ *                         example: "Backend Intern"
+ *                       company:
+ *                         type: string
+ *                         example: "TechCo"
+ *                       type:
+ *                         type: string
+ *                         example: "internship"
+ *                       status:
+ *                         type: string
+ *                         example: "open"
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
@@ -219,7 +293,7 @@ router.get("/saved", protect, authorize("jobSeeker"), getSavedJobs);
  * /api/v1/jobs/my-jobs:
  *   get:
  *     summary: List my jobs
- *     description: Recruiter-only route returning jobs created by the logged-in recruiter.
+ *     description: Recruiter-only route returning all job posts created by the logged-in recruiter.
  *     tags:
  *       - Jobs
  *     security:
@@ -227,6 +301,35 @@ router.get("/saved", protect, authorize("jobSeeker"), getSavedJobs);
  *     responses:
  *       200:
  *         description: Recruiter jobs returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 jobs:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "665fa1112c1e4a0012b34569"
+ *                       title:
+ *                         type: string
+ *                         example: "Backend Intern"
+ *                       status:
+ *                         type: string
+ *                         example: "open"
+ *                       type:
+ *                         type: string
+ *                         example: "internship"
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2026-05-07T12:00:00.000Z"
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
@@ -241,7 +344,7 @@ router.get("/my-jobs", protect, authorize("recruiter"), getMyJobs);
  * /api/v1/jobs/{id}:
  *   get:
  *     summary: Get job by id
- *     description: Public route returning a single job post by id.
+ *     description: Public route returning a single job post by its ID, with recruiter info populated.
  *     tags:
  *       - Jobs
  *     parameters:
@@ -254,10 +357,61 @@ router.get("/my-jobs", protect, authorize("recruiter"), getMyJobs);
  *     responses:
  *       200:
  *         description: Job returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 job:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "665f9a7b2c1e4a0012b34567"
+ *                     title:
+ *                       type: string
+ *                       example: "Backend Intern"
+ *                     description:
+ *                       type: string
+ *                       example: "Work on APIs and integrations."
+ *                     requirements:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example: ["Node.js", "MongoDB", "REST APIs"]
+ *                     category:
+ *                       type: string
+ *                       example: "Backend"
+ *                     status:
+ *                       type: string
+ *                       example: "open"
+ *                     createdBy:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: "Recruiter Name"
+ *                         email:
+ *                           type: string
+ *                           example: "recruiter@example.com"
  *       400:
  *         description: Invalid job id format
  *       404:
  *         description: Job not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Job not found"
  */
 // Public: GET /api/v1/jobs/:id
 router.get("/:id", getJobById);
@@ -267,7 +421,7 @@ router.get("/:id", getJobById);
  * /api/v1/jobs/{id}:
  *   delete:
  *     summary: Delete job
- *     description: Recruiter (owner) or admin route to delete a job post.
+ *     description: Recruiter owner or admin route. Permanently deletes a job post.
  *     tags:
  *       - Jobs
  *     security:
@@ -282,10 +436,32 @@ router.get("/:id", getJobById);
  *     responses:
  *       200:
  *         description: Job deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Job deleted"
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
  *         description: Forbidden. Recruiter owner or admin role required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Not authorised to delete this job"
  *       404:
  *         description: Job not found
  */
@@ -297,7 +473,7 @@ router.delete("/:id", protect, authorize("recruiter", "admin"), deleteJob);
  * /api/v1/jobs/{id}:
  *   patch:
  *     summary: Update job
- *     description: Recruiter-only route to update a job post.
+ *     description: Recruiter-only route to update a job post. Recruiter must own the job. If description is changed, the AI re-classifies the category automatically.
  *     tags:
  *       - Jobs
  *     security:
@@ -315,30 +491,74 @@ router.delete("/:id", protect, authorize("recruiter", "admin"), deleteJob);
  *         application/json:
  *           schema:
  *             type: object
+ *             description: All fields are optional.
  *             properties:
  *               title:
  *                 type: string
+ *                 example: "Senior Backend Engineer"
  *               company:
  *                 type: string
- *               location:
- *                 type: string
- *               type:
- *                 type: string
+ *                 example: "TechCo"
  *               description:
  *                 type: string
- *               category:
+ *                 example: "Build scalable APIs and backend services."
+ *               requirements:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["Node.js", "MongoDB", "System Design"]
+ *               location:
  *                 type: string
+ *                 enum: ["City", "Remote"]
+ *                 example: "Remote"
+ *               type:
+ *                 type: string
+ *                 enum: ["full-time", "part-time", "internship"]
+ *                 example: "full-time"
+ *               salary:
+ *                 type: number
+ *                 example: 20000
+ *               totalSlots:
+ *                 type: number
+ *                 example: 2
  *               status:
  *                 type: string
+ *                 enum: ["open", "closed"]
+ *                 example: "closed"
+ *             example:
+ *               title: "Senior Backend Engineer"
+ *               status: "closed"
  *     responses:
  *       200:
  *         description: Job updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 job:
+ *                   type: object
+ *                   description: Updated job fields.
  *       400:
  *         description: Invalid job data
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
- *         description: Forbidden. Recruiter role required.
+ *         description: Forbidden. Recruiter role required or recruiter does not own this job.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Not authorised to edit this job"
  */
 // Recruiter only: PATCH /api/v1/jobs/:id
 router.patch("/:id", protect, updateJob);
@@ -348,7 +568,7 @@ router.patch("/:id", protect, updateJob);
  * /api/v1/jobs/{jobId}/applicants:
  *   get:
  *     summary: List job applicants
- *     description: Recruiter-only route returning applicants for a specific job post.
+ *     description: Recruiter-only route. Recruiter must own the job. Returns all applications for a specific job, with full applicant details populated.
  *     tags:
  *       - Jobs
  *     security:
@@ -363,10 +583,53 @@ router.patch("/:id", protect, updateJob);
  *     responses:
  *       200:
  *         description: Applicants returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 applications:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "665fa1112c1e4a0012b34569"
+ *                       status:
+ *                         type: string
+ *                         example: "pending"
+ *                       coverLetter:
+ *                         type: string
+ *                         example: "I am excited to apply for this role."
+ *                       appliedAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2026-05-07T12:00:00.000Z"
+ *                       user:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "665f9a7b2c1e4a0012b34567"
+ *                           name:
+ *                             type: string
+ *                             example: "Sara Ahmed"
+ *                           email:
+ *                             type: string
+ *                             example: "sara@example.com"
+ *                           skills:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                             example: ["React", "Node.js"]
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
- *         description: Forbidden. Recruiter role required.
+ *         description: Forbidden. Recruiter role required or recruiter does not own this job.
  *       404:
  *         description: Job not found
  */
@@ -408,7 +671,7 @@ router.post("/:id/save", protect, authorize("jobSeeker"), toggleSaveJob);
  * /api/v1/jobs/{jobId}/apply:
  *   post:
  *     summary: Apply to a job
- *     description: Job seeker-only route to apply to a job post.
+ *     description: Job seeker-only route. Submits an application to a job. Duplicate applications are rejected at the database level via a unique compound index.
  *     tags:
  *       - Jobs
  *     security:
@@ -420,17 +683,76 @@ router.post("/:id/save", protect, authorize("jobSeeker"), toggleSaveJob);
  *         schema:
  *           type: string
  *         description: Job id
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               coverLetter:
+ *                 type: string
+ *                 example: "I am excited to apply because my backend experience matches this role."
  *     responses:
- *       200:
+ *       201:
  *         description: Application submitted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 application:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "665f9c9a2c1e4a0012b34568"
+ *                     user:
+ *                       type: string
+ *                       example: "<userId>"
+ *                     job:
+ *                       type: string
+ *                       example: "<jobId>"
+ *                     status:
+ *                       type: string
+ *                       example: "pending"
+ *                     appliedAt:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2026-05-07T12:00:00.000Z"
  *       400:
- *         description: Invalid application request
+ *         description: Invalid application request or duplicate application
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "You have already applied to this job"
  *       401:
  *         description: Unauthorized. Missing, invalid, or expired token.
  *       403:
  *         description: Forbidden. Job seeker role required.
  *       404:
  *         description: Job not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Job not found"
  */
 // Job Seeker only: POST /api/v1/jobs/:jobId/apply
 router.post("/:jobId/apply", protect, authorize("jobSeeker"), applyToJob);
