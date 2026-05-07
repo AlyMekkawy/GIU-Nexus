@@ -279,6 +279,52 @@ router.patch('/', protect, upload.single('profilePicture'), updateProfile);
 // PATCH /api/v1/profile/change-password - private (any authenticated user)
 router.patch('/change-password', protect, changePassword);
 
+/**
+ * @openapi
+ * /api/v1/profile/extract-skills:
+ *   post:
+ *     summary: Extract skills from bio
+ *     description: Job seeker-only route that extracts skills from the provided bio text.
+ *     tags:
+ *       - Profile
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - bio
+ *             properties:
+ *               bio:
+ *                 type: string
+ *                 description: Bio text used for skill extraction
+ *                 example: "Backend developer with Node.js, Express, and MongoDB."
+ *     responses:
+ *       200:
+ *         description: Skills extracted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 skills:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ["Node.js", "Express", "MongoDB"]
+ *       400:
+ *         description: Missing or invalid bio
+ *       401:
+ *         description: Unauthorized. Missing, invalid, or expired token.
+ *       403:
+ *         description: Forbidden. Job seeker role required.
+ */
 // POST /api/v1/profile/extract-skills - private (jobSeeker only)
 router.post('/extract-skills', protect, authorize('jobSeeker'), extractSkills);
 

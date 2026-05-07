@@ -21,7 +21,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 // Body parser
 app.use(express.json());
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/applications', applicationRoutes);
