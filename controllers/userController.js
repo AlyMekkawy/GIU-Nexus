@@ -13,9 +13,9 @@ const getUserByID = async (req,res,next)=>{
                 user: {
                     _id: user._id,
                     name: user.name,
+                    email: user.email,
                     role: user.role,
                     status: user.status,
-                    email: user.email,
                 },
             })
         }
@@ -63,7 +63,7 @@ const getUsers = async (req, res, next) => {
         if (status) filter.status = status
 
         const skip = (page - 1) * limit
-        const users = await User.find(filter).skip(skip).limit(limit).select('-password')
+        const users = await User.find(filter).skip(skip).limit(limit).select('_id name email role status createdAt')
         const total = await User.countDocuments(filter)
 
         res.status(200).json({ success: true, total, page, users })
