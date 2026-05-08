@@ -289,19 +289,6 @@ router.patch('/change-password', protect, changePassword);
  *       - Profile
  *     security:
  *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - bio
- *             properties:
- *               bio:
- *                 type: string
- *                 description: Bio text used for skill extraction
- *                 example: "Backend developer with Node.js, Express, and MongoDB."
  *     responses:
  *       200:
  *         description: Skills extracted successfully
