@@ -88,14 +88,6 @@ const router = express.Router();
  *                       type: string
  *                       description: Present only for recruiter accounts.
  *                       example: "pending"
- *                     profilePicture:
- *                       type: string
- *                       example: ""
- *                     skills:
- *                       type: array
- *                       items:
- *                         type: string
- *                       example: []
  *       400:
  *         description: Invalid input, password complexity failure, or email already in use
  *         content:

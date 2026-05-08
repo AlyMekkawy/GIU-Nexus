@@ -323,7 +323,7 @@ const updateJob = async (req, res, next) => {
     const updatedJob = await JobPost.findByIdAndUpdate(jobId, updateData, {
       new: true,
       runValidators: true
-    });
+    }).select(Object.keys(updateData).join(" "));
 
     return res.status(200).json({ success: true, job: updatedJob });
   } catch (error) {
