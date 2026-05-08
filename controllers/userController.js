@@ -92,6 +92,12 @@ const updateUserStatus = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' })
         }
+        if (user.role !== "recruiter") {
+            return res.status(400).json({ success: false, message: "Status can only be updated for recruiters" })
+        }
+
+        user.status = status
+        await user.save()
 
         res.status(200).json({ success: true, user })
     } catch (error) {
