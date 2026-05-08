@@ -1,45 +1,47 @@
 # GIU Nexus
 
-GIU Nexus is a full-stack job and internship platform designed for university students and recruiters. It integrates AI to automate skill extraction, job classification, and recommendation workflows, reducing manual effort on both sides.
+GIU Nexus is a backend-driven job and internship platform built for university students, recruiters, and admins. It provides authentication, profile management, job posting, applications, and AI-assisted workflows (such as skill extraction and job text analysis).
 
-## What It Does
+## Features
 
-- Create and manage student profiles  
-- Automatically extract skills from profile text using AI  
-- Post and manage job/internship listings  
-- Automatically classify job postings  
-- Recommend relevant jobs to students based on their profiles  
-- Allow students to browse and apply to opportunities  
-- Help recruiters discover suitable candidates faster  
+- User registration and login with JWT authentication
+- Student profile creation and updates
+- Job/internship posting and management
+- Job applications workflow
+- Admin-specific endpoints
+- AI-powered extraction/classification helpers via Hugging Face
+- File upload support (Cloudinary)
+- Rate limiting and centralized error handling
+- Swagger API documentation endpoint
+- Integration test coverage for core flows
 
-## Stack
-- **MERN** stack (MongoDB, Express, React, Node.js)
-- Mongoose for database modeling
+## Tech Stack
 
-### Backend
+- **Runtime:** Node.js
+- **Framework:** Express
+- **Database:** MongoDB + Mongoose
+- **Auth:** JSON Web Tokens (JWT)
+- **AI Integrations:** Hugging Face Inference API
+- **File Hosting:** Cloudinary
+- **Email:** Nodemailer
+- **Testing:** Jest + Supertest + mongodb-memory-server
 
-- (Node.js / Express)  
-- Database integration (MongoDB)  
-- Hugging Face Inference API for AI features  
-
-### Frontend
-
-- React   
-
-## Repository Layout
+## Project Structure
 
 ```text
 .
-├── config/       # Database and app configuration
-├── controllers/  # Request handlers and business logic
-├── middleware/   # Auth, validation, and error handling
-├── models/       # Mongoose models and schemas
-├── routes/       # API route definitions and versioning
-├── schema/       # Validation schemas and shared types
-├── services/     # External services (AI, email, etc.)
-├── server.js     # App entry point
-├── package.json  # Project metadata and scripts
-└── package-lock.json
+├── app.js
+├── server.js
+├── config/
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+├── services/
+├── tests/
+├── Dockerfile
+├── docker-compose.yml
+└── package.json
 ```
 
 ## .env
@@ -47,28 +49,39 @@ GIU Nexus is a full-stack job and internship platform designed for university st
 Example (replace values with your own):
 
 ```env
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/giu-nexus
-JWT_SECRET=replace_with_a_long_random_string
-JWT_EXPIRES_IN=7d
-HF_API_TOKEN=replace_with_your_huggingface_token
-EMAIL_HOST=smtp.example.com
+PORT = 5004
+HOST= 0.0.0.0
+MONGO_URI = replace_with_your_mongodb_connection_string_or_docker_service_name
+
+JWT_SECRET = xxxxxx
+JWT_EXPIRE = 7d
+
+HF_TOKEN = hf_xxxxxxxxxxxxxx
+
+EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_USER=replace_with_smtp_username
-EMAIL_PASS=replace_with_smtp_password
-EMAIL_FROM="GIU Nexus <noreply@example.com>"
+EMAIL_USER=xxxxxxx@gmail.com
+EMAIL_PASS=xxxxxxxxxxxxxxxx
+
+CLOUDINARY_CLOUD_NAME=xxxxxxxxxx
+CLOUDINARY_API_KEY=xxxxxxxxxxxxxxxxx
+CLOUDINARY_API_SECRET=xxxxxxxxxxxxxxxxxxx
 ```
 
 - `PORT`: Port for the Express server.
-- `MONGO_URI`: MongoDB connection string.
+- `HOST`: Host for the Express server
+- `MONGO_URI`: MongoDB connection string or docker service name.
 - `JWT_SECRET`: Secret used to sign JWTs.
 - `JWT_EXPIRES_IN`: JWT lifetime (e.g., `7d`, `1h`).
-- `HF_API_TOKEN`: Hugging Face Inference API token.
+- `HF_TOKEN`: Hugging Face Inference API token.
 - `EMAIL_HOST`: SMTP host for sending emails.
 - `EMAIL_PORT`: SMTP port (often `587` or `465`).
 - `EMAIL_USER`: SMTP username.
 - `EMAIL_PASS`: SMTP password or app password.
 - `EMAIL_FROM`: Default sender address.
+- `CLOUDINARY_CLOUD_NAME`: Your Cloudinary cloud name.
+- `CLOUDINARY_API_KEY`: Your Cloudinary API key.
+- `CLOUDINARY_API_SECRET`: Your Cloudinary API secret.
 
 ## Team Members
 
