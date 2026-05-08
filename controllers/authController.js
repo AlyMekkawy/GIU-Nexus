@@ -171,30 +171,74 @@ const forgotPassword = async (req, res, next) => {
             return res.status(200).json({ success: true, message: 'Password reset email sent' });
         }
 
+        // Generate a cryptographically random reset token
+        const rawToken = crypto.randomBytes(32).toString('hex');
 
         // Generate a 6-digit OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
         // Hash it before storing
+        user.resetPasswordToken  = crypto.createHash('sha256').update(rawToken).digest('hex');
+        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+
         user.resetPasswordOtp = crypto.createHash('sha256').update(otp).digest('hex');
         user.resetPasswordOtpExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
         await user.save({ validateBeforeSave: false });
 
+        // Build the reset link with the RAW (unhashed) token
+        const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${rawToken}`;
+
         try {
             await sendEmail({
                 to: user.email,
-                subject: 'GIU Nexus — Password Reset OTP',
-                text: `You requested a password reset. Your OTP is: ${otp}\n\nIt expires in 10 minutes. If you did not request this, ignore this email.`,
-                html: `<p>You requested a password reset. Your OTP is:</p>
-                       <h2>${otp}</h2>
-                       <p>It expires in <strong>10 minutes</strong>. If you did not request this, ignore this email.</p>`,
+                subject: 'GIU Nexus — Password Reset',
+                text: `You requested a password reset.
+
+            You can reset your password using either of the following options:
+            
+            1. Open this link within 10 minutes:
+            ${resetUrl}
+            
+            2. Or enter this OTP:
+            ${otp}
+            
+            The link and OTP both expire in 10 minutes.
+            
+            If you did not request this, ignore this email.`,
+                            html: `
+                        <p>You requested a password reset.</p>
+                        <p>You can reset your password using either of the following options:</p>
+                        <p>
+                            <strong>Option 1:</strong> Click the link below within 
+                            <strong>10 minutes</strong>:
+                        </p>
+                        <p>
+                            <a href="${resetUrl}">${resetUrl}</a>
+                        </p>
+                        <p>
+                            <strong>Option 2:</strong> Enter this OTP:
+                        </p>
+                        <h2>${otp}</h2>
+                        <p>
+                            The link and OTP both expire in 
+                            <strong>10 minutes</strong>.
+                        </p>
+                        <p>If you did not request this, ignore this email.</p>
+                    `,
             });
         } catch (emailErr) {
-            // Roll back the OTP if email fails
+            // Roll back the reset credentials if email fails
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
             user.resetPasswordOtp = undefined;
             user.resetPasswordOtpExpire = undefined;
+
             await user.save({ validateBeforeSave: false });
-            return res.status(500).json({ success: false, message: 'Email could not be sent' });
+
+            return res.status(500).json({
+                success: false,
+                message: 'Email could not be sent',
+            });
         }
 
         res.status(200).json({ success: true, message: 'Password reset email sent' });
@@ -270,9 +314,13 @@ const resetPassword = async (req, res, next) => {
             });
         }
 
+        //546ffa41ce1bb855b6e894012069ee4ec4042711318d093b451a1c546a3d2def
+        //546ffa41ce1bb855b6e894012069ee4ec4042711318d093b451a1c546a3d2def
+
         // Hash the incoming raw token and look it up
         const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
 
+        console.log(req.params.token)
         const user = await User.findOne({
             resetPasswordToken: hashedToken,
             resetPasswordExpire: { $gt: Date.now() },
@@ -296,7 +344,11 @@ const resetPassword = async (req, res, next) => {
         res.status(200).json({
             success: true,
             token,
-            user: userPayload(user),
+            user: {
+                _id: user._id,
+                name: user.name,
+                role: user.role
+            }
         });
     } catch (err) {
         next(err);
