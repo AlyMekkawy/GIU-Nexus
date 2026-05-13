@@ -1,5 +1,7 @@
 # node modules folder ignored (requirement for project)
-/node_modules/
+/node_modules
+/server/node_modules
+/client/node_modules
 /dist/
 /build/
 # environment variables file ignored (requirement for project)
