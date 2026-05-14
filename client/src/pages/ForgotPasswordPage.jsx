@@ -6,20 +6,24 @@ import "./ForgotPasswordPage.css";
 function ForgotPasswordPage() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState("");
+    const [status, setStatus] = useState({ type: "", text: "" });
 
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
-        setError("");
-        setMessage("");
+        setStatus({ type: "", text: "" });
 
         try {
             await api.post("/auth/forgot-password", { email });
-            setMessage("If an account exists for this email, a reset link has been sent.");
+            setStatus({
+                type: "success",
+                text: "If an account exists for this email, a reset link has been sent.",
+            });
         } catch (err) {
-            setError(err?.response?.data?.message || err.message || "Something went wrong");
+            setStatus({
+                type: "error",
+                text: err?.response?.data?.message || err.message || "Something went wrong",
+            });
         } finally {
             setLoading(false);
         }
@@ -47,13 +51,16 @@ function ForgotPasswordPage() {
                         {loading ? "Sending..." : "Send Reset Link →"}
                     </button>
 
+                    {status.text && (
+                        <div className={`forgot-status ${status.type}`} role="status" aria-live="polite">
+                            {status.text}
+                        </div>
+                    )}
+
                     <div>
                         <Link to="/login">← Back to sign in</Link>
                     </div>
                 </form>
-
-                {message && <div>{message}</div>}
-                {error && <div>{error}</div>}
             </div>
         </div>
     );
