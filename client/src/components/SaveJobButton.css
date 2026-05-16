@@ -1,0 +1,48 @@
+/* ── SaveJobButton.css ───────────────────────────────────────────── */
+
+.save-job-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  padding: 0;
+}
+
+.save-job-btn:hover:not(:disabled) {
+  color: #4f46e5;
+  border-color: #4f46e5;
+  background: #f5f3ff;
+}
+
+.save-job-btn--saved {
+  color: #4f46e5;
+  border-color: #4f46e5;
+  background: #f5f3ff;
+}
+
+.save-job-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Tiny inline spinner */
+.save-job-btn__spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #c4b5fd;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
