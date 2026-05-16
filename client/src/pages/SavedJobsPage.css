@@ -1,0 +1,137 @@
+/* ── SavedJobsPage.css ───────────────────────────────────────────── */
+
+.saved-jobs-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  min-height: 70vh;
+}
+
+/* Header */
+.saved-jobs-header {
+  margin-bottom: 2rem;
+}
+
+.saved-jobs-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.25rem;
+}
+
+.bookmark-icon {
+  font-size: 1.75rem;
+}
+
+.saved-jobs-subtitle {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Count */
+.saved-jobs-count {
+  color: #4b5563;
+  font-size: 0.9rem;
+  margin: 0 0 1.25rem;
+}
+
+/* Grid */
+.saved-jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Loading */
+.saved-jobs-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  color: #6b7280;
+}
+
+/* Error */
+.saved-jobs-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  color: #b91c1c;
+  text-align: center;
+}
+
+.retry-btn {
+  padding: 0.5rem 1.25rem;
+  border: 1.5px solid #b91c1c;
+  border-radius: 6px;
+  background: transparent;
+  color: #b91c1c;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.retry-btn:hover {
+  background: #b91c1c;
+  color: #fff;
+}
+
+/* Empty state */
+.saved-jobs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+}
+
+.saved-jobs-empty h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.saved-jobs-empty p {
+  color: #6b7280;
+  max-width: 360px;
+  margin: 0;
+}
+
+.browse-btn {
+  margin-top: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  background: #4f46e5;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.browse-btn:hover {
+  background: #4338ca;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .saved-jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .saved-jobs-title {
+    font-size: 1.5rem;
+  }
+}
