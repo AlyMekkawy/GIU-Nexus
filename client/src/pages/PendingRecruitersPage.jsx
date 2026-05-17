@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "./PendingRecruitersPage.css";
+import "./PendingRecruiters.css";
 
 /* ── Icons ─────────────────────────────────────────────────────────────── */
 const SearchIcon = () => (
