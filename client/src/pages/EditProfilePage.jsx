@@ -103,18 +103,20 @@ function EditProfilePage() {
       setError('');
       setSuccess('');
 
-      // 1. Save name & bio as plain JSON
-      await api.patch('/profile', { name: name.trim(), bio: bio.trim() });
-
-      // 2. If a new photo was picked, upload it separately
+      // Create FormData to handle both JSON fields and file upload
+      const formData = new FormData();
+      formData.append('name', name.trim());
+      formData.append('bio', bio.trim());
+      
+      // Add photo file if one was selected
       const photoFile = fileInputRef.current?.files?.[0];
       if (photoFile) {
-        const formData = new FormData();
         formData.append('profilePicture', photoFile);
-        await api.patch('/profile/photo', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
       }
+
+      // Single PATCH request with both data and file
+      // Don't set Content-Type header - let axios handle it automatically with correct boundary
+      await api.patch('/profile', formData);
 
       setSuccess('Profile updated successfully!');
       setTimeout(() => navigate('/profile'), 1200);
@@ -265,7 +267,7 @@ function EditProfilePage() {
                       position: 'absolute',
                       bottom: 0,
                       right: 0,
-                      background: 'var(--color-primary)',
+                      background: '#000',
                       color: '#fff',
                       border: '2.5px solid #fff',
                       borderRadius: '50%',
@@ -311,18 +313,19 @@ function EditProfilePage() {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       style={{
-                        background: 'none',
+                        background: '#000',
                         border: 'none',
-                        padding: 0,
+                        padding: '8px 16px',
                         cursor: 'pointer',
                         fontSize: '14px',
                         fontWeight: 600,
-                        color: 'var(--color-primary)',
+                        color: '#fff',
                         textDecoration: 'none',
                         fontFamily: 'Inter, sans-serif',
-                        transition: 'opacity 0.15s',
+                        transition: 'opacity 0.15s, background 0.15s',
+                        borderRadius: '6px',
                       }}
-                      onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+                      onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
                       onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
                     >
                       Upload New
@@ -403,15 +406,6 @@ function EditProfilePage() {
                   >
                     Bio
                   </label>
-                  <span
-                    style={{
-                      fontSize: '13px',
-                      color: bioCount > BIO_MAX ? 'var(--color-error)' : 'var(--color-ink-muted)',
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    {bioCount} / {BIO_MAX}
-                  </span>
                 </div>
                 <textarea
                   id="bio-textarea"
@@ -429,7 +423,7 @@ function EditProfilePage() {
                     fontSize: '15px',
                     lineHeight: 1.6,
                     color: 'var(--color-on-surface)',
-                    resize: 'vertical',
+                    resize: 'none',
                     outline: 'none',
                     fontFamily: 'Inter, sans-serif',
                     transition: 'border-color 0.2s',
@@ -495,7 +489,7 @@ function EditProfilePage() {
                   type="submit"
                   disabled={saving || bioCount > BIO_MAX}
                   style={{
-                    background: 'var(--color-primary)',
+                    background: '#000',
                     color: '#fff',
                     border: 'none',
                     borderRadius: '9999px',
@@ -506,7 +500,7 @@ function EditProfilePage() {
                     fontFamily: 'Inter, sans-serif',
                     opacity: saving ? 0.75 : 1,
                     transition: 'opacity 0.15s, transform 0.1s, box-shadow 0.15s',
-                    boxShadow: '0 4px 14px rgba(0,78,159,0.25)',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
