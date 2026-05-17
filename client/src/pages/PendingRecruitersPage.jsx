@@ -103,8 +103,37 @@ function PendingRecruitersPage() {
         setLoading(true);
         setError("");
         try {
-            const response = await api.get("/users", { params: { role: "recruiter", status } });
-            setRecruiters(response?.data?.users || []);
+            const pageSize = 100;
+            let page = 1;
+            let allRecruiters = [];
+            let total = null;
+
+            while (true) {
+                const response = await api.get("/users", {
+                    params: { role: "recruiter", status, page, limit: pageSize },
+                });
+
+                const users = response?.data?.users || [];
+                const reportedTotal = response?.data?.total;
+
+                allRecruiters = [...allRecruiters, ...users];
+
+                if (typeof reportedTotal === "number") {
+                    total = reportedTotal;
+                }
+
+                if (
+                    users.length === 0 ||
+                    users.length < pageSize ||
+                    (typeof total === "number" && allRecruiters.length >= total)
+                ) {
+                    break;
+                }
+
+                page += 1;
+            }
+
+            setRecruiters(allRecruiters);
         } catch (err) {
             setError(err?.message || "Failed to load recruiters.");
         } finally {
