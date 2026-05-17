@@ -167,6 +167,7 @@ const getJobById = async (req, res, next) => {
       title,
       description,
       requirements,
+      salary,
       category,
       status,
       createdBy,
@@ -179,6 +180,7 @@ const getJobById = async (req, res, next) => {
         title,
         description,
         requirements,
+        salary,
         category,
         status,
         createdBy: {

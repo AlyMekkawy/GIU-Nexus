@@ -10,7 +10,7 @@
 .jd-main-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1.5rem 5rem;
+    padding: 6rem 1.5rem 3rem;
 }
 
 /* ── Breadcrumb ──────────────────────────────────────── */
@@ -217,7 +217,7 @@
 /* ── Right Column ────────────────────────────────────── */
 .jd-right-col {
     position: sticky;
-    top: 2rem;
+    top: 5.5rem;
 }
 
 .jd-action-card {

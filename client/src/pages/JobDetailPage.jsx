@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
 import ApplicationStatusBadge from '../components/ApplicationStatusBadge';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import './JobDetailPage.css';
 
 const CATEGORY_COLORS = {
@@ -44,12 +46,21 @@ function JobDetailPage() {
                 const res = await api.get(`/jobs/${id}`);
                 const jobData = res.data.job || res.data;
                 setJob(jobData);
-                setSaved(jobData.isSaved || false);
             } catch (err) {
                 setError(err.message || 'Failed to load job details.');
             } finally {
                 setLoading(false);
             }
+        }
+
+        async function fetchSavedState() {
+            if (!isJobSeeker) return;
+            try {
+                const res = await api.get('/jobs/saved');
+                const savedJobs = res.data.jobs || res.data || [];
+                const isSaved = savedJobs.some(j => (j._id || j) === id);
+                setSaved(isSaved);
+            } catch (_) {}
         }
 
         async function fetchMyApplications() {
@@ -63,6 +74,7 @@ function JobDetailPage() {
         }
 
         fetchJob();
+        fetchSavedState();
         fetchMyApplications();
     }, [id, isJobSeeker]);
 
@@ -98,19 +110,23 @@ function JobDetailPage() {
         }
     }
 
-    if (loading) return <Spinner />;
+    if (loading) return <><Navbar /><Spinner /></>;
 
     if (error) {
         return (
-            <div className="jd-error-container">
-                <div className="jd-error-box">
-                    <span className="jd-error-icon">⚠️</span>
-                    <p>{error}</p>
-                    <button className="jd-btn-primary" onClick={() => navigate('/jobs')}>
-                        Back to Jobs
-                    </button>
+            <>
+                <Navbar />
+                <div className="jd-error-container">
+                    <div className="jd-error-box">
+                        <span className="jd-error-icon">⚠️</span>
+                        <p>{error}</p>
+                        <button className="jd-btn-primary" onClick={() => navigate('/jobs')}>
+                            Back to Jobs
+                        </button>
+                    </div>
                 </div>
-            </div>
+                <Footer />
+            </>
         );
     }
 
@@ -120,6 +136,8 @@ function JobDetailPage() {
 
     return (
         <div className="jd-page">
+            <Navbar />
+
             <main className="jd-main-container">
                 {/* Breadcrumb */}
                 <nav className="jd-breadcrumb">
@@ -247,6 +265,15 @@ function JobDetailPage() {
                                             <span className="jd-overview-value">{job.createdBy.name}</span>
                                         </div>
                                     )}
+                                    {job.salary && (
+                                        <div className="jd-overview-row">
+                                            <div className="jd-overview-label-wrap">
+                                                <span className="jd-overview-icon">💰</span>
+                                                <span className="jd-overview-label">Salary</span>
+                                            </div>
+                                            <span className="jd-overview-value">{job.salary}</span>
+                                        </div>
+                                    )}
                                     <div className="jd-overview-row">
                                         <div className="jd-overview-label-wrap">
                                             <span className="jd-overview-icon">✦</span>
@@ -288,6 +315,8 @@ function JobDetailPage() {
                     </div>
                 </div>
             </main>
+
+            <Footer />
 
             {/* Apply Modal */}
             <Modal
