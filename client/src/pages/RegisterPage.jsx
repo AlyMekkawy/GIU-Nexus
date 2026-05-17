@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 
 function RegisterPage() {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
 
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
@@ -18,6 +18,13 @@ function RegisterPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formError, setFormError] = useState("");
     const [pendingStatus, setPendingStatus] = useState(null);
+
+    // Redirect authenticated users away from the register page.
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/", { replace: true });
+        }
+    }, [isAuthenticated, navigate]);
 
     const passwordsMismatch = (touchedConfirm || isSubmitting) && confirmPassword.length > 0 && password !== confirmPassword;
     const showPendingNotice = pendingStatus === "pending";
