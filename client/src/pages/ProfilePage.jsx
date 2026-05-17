@@ -320,7 +320,7 @@ function ProfilePage() {
                     position: 'absolute',
                     bottom: '6px',
                     right: '6px',
-                    background: 'var(--color-primary)',
+                    background: '#000',
                     color: '#fff',
                     border: 'none',
                     borderRadius: '50%',
@@ -453,20 +453,6 @@ function ProfilePage() {
                 overflow: 'hidden',
               }}
             >
-              {/* Decorative quote watermark */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  padding: '16px',
-                  opacity: 0.04,
-                  pointerEvents: 'none',
-                  lineHeight: 1,
-                }}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '120px' }}>format_quote</span>
-              </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <h2
@@ -520,7 +506,7 @@ function ProfilePage() {
                       fontSize: '15px',
                       lineHeight: 1.6,
                       color: 'var(--color-on-surface)',
-                      resize: 'vertical',
+                      resize: 'none',
                       outline: 'none',
                       fontFamily: 'Inter, sans-serif',
                       boxSizing: 'border-box',
@@ -714,23 +700,21 @@ function ProfilePage() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '6px',
-                      background: '#fff',
-                      color: 'var(--color-secondary)',
+                      background: '#000',
+                      color: '#fff',
                       padding: '6px 16px',
                       borderRadius: '9999px',
                       fontSize: '13px',
                       fontWeight: 500,
                       cursor: 'pointer',
-                      border: '1.5px dashed var(--color-outline-variant)',
-                      transition: 'border-color 0.2s, color 0.2s',
+                      border: '1.5px solid #000',
+                      transition: 'opacity 0.2s, background 0.2s',
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = 'var(--color-primary)';
-                      e.currentTarget.style.color = 'var(--color-primary)';
+                      e.currentTarget.style.opacity = '0.8';
                     }}
                     onMouseLeave={e => {
-                      e.currentTarget.style.borderColor = 'var(--color-outline-variant)';
-                      e.currentTarget.style.color = 'var(--color-secondary)';
+                      e.currentTarget.style.opacity = '1';
                     }}
                   >
                     <span className="material-symbols-outlined" style={{ fontSize: '17px' }}>add</span>
@@ -772,7 +756,7 @@ function ProfilePage() {
 
 /* ─── Shared button styles ───────────────────────────────────── */
 const primaryBtnStyle = {
-  background: 'var(--color-primary)',
+  background: '#000',
   color: '#fff',
   border: 'none',
   borderRadius: '9999px',
