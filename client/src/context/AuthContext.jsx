@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
     async function logout() {
         try {
             await api.post("/auth/logout");
-        } catch (_) {}
+        } catch (_) { }
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         setToken(null);
