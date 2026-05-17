@@ -31,7 +31,7 @@ const Navbar = () => {
     const navLinks = [
         { label: "Home", to: "/" },
         { label: "Jobs", to: "/jobs" },
-        { label: "Recommended", to: "/recommended" },
+        { label: "Recommended", to: "/jobs/recommended" },
     ];
 
     const isActive = (path) => location.pathname === path;
