@@ -1,15 +1,7 @@
 import { Link } from "react-router-dom";
+import { categoryConfig } from "./JobCard";
 
-const categoryConfig = {
-  Frontend:          { icon: "palette",   bg: "#e8f7ee", color: "#16833a" },
-  Backend:           { icon: "dataset",   bg: "#e8f2ff", color: "#0066cc" },
-  "AI/ML":           { icon: "neurology", bg: "#f1eaff", color: "#6b3fd1" },
-  DevOps:            { icon: "cloud",     bg: "#e0f2f1", color: "#00695c" },
-  "Data Engineering":{ icon: "bar_chart", bg: "#fff3e0", color: "#e65100" },
-  Other:             { icon: "work",      bg: "#f0edef", color: "#414753" },
-};
-
-function JobCard({ job }) {
+function RecommendedJobCard({ job }) {
   const cat = categoryConfig[job.category] || categoryConfig.Other;
 
   return (
@@ -26,9 +18,11 @@ function JobCard({ job }) {
         <div style={{ width: '48px', height: '48px', background: cat.bg, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span className="material-symbols-outlined" style={{ color: cat.color }}>{cat.icon}</span>
         </div>
-        <span style={{ background: '#f0edef', color: '#414753', padding: '4px 12px', borderRadius: '9999px', fontSize: '12px', fontWeight: '600' }}>
-          {job.type}
-        </span>
+        {job.score !== undefined && (
+          <div style={{ background: '#0066cc', color: '#fff', padding: '4px 12px', borderRadius: '9999px', fontSize: '12px', fontWeight: '700' }}>
+            {Math.round(job.score * 100)}% Match
+          </div>
+        )}
       </div>
 
       <div>
@@ -56,5 +50,4 @@ function JobCard({ job }) {
   );
 }
 
-export { categoryConfig };
-export default JobCard;
+export default RecommendedJobCard;
