@@ -37,14 +37,43 @@ function JobDetailPage() {
     const isJobSeeker = isAuthenticated && user?.role === 'jobSeeker';
 
     useEffect(() => {
+        async function fetchSavedJobs() {
+            if (!isJobSeeker) return [];
+            try {
+                const res = await api.get('/jobs/saved');
+                return res.data.jobs || res.data.savedJobs || res.data || [];
+            } catch (_) {
+                return [];
+            }
+        }
+
         async function fetchJob() {
             setLoading(true);
             setError('');
             try {
-                const res = await api.get(`/jobs/${id}`);
-                const jobData = res.data.job || res.data;
+                const [jobRes, savedJobs] = await Promise.all([
+                    api.get(`/jobs/${id}`),
+                    fetchSavedJobs(),
+                ]);
+
+                const jobData = jobRes.data.job || jobRes.data;
                 setJob(jobData);
-                setSaved(jobData.isSaved || false);
+
+                if (typeof jobData.isSaved === 'boolean') {
+                    setSaved(jobData.isSaved);
+                } else if (isJobSeeker) {
+                    const isSavedJob = savedJobs.some(savedJob => {
+                        const savedJobId =
+                            savedJob?._id ||
+                            savedJob?.job?._id ||
+                            savedJob?.job ||
+                            savedJob?.id;
+                        return savedJobId === id;
+                    });
+                    setSaved(isSavedJob);
+                } else {
+                    setSaved(false);
+                }
             } catch (err) {
                 setError(err.message || 'Failed to load job details.');
             } finally {
