@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 
@@ -11,6 +11,41 @@ function ChangePasswordPage() {
   const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [lastChanged, setLastChanged] = useState(() => {
+    try {
+      return localStorage.getItem("passwordLastChanged");
+    } catch (_) { return null }
+  });
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("passwordLastChanged");
+      if (stored) setLastChanged(stored);
+    } catch (_) {}
+  }, []);
+
+  function formatRelativeDate(value) {
+    if (!value) return "Not available";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "Not available";
+    const diffDays = Math.max(Math.floor((Date.now() - date.getTime()) / 86400000), 0);
+    if (diffDays === 0) return "Changed today";
+    if (diffDays === 1) return "Changed 1 day ago";
+    if (diffDays < 7) return `Changed ${diffDays} days ago`;
+    if (diffDays < 14) return "Changed 1 week ago";
+    return `Changed ${Math.floor(diffDays / 7)} weeks ago`;
+  }
+
+  // Front-end password requirement checks (mirror server rules)
+  const hasMinLen = newPassword.length >= 8;
+  const hasUpper = /[A-Z]/.test(newPassword);
+  const hasLower = /[a-z]/.test(newPassword);
+  const hasDigit = /[0-9]/.test(newPassword);
+  const hasSpecial = /[^A-Za-z0-9]/.test(newPassword);
+  const meetsRequirements = hasMinLen && hasUpper && hasLower && hasDigit && hasSpecial;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,8 +64,8 @@ function ChangePasswordPage() {
       return;
     }
 
-    if (newPassword.length < 8) {
-      setFormError("New password must be at least 8 characters.");
+    if (!meetsRequirements) {
+      setFormError("New password does not meet complexity requirements.");
       return;
     }
 
@@ -46,6 +81,11 @@ function ChangePasswordPage() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
+      try {
+        const now = new Date().toISOString();
+        localStorage.setItem("passwordLastChanged", now);
+        setLastChanged(now);
+      } catch (_) {}
     } catch (err) {
       const status = err.response?.status;
       const message = err.response?.data?.message || err.message || "Unable to update password.";
@@ -88,14 +128,19 @@ function ChangePasswordPage() {
                   <div className="relative">
                     <input
                       id="current-password"
-                      type="password"
+                      type={showCurrent ? "text" : "password"}
                       value={currentPassword}
                       onChange={(event) => setCurrentPassword(event.target.value)}
                       placeholder="••••••••"
                       className="w-full h-12 px-4 bg-white border rounded-lg focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-body text-body"
                     />
-                    <button className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted" type="button">
-                      <span className="material-symbols-outlined">visibility_off</span>
+                    <button
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted"
+                      type="button"
+                      aria-label={showCurrent ? "Hide current password" : "Show current password"}
+                      onClick={() => setShowCurrent((s) => !s)}
+                    >
+                      <span className="material-symbols-outlined">{showCurrent ? "visibility" : "visibility_off"}</span>
                     </button>
                   </div>
                   {currentPasswordError && (
@@ -115,14 +160,19 @@ function ChangePasswordPage() {
                   <div className="relative">
                     <input
                       id="new-password"
-                      type="password"
+                      type={showNew ? "text" : "password"}
                       value={newPassword}
                       onChange={(event) => setNewPassword(event.target.value)}
                       placeholder="Enter new password"
                       className="w-full h-12 px-4 bg-white border border-hairline rounded-lg focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-body text-body"
                     />
-                    <button className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted" type="button">
-                      <span className="material-symbols-outlined">visibility</span>
+                    <button
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted"
+                      type="button"
+                      aria-label={showNew ? "Hide new password" : "Show new password"}
+                      onClick={() => setShowNew((s) => !s)}
+                    >
+                      <span className="material-symbols-outlined">{showNew ? "visibility" : "visibility_off"}</span>
                     </button>
                   </div>
                 </div>
@@ -134,14 +184,19 @@ function ChangePasswordPage() {
                   <div className="relative">
                     <input
                       id="confirm-password"
-                      type="password"
+                      type={showConfirm ? "text" : "password"}
                       value={confirmPassword}
                       onChange={(event) => setConfirmPassword(event.target.value)}
                       placeholder="Repeat new password"
                       className="w-full h-12 px-4 bg-white border border-hairline rounded-lg focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-body text-body"
                     />
-                    <button className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted" type="button">
-                      <span className="material-symbols-outlined">visibility</span>
+                    <button
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted"
+                      type="button"
+                      aria-label={showConfirm ? "Hide confirm password" : "Show confirm password"}
+                      onClick={() => setShowConfirm((s) => !s)}
+                    >
+                      <span className="material-symbols-outlined">{showConfirm ? "visibility" : "visibility_off"}</span>
                     </button>
                   </div>
                   {confirmPasswordError && (
@@ -179,9 +234,28 @@ function ChangePasswordPage() {
                   </div>
                   <div>
                     <h3 className="font-title text-caption font-bold text-on-surface mb-2">Password Requirements</h3>
-                    <p className="font-body text-caption text-on-surface-variant leading-relaxed">
-                      Use at least 8 characters with a mix of letters, numbers, and symbols to ensure maximum account security.
-                    </p>
+                    <ul className="font-body text-caption text-on-surface-variant leading-relaxed space-y-1">
+                      <li className="flex items-center gap-2">
+                        <span className={`text-sm ${hasMinLen ? 'text-green-600' : 'text-ink-muted'}`}>{hasMinLen ? '✓' : '•'}</span>
+                        <span>At least 8 characters</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className={`text-sm ${hasUpper ? 'text-green-600' : 'text-ink-muted'}`}>{hasUpper ? '✓' : '•'}</span>
+                        <span>One uppercase letter</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className={`text-sm ${hasLower ? 'text-green-600' : 'text-ink-muted'}`}>{hasLower ? '✓' : '•'}</span>
+                        <span>One lowercase letter</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className={`text-sm ${hasDigit ? 'text-green-600' : 'text-ink-muted'}`}>{hasDigit ? '✓' : '•'}</span>
+                        <span>One digit</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className={`text-sm ${hasSpecial ? 'text-green-600' : 'text-ink-muted'}`}>{hasSpecial ? '✓' : '•'}</span>
+                        <span>One special character</span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -190,7 +264,7 @@ function ChangePasswordPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="font-fine text-fine text-ink-muted">Last changed</span>
-                    <span className="font-fine text-fine text-on-surface font-medium">3 months ago</span>
+                    <span className="font-fine text-fine text-on-surface font-medium">{formatRelativeDate(lastChanged)}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="font-fine text-fine text-ink-muted">Two-factor auth</span>
