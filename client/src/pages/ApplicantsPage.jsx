@@ -237,7 +237,7 @@ function ApplicantsPage() {
                                         </span>
                                     </div>
                                     <div className="ap-skills-wrap ap-mobile-skills">
-                                        {app.user?.skills?.slice(0, 3).map((skill, i) => (
+                                        {(app.user?.skills ?? []).slice(0, 3).map((skill, i) => (
                                             <span key={i} className="ap-skill-chip">{skill}</span>
                                         ))}
                                     </div>
