@@ -1,9 +1,16 @@
+import './Spinner.css';
+
 function Spinner() {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '4rem' }}>
-      <div className="spinner" />
-    </div>
-  );
+    return (
+        <div className="spinner-overlay">
+            <div className="spinner-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    );
 }
 
 export default Spinner;
