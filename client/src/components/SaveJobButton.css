@@ -1,48 +1,40 @@
-/* ── SaveJobButton.css ───────────────────────────────────────────── */
-
 .save-job-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  color: #9ca3af;
-  cursor: pointer;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
-  padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    background: #fff;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.save-job-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.18s ease;
 }
 
 .save-job-btn:hover:not(:disabled) {
-  color: #4f46e5;
-  border-color: #4f46e5;
-  background: #f5f3ff;
+    border-color: #2563eb;
+    color: #2563eb;
 }
 
-.save-job-btn--saved {
-  color: #4f46e5;
-  border-color: #4f46e5;
-  background: #f5f3ff;
+.save-job-btn:hover:not(:disabled) svg {
+    transform: scale(1.15);
+}
+
+.save-job-btn.saved {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #2563eb;
 }
 
 .save-job-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* Tiny inline spinner */
-.save-job-btn__spinner {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border: 2px solid #c4b5fd;
-  border-top-color: #4f46e5;
-  border-radius: 50%;
-  animation: btn-spin 0.6s linear infinite;
-}
-
-@keyframes btn-spin {
-  to { transform: rotate(360deg); }
+    opacity: 0.45;
+    cursor: not-allowed;
 }

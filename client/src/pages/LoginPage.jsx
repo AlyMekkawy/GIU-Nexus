@@ -26,7 +26,12 @@ function LoginPage() {
                 throw new Error(fallbackMsg);
             }
             login(token, user);
-            navigate("/", { replace: true });
+            const redirectTo = {
+                admin:     "/admin/dashboard",
+                recruiter: "/recruiter/dashboard",
+                jobSeeker: "/",
+            }[user.role] ?? "/";
+            navigate(redirectTo, { replace: true });
         } catch (err) {
             const backendMessage = err?.response?.data?.message;
             const details = backendMessage || err.message || "Login failed";
@@ -145,6 +150,4 @@ function LoginPage() {
         </div>
     );
 }
-
 export default LoginPage;
-
