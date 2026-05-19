@@ -1,90 +1,61 @@
-/* Footer.css — Platform footer, self-contained */
-
-.nexus-footer {
-  --footer-font: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --footer-bg:       #f5f5f7;
-  --footer-ink:      #1d1d1f;
-  --footer-muted:    #6e6e73;
-  --footer-hairline: #e0e0e0;
-  --footer-primary:  #0066cc;
-
-  background: var(--footer-bg);
-  border-top: 1px solid var(--footer-hairline);
-  padding: 48px 24px 32px;
-  font-family: var(--footer-font);
+.footer {
+    background: #f0edef;
+    border-top: 1px solid #e0e0e0;
+    padding: 3rem 1.5rem;
+    margin-top: 4rem;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
-.nexus-footer-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  gap: 40px;
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
 }
 
-.nexus-footer-brand-name {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--footer-ink);
-  margin: 0 0 12px;
-  display: block;
+.footer-logo {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #004e9f;
+    display: block;
+    margin-bottom: 0.25rem;
 }
 
-.nexus-footer-brand-sub {
-  font-size: 13px;
-  color: var(--footer-muted);
-  line-height: 1.6;
+.footer-tagline {
+    font-size: 0.78rem;
+    color: #6e6e73;
+    margin: 0 0 0.2rem;
 }
 
-.nexus-footer-col h4 {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--footer-ink);
-  margin: 0 0 16px;
+.footer-copy {
+    font-size: 0.75rem;
+    color: #6e6e73;
+    margin: 0;
 }
 
-.nexus-footer-col ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.footer-links {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
 }
 
-.nexus-footer-col ul li a {
-  font-size: 13px;
-  color: var(--footer-muted);
-  text-decoration: none;
-  transition: color 150ms ease;
-}
-.nexus-footer-col ul li a:hover { color: var(--footer-primary); }
-
-.nexus-footer-bottom {
-  max-width: 1200px;
-  margin: 28px auto 0;
-  padding-top: 20px;
-  border-top: 1px solid var(--footer-hairline);
-  text-align: center;
-  font-size: 12px;
-  color: #8a8a8e;
+.footer-heading {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1b1b1d;
+    margin: 0 0 0.75rem;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────────── */
-@media (max-width: 834px) {
-  .nexus-footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-  }
+.footer-link {
+    display: block;
+    font-size: 0.78rem;
+    color: #6e6e73;
+    text-decoration: underline;
+    margin-bottom: 0.4rem;
+    transition: color 0.15s;
 }
 
-@media (max-width: 640px) {
-  .nexus-footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .nexus-footer {
-    padding: 32px 16px 24px;
-  }
-}
+.footer-link:hover { color: #004e9f; }
