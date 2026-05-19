@@ -35,6 +35,8 @@ function JobDetailPage() {
     const [applying, setApplying]           = useState(false);
     const [applyError, setApplyError]       = useState('');
     const [applySuccess, setApplySuccess]   = useState(false);
+    const [suggesting, setSuggesting]       = useState(false);
+    const [suggestionError, setSuggestionError] = useState('');
 
     const isJobSeeker = isAuthenticated && user?.role === 'jobSeeker';
 
@@ -99,15 +101,44 @@ function JobDetailPage() {
             setMyApplication(res.data.application || { status: 'pending' });
             setApplySuccess(true);
             setTimeout(() => {
-                setModalOpen(false);
+                closeApplyModal();
                 setApplySuccess(false);
-                setCoverLetter('');
             }, 1800);
         } catch (err) {
             setApplyError(err.message || 'Failed to apply. Please try again.');
         } finally {
             setApplying(false);
         }
+    }
+
+    async function handleSuggestCoverLetter() {
+        if (suggesting) return;
+
+        setSuggesting(true);
+        setSuggestionError('');
+
+        try {
+            const res = await api.post(`/jobs/${id}/cover-letter-suggestion`);
+            const suggestedCoverLetter =
+                res.data?.coverLetter ||
+                res.data?.suggestion ||
+                res.data?.draft ||
+                res.data?.text ||
+                '';
+
+            setCoverLetter(suggestedCoverLetter);
+        } catch (err) {
+            setSuggestionError(err.message || 'Failed to generate a cover letter suggestion.');
+        } finally {
+            setSuggesting(false);
+        }
+    }
+
+    function closeApplyModal() {
+        setModalOpen(false);
+        setApplyError('');
+        setSuggestionError('');
+        setCoverLetter('');
     }
 
     if (loading) return <><Navbar /><Spinner /></>;
@@ -321,7 +352,7 @@ function JobDetailPage() {
             {/* Apply Modal */}
             <Modal
                 isOpen={modalOpen}
-                onClose={() => { setModalOpen(false); setApplyError(''); setCoverLetter(''); }}
+                onClose={closeApplyModal}
                 title={`Apply for ${job.title}`}
             >
                 {applySuccess ? (
@@ -334,6 +365,16 @@ function JobDetailPage() {
                         <p className="jd-apply-subtitle">
                             Posted by <strong>{job.createdBy?.name}</strong>
                         </p>
+                        <button
+                            className="jd-btn-secondary"
+                            onClick={handleSuggestCoverLetter}
+                            disabled={suggesting || applying}
+                            type="button"
+                            style={{ marginBottom: '12px' }}
+                        >
+                            {suggesting ? 'Generating suggestion...' : 'Suggest cover letter'}
+                        </button>
+                        {suggestionError && <p className="jd-apply-error">{suggestionError}</p>}
                         <div className="jd-form-group">
                             <label className="jd-label">
                                 Cover Letter <span className="jd-optional">(optional)</span>
@@ -350,7 +391,7 @@ function JobDetailPage() {
                         <div className="jd-modal-actions">
                             <button
                                 className="jd-btn-secondary"
-                                onClick={() => { setModalOpen(false); setApplyError(''); }}
+                                onClick={closeApplyModal}
                             >
                                 Cancel
                             </button>
