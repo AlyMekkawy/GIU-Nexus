@@ -21,8 +21,8 @@
   "main": "JobPost.js",
   "scripts": {
     "test": "jest --runInBand",
-    "dev": "nodemon server.js",
-    "start": "node server.js"
+    "dev": "nodemon --exec \"node --env-file=.env\" server.js",
+    "start": "node --env-file=.env server.js"
   },
   "repository": {
     "type": "git",

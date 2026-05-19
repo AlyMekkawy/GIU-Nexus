@@ -10,6 +10,8 @@ function ResetPasswordPage() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -106,15 +108,20 @@ function ResetPasswordPage() {
                     <div className="relative group">
                       <input
                         id="new-password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         placeholder="Min. 8 characters"
                         className="w-full h-12 bg-surface-container-lowest border border-hairline rounded-xl px-4 font-body text-body focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none"
                       />
-                      <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant cursor-pointer group-focus-within:text-primary transition-colors">
-                        visibility
-                      </span>
+                      <button
+                        type="button"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        onClick={() => setShowPassword((s) => !s)}
+                        className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant cursor-pointer group-focus-within:text-primary transition-colors"
+                      >
+                        {showPassword ? "visibility_off" : "visibility"}
+                      </button>
                     </div>
                   </div>
 
@@ -125,15 +132,20 @@ function ResetPasswordPage() {
                     <div className="relative group">
                       <input
                         id="confirm-password"
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         value={confirmPassword}
                         onChange={(event) => setConfirmPassword(event.target.value)}
                         placeholder="Repeat password"
                         className="w-full h-12 bg-surface-container-lowest border border-hairline rounded-xl px-4 font-body text-body focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none"
                       />
-                      <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant cursor-pointer group-focus-within:text-primary transition-colors">
-                        visibility
-                      </span>
+                      <button
+                        type="button"
+                        aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                        onClick={() => setShowConfirmPassword((s) => !s)}
+                        className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant cursor-pointer group-focus-within:text-primary transition-colors"
+                      >
+                        {showConfirmPassword ? "visibility_off" : "visibility"}
+                      </button>
                     </div>
                   </div>
 
