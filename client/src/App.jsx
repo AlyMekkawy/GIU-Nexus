@@ -46,23 +46,10 @@ function App() {
         <Route path="/jobs/:id" element={<JobDetailPage />} />
 
           {/* Private / Role specific */}
-        <Route
-            path="/profile"
-            element={
-              <RoleRoute allowedRoles={["jobSeeker"]}>
-                <ProfilePage />
-              </RoleRoute>
-            }
-        />
+        {/* TODO: restore RoleRoute before production */}
+        <Route path="/profile" element={<ProfilePage />} />
 
-        <Route
-            path="/profile/edit"
-            element={
-              <PrivateRoute>
-                <EditProfilePage />
-              </PrivateRoute>
-            }
-        />
+        <Route path="/profile/edit" element={<EditProfilePage />} />
 
         <Route
             path="/profile/change-password"
