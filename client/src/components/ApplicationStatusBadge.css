@@ -1,29 +1,24 @@
-/* ── ApplicationStatusBadge.css ──────────────────────────────────── */
-
 .app-status-badge {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  letter-spacing: 0.03em;
-  text-transform: capitalize;
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
 }
 
-.badge--pending {
-  background: #fef9c3;
-  color: #854d0e;
-  border: 1px solid #fde047;
+.badge-pending {
+    background: #fef3c7;
+    color: #92400e;
 }
 
-.badge--shortlisted {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #6ee7b7;
+.badge-shortlisted {
+    background: #d1fae5;
+    color: #065f46;
 }
 
-.badge--rejected {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+.badge-rejected {
+    background: #fee2e2;
+    color: #991b1b;
 }

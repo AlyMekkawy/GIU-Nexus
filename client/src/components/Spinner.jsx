@@ -1,12 +1,16 @@
-import "./Spinner.css";
+import './Spinner.css';
 
-export default function Spinner({ size = 40 }) {
-  return (
-    <span
-      className="spinner"
-      style={{ width: size, height: size }}
-      role="status"
-      aria-label="Loading"
-    />
-  );
+function Spinner() {
+    return (
+        <div className="spinner-overlay">
+            <div className="spinner-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    );
 }
+
+export default Spinner;
