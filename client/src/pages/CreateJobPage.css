@@ -1,0 +1,440 @@
+/* ── Variables (inherits from :root in RecruiterDashboard.css) ─────────── */
+/* Reuse the same tokens so the whole recruiter section is visually unified */
+
+/* ── Page shell ─────────────────────────────────────────────────────────── */
+.cj-page {
+    min-height: 100vh;
+    background: var(--rd-bg, #f5f5f7);
+    color: var(--rd-text, #1b1b1d);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+.cj-container {
+    max-width: 820px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 28px 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.cj-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.cj-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    background: var(--rd-surface, #fff);
+    border: 1px solid var(--rd-border, #e8eaed);
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--rd-text, #1b1b1d);
+    transition: background 0.15s, border-color 0.15s;
+    margin-top: 4px;
+}
+.cj-back-btn:hover {
+    background: var(--rd-primary-soft, #dde8f8);
+    border-color: #93b4d8;
+}
+.cj-back-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+}
+
+.cj-header > div { flex: 1; }
+
+.cj-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+    letter-spacing: -0.4px;
+    color: var(--rd-text, #1b1b1d);
+}
+
+.cj-sub {
+    color: var(--rd-muted, #6e6e73);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.cj-icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1.5px solid var(--rd-border, #e8eaed);
+    background: var(--rd-surface, #fff);
+    color: var(--rd-primary, #004e9f);
+    flex-shrink: 0;
+}
+.cj-icon-box svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--rd-primary, #004e9f);
+    fill: none;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Error banner ────────────────────────────────────────────────────────── */
+.cj-error-banner {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: var(--rd-error, #b42318);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ── Form card ───────────────────────────────────────────────────────────── */
+.cj-form {
+    background: var(--rd-surface, #fff);
+    border: 1px solid var(--rd-border, #e8eaed);
+    border-radius: 16px;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cj-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.cj-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cj-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--rd-text, #1b1b1d);
+}
+
+.cj-hint {
+    font-weight: 400;
+    color: var(--rd-muted, #6e6e73);
+}
+
+.cj-required {
+    color: var(--rd-error, #b42318);
+    margin-left: 1px;
+}
+
+.cj-input,
+.cj-select,
+.cj-textarea {
+    border: 1px solid var(--rd-border, #e8eaed);
+    border-radius: 8px;
+    padding: 10px 14px;
+    background: var(--rd-surface-soft, #fafafc);
+    font-size: 0.9rem;
+    color: var(--rd-text, #1b1b1d);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cj-input:focus,
+.cj-select:focus,
+.cj-textarea:focus {
+    border-color: #93b4d8;
+    box-shadow: 0 0 0 3px rgba(0, 78, 159, 0.08);
+    background: var(--rd-surface, #fff);
+}
+
+.cj-input::placeholder,
+.cj-textarea::placeholder {
+    color: var(--rd-muted, #6e6e73);
+}
+
+.cj-input-error {
+    border-color: #fca5a5 !important;
+    background: #fef2f2 !important;
+}
+
+.cj-textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.55;
+}
+
+.cj-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.cj-field-error {
+    font-size: 0.8rem;
+    color: var(--rd-error, #b42318);
+    font-weight: 500;
+}
+
+/* ── AI notice ───────────────────────────────────────────────────────────── */
+.cj-ai-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--rd-primary-soft, #dde8f8);
+    border: 1px solid #93b4d8;
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--rd-primary, #004e9f);
+    font-size: 0.875rem;
+}
+
+.cj-ai-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+.cj-ai-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--rd-primary, #004e9f);
+    fill: none;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cj-ai-notice p { margin: 0; line-height: 1.5; }
+
+/* ── Form footer buttons ─────────────────────────────────────────────────── */
+.cj-form-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 4px;
+    border-top: 1px solid var(--rd-border, #e8eaed);
+}
+
+.cj-btn-primary {
+    background: var(--rd-primary, #004e9f);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 28px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s, box-shadow 0.15s;
+}
+.cj-btn-primary:hover:not(:disabled) {
+    background: #003d7a;
+    box-shadow: 0 4px 12px rgba(0, 78, 159, 0.3);
+}
+.cj-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cj-btn-secondary {
+    background: var(--rd-surface, #fff);
+    color: var(--rd-text, #1b1b1d);
+    border: 1px solid var(--rd-border, #e8eaed);
+    border-radius: 999px;
+    padding: 10px 24px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+.cj-btn-secondary:hover:not(:disabled) {
+    background: var(--rd-surface-soft, #fafafc);
+    border-color: #93b4d8;
+}
+.cj-btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cj-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: cj-spin 0.65s linear infinite;
+}
+
+@keyframes cj-spin { to { transform: rotate(360deg); } }
+
+/* ── Success screen ─────────────────────────────────────────────────────── */
+.cj-success-card {
+    background: var(--rd-surface, #fff);
+    border: 1px solid var(--rd-border, #e8eaed);
+    border-radius: 16px;
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    max-width: 560px;
+    margin: 2rem auto 0;
+    width: 100%;
+}
+
+.cj-success-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--rd-success-soft, #e6f4ec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+.cj-success-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--rd-success, #16833a);
+    fill: none;
+}
+
+.cj-success-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin: 0;
+    color: var(--rd-text, #1b1b1d);
+}
+
+.cj-success-sub {
+    color: var(--rd-muted, #6e6e73);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.cj-success-details {
+    width: 100%;
+    border: 1px solid var(--rd-border, #e8eaed);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+    text-align: left;
+}
+
+.cj-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--rd-border, #e8eaed);
+    gap: 12px;
+}
+.cj-detail-row:last-child { border-bottom: none; }
+
+.cj-detail-label {
+    font-size: 0.85rem;
+    color: var(--rd-muted, #6e6e73);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.cj-detail-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--rd-text, #1b1b1d);
+    text-align: right;
+}
+
+.cj-capitalize { text-transform: capitalize; }
+
+.cj-ai-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--rd-primary, #004e9f);
+    font-weight: 600;
+}
+.cj-ai-label svg {
+    width: 13px;
+    height: 13px;
+    stroke: var(--rd-primary, #004e9f);
+    fill: none;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cj-success-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ── Category badges (mirrors RecruiterDashboard.css) ───────────────────── */
+.cj-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    width: fit-content;
+}
+.cj-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.cj-badge-frontend  { background: #eafaf1; color: #1a8c4e; }
+.cj-badge-frontend::before  { background: #1a8c4e; }
+.cj-badge-backend   { background: #deeeff; color: #0057b3; }
+.cj-badge-backend::before   { background: #0057b3; }
+.cj-badge-ai        { background: #f2eeff; color: #6b3fd1; }
+.cj-badge-ai::before        { background: #6b3fd1; }
+.cj-badge-devops    { background: #e4f8f7; color: #1a8c85; }
+.cj-badge-devops::before    { background: #1a8c85; }
+.cj-badge-data      { background: #fff4e0; color: #c47000; }
+.cj-badge-data::before      { background: #c47000; }
+.cj-badge-other     { background: #f0f0f2; color: #6b7280; }
+.cj-badge-other::before     { background: #6b7280; }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .cj-row { grid-template-columns: 1fr; }
+    .cj-form { padding: 20px 18px; }
+    .cj-heading { font-size: 1.6rem; }
+    .cj-success-card { padding: 28px 20px; }
+    .cj-form-footer { flex-direction: column-reverse; }
+    .cj-btn-primary, .cj-btn-secondary { width: 100%; justify-content: center; }
+}
