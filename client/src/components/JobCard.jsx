@@ -1,60 +1,99 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import SaveJobButton from "./SaveJobButton";
+import ApplicationStatusBadge from "./ApplicationStatusBadge";
+import "./JobCard.css";
 
-const categoryConfig = {
-  Frontend:          { icon: "palette",   bg: "#e8f7ee", color: "#16833a" },
-  Backend:           { icon: "dataset",   bg: "#e8f2ff", color: "#0066cc" },
-  "AI/ML":           { icon: "neurology", bg: "#f1eaff", color: "#6b3fd1" },
-  DevOps:            { icon: "cloud",     bg: "#e0f2f1", color: "#00695c" },
-  "Data Engineering":{ icon: "bar_chart", bg: "#fff3e0", color: "#e65100" },
-  Other:             { icon: "work",      bg: "#f0edef", color: "#414753" },
+// Category → colour map (spec §5)
+const CATEGORY_COLORS = {
+  Frontend:         { bg: "#d1fae5", text: "#065f46", border: "#6ee7b7" },
+  Backend:          { bg: "#dbeafe", text: "#1e40af", border: "#93c5fd" },
+  "AI/ML":          { bg: "#ede9fe", text: "#5b21b6", border: "#c4b5fd" },
+  DevOps:           { bg: "#ccfbf1", text: "#0f766e", border: "#5eead4" },
+  "Data Engineering":{ bg: "#ffedd5", text: "#9a3412", border: "#fdba74" },
+  Other:            { bg: "#f3f4f6", text: "#374151", border: "#d1d5db" },
 };
 
-function JobCard({ job }) {
-  const cat = categoryConfig[job.category] || categoryConfig.Other;
+export default function JobCard({ job, initialSaved = false, onUnsave }) {
+  const navigate = useNavigate();
+  const [saved, setSaved] = useState(initialSaved);
+
+  const {
+    _id,
+    title,
+    company,
+    location,
+    type,
+    status,
+    category,
+    applicationStatus, // present if the seeker has applied
+  } = job;
+
+  const catStyle = CATEGORY_COLORS[category] ?? CATEGORY_COLORS.Other;
+
+  const handleSaveToggle = (newSaved) => {
+    setSaved(newSaved);
+    // If we're on the SavedJobsPage, propagate the unsave upward
+    if (!newSaved && onUnsave) {
+      onUnsave(_id);
+    }
+  };
 
   return (
     <div
-      style={{
-        background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '18px',
-        padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px',
-        transition: 'box-shadow 0.2s',
-      }}
-      onMouseEnter={e => e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)'}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+      className="job-card"
+      onClick={() => navigate(`/jobs/${_id}`)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && navigate(`/jobs/${_id}`)}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div style={{ width: '48px', height: '48px', background: cat.bg, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span className="material-symbols-outlined" style={{ color: cat.color }}>{cat.icon}</span>
-        </div>
-        <span style={{ background: '#f0edef', color: '#414753', padding: '4px 12px', borderRadius: '9999px', fontSize: '12px', fontWeight: '600' }}>
-          {job.type}
-        </span>
+      {/* Category badge */}
+      <span
+        className="job-card__category"
+        style={{
+          background: catStyle.bg,
+          color: catStyle.text,
+          border: `1px solid ${catStyle.border}`,
+        }}
+      >
+        {category ?? "Other"}
+      </span>
+
+      <h3 className="job-card__title">{title}</h3>
+      <p className="job-card__company">{company}</p>
+
+      <div className="job-card__meta">
+        {location && (
+          <span className="job-card__meta-item">
+            <span aria-hidden>📍</span> {location}
+          </span>
+        )}
+        {type && (
+          <span className="job-card__meta-item">
+            <span aria-hidden>💼</span> {type}
+          </span>
+        )}
       </div>
 
-      <div>
-        <h4 style={{ fontSize: '18px', fontWeight: '600', margin: '0 0 4px', color: '#1b1b1d' }}>{job.title}</h4>
-        <p style={{ fontSize: '14px', color: '#414753', margin: 0 }}>{job.company} • {job.location}</p>
-      </div>
-
-      {job.requirements && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {job.requirements.slice(0, 2).map((req, i) => (
-            <span key={i} style={{ background: cat.bg, color: cat.color, padding: '4px 10px', borderRadius: '9999px', fontSize: '12px', fontWeight: '500' }}>
-              {req}
-            </span>
-          ))}
+      {/* Application status (if the seeker already applied) */}
+      {applicationStatus && (
+        <div className="job-card__app-status">
+          <ApplicationStatusBadge status={applicationStatus} />
         </div>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid #e0e0e0' }}>
-        <span style={{ fontSize: '12px', color: '#727784' }}>{job.category}</span>
-        <Link to={`/jobs/${job._id}`} style={{ fontSize: '14px', fontWeight: '600', color: '#004e9f', textDecoration: 'none' }}>
-          View →
-        </Link>
+      {/* Save / Unsave — stop propagation so clicking the icon doesn't open the detail page */}
+      <div
+        className="job-card__save"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <SaveJobButton
+          jobId={_id}
+          jobStatus={status}
+          initialSaved={saved}
+          onToggle={handleSaveToggle}
+        />
       </div>
     </div>
   );
 }
-
-export { categoryConfig };
-export default JobCard;

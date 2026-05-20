@@ -26,9 +26,9 @@ export function AuthProvider({ children }) {
     async function logout() {
         try {
             await api.post("/auth/logout");
-        } catch (_) { }
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        } catch (_) {}
+        // Clear all auth-related keys — including any stale keys from old sessions
+        ["token", "user", "role"].forEach((k) => localStorage.removeItem(k));
         setToken(null);
         setUser(null);
     }

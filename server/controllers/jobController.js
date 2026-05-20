@@ -167,6 +167,7 @@ const getJobById = async (req, res, next) => {
       title,
       description,
       requirements,
+      salary,
       category,
       status,
       createdBy,
@@ -179,6 +180,7 @@ const getJobById = async (req, res, next) => {
         title,
         description,
         requirements,
+        salary,
         category,
         status,
         createdBy: {
@@ -600,6 +602,140 @@ const applyToJob = async (req, res, next) => {
   }
 };
 
+// ── POST /api/v1/jobs/:id/cover-letter-suggestion ─────────────────
+// Job Seeker only. Generates an AI cover letter draft.
+const getCoverLetterSuggestion = async (req, res, next) => {
+  try {
+    const jobId = req.params.id;
+    if (!mongoose.isValidObjectId(jobId)) {
+      return res.status(400).json({ success: false, message: "Invalid job id" });
+    }
+
+    const job = await JobPost.findById(jobId)
+        .select("title company location requirements type description")
+        .lean();
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    const studentBio = typeof req.user?.bio === "string" ? req.user.bio.trim() : "";
+    if (!studentBio) {
+      return res.status(400).json({ success: false, message: "Student bio is required" });
+    }
+
+    const jobDescription = typeof job.description === "string" ? job.description.trim() : "";
+    if (!jobDescription) {
+      return res.status(400).json({ success: false, message: "Job description is required" });
+    }
+
+    const requirements = Array.isArray(job.requirements)
+        ? job.requirements
+            .filter((item) => typeof item === "string" && item.trim())
+            .join(", ")
+        : "";
+
+    const prompt = buildCoverLetterPrompt({
+      studentBio,
+      jobTitle: job.title,
+      company: job.company,
+      jobType: job.type,
+      location: job.location,
+      requirements: requirements || "Not specified",
+      jobDescription,
+    });
+
+    if (!process.env.HF_TOKEN) {
+      return res.status(503).json({
+        success: false,
+        message: "Hugging Face API token is not configured",
+      });
+    }
+
+    let result;
+    try {
+      result = await hf.chatCompletion({
+        model: "Qwen/Qwen2.5-7B-Instruct:fastest",
+        messages: prompt,
+        max_new_tokens: 280,
+        temperature: 0.7,
+        top_p: 0.9,
+      });
+    } catch (error) {
+      const message = String(error?.message || "");
+
+      if (/provider|http error|inference|503|502|gateway/i.test(message)) {
+        return res.status(502).json({
+          success: false,
+          message: "Hugging Face generation failed",
+        });
+      }
+
+      return res.status(503).json({
+        success: false,
+        message: "Hugging Face generation failed",
+      });
+    }
+
+
+    const coverLetter =
+        typeof result?.choices?.[0]?.message?.content === "string"
+            ? result.choices[0].message.content.trim()
+            : "";
+
+    if (!coverLetter) {
+      return res.status(503).json({
+        success: false,
+        message: "Hugging Face returned empty output",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      coverLetter,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ── Helper: Cover Letter Prompt ───────────────────────────────────
+function buildCoverLetterPrompt({ studentBio, jobTitle, company, jobType, location, requirements, jobDescription }) {
+  return [
+    {
+      role: "system",
+      content:
+          "You are a professional cover letter writer. Write concise, tailored cover letters in first person. Return only the cover letter text — no explanations, no greetings, no meta-commentary.",
+    },
+    {
+      role: "user",
+      content: `Write a concise professional cover letter for a student applying to this job.
+
+Student bio:
+${studentBio}
+
+Job title:
+${jobTitle || ""}
+
+Company:
+${company || ""}
+
+Job type:
+${jobType || ""}
+
+Location:
+${location || ""}
+
+Job requirements:
+${requirements || ""}
+
+Job description:
+${jobDescription}
+
+The cover letter should be polite, specific to the job, written in first person, and no longer than 250 words. Do not invent experience that is not supported by the student bio. Return only the cover letter text. Do not include  /n new lines in the response`,
+    },
+  ];
+}
 module.exports = {
   getJobs,
   createJob,
@@ -611,5 +747,6 @@ module.exports = {
   getSavedJobs,
   getMyJobs,
   toggleSaveJob,
-  applyToJob
+  applyToJob,
+  getCoverLetterSuggestion
 };
