@@ -1,7 +1,7 @@
 const express = require("express");
 
 
-const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, toggleSaveJob, applyToJob } = require("../controllers/jobController");
+const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, toggleSaveJob, applyToJob, getCoverLetterSuggestion } = require("../controllers/jobController");
 
 const { protect, authorize } = require("../middleware/auth");
 
@@ -756,5 +756,63 @@ router.post("/:id/save", protect, authorize("jobSeeker"), toggleSaveJob);
  */
 // Job Seeker only: POST /api/v1/jobs/:jobId/apply
 router.post("/:jobId/apply", protect, authorize("jobSeeker"), applyToJob);
+
+/**
+ * @openapi
+ * /api/v1/jobs/{id}/cover-letter-suggestion:
+ *   post:
+ *     summary: Generate cover letter suggestion
+ *     description: Job seeker-only route that generates a draft cover letter using the student's bio and the selected job's details.
+ *     tags:
+ *       - Jobs
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Job id
+ *     responses:
+ *       200:
+ *         description: Cover letter generated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 coverLetter:
+ *                   type: string
+ *                   example: "Dear Hiring Manager, ..."
+ *       400:
+ *         description: Invalid request (missing bio or job description)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Student bio is required"
+ *       401:
+ *         description: Unauthorized. Missing, invalid, or expired token.
+ *       403:
+ *         description: Forbidden. Job seeker role required.
+ *       404:
+ *         description: Job not found
+ *       503:
+ *         description: Hugging Face generation failed or timed out
+ */
+// Job Seeker only: POST /api/v1/jobs/:id/cover-letter-suggestion
+router.post("/:id/cover-letter-suggestion", protect, authorize("jobSeeker"), getCoverLetterSuggestion);
+
+
 
 module.exports = router;

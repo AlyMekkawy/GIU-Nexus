@@ -1,0 +1,482 @@
+/* ── Base ────────────────────────────────────────────── */
+.ap-page {
+    min-height: 100vh;
+    background: #f5f5f7;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: #1b1b1d;
+    padding: 2rem 1.5rem 5rem;
+}
+
+.ap-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.ap-header {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.ap-header-left { flex: 1; }
+
+.ap-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: #6e6e73;
+    margin-bottom: 0.5rem;
+}
+
+.ap-breadcrumb-link {
+    background: none;
+    border: none;
+    color: #6e6e73;
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s;
+}
+
+.ap-breadcrumb-link:hover { color: #004e9f; }
+
+.ap-breadcrumb-sep { color: #c1c6d5; }
+
+.ap-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1b1b1d;
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.ap-subtitle {
+    font-size: 1rem;
+    color: #414753;
+    margin: 0;
+}
+
+.ap-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.ap-btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #414753;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ap-btn-filter:hover { background: #f0edef; }
+
+.ap-btn-share {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    background: #004e9f;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    box-shadow: 0 2px 8px rgba(0,78,159,0.2);
+}
+
+.ap-btn-share:hover { opacity: 0.9; }
+
+/* ── Update Error ────────────────────────────────────── */
+.ap-update-error {
+    background: #fff0ee;
+    color: #b42318;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Table ───────────────────────────────────────────── */
+.ap-table-wrapper {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    display: block;
+}
+
+@media (max-width: 767px) {
+    .ap-table-wrapper { display: none; }
+}
+
+.ap-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ap-table thead {
+    background: #f6f3f5;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.ap-table th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #5d5e60;
+    letter-spacing: 0.01em;
+}
+
+.ap-th-right { text-align: right; }
+
+.ap-row {
+    border-bottom: 1px solid #f0edef;
+    transition: background 0.15s;
+}
+
+.ap-row:last-child { border-bottom: none; }
+
+.ap-row:hover { background: #fafafc; }
+
+.ap-td {
+    padding: 1.25rem 1.5rem;
+    vertical-align: middle;
+}
+
+.ap-td-right { text-align: right; }
+
+/* ── Applicant Cell ──────────────────────────────────── */
+.ap-applicant-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ap-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d7e3ff;
+    color: #001b3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.ap-avatar-lg {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+}
+
+.ap-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1b1b1d;
+}
+
+.ap-email {
+    font-size: 0.75rem;
+    color: #6e6e73;
+    margin-top: 0.1rem;
+}
+
+/* ── Skills ──────────────────────────────────────────── */
+.ap-skills-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.ap-skill-chip {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: #e8f7ee;
+    color: #16833a;
+    white-space: nowrap;
+}
+
+.ap-skill-more {
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: #f0edef;
+    color: #6e6e73;
+}
+
+.ap-no-skills {
+    font-size: 0.82rem;
+    color: #c1c6d5;
+}
+
+/* ── Status Badge ────────────────────────────────────── */
+.ap-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ap-status-pending {
+    background: #fff7e6;
+    color: #b26a00;
+}
+
+.ap-status-shortlisted {
+    background: #e8f7ee;
+    color: #16833a;
+}
+
+.ap-status-rejected {
+    background: #fff0ee;
+    color: #b42318;
+}
+
+/* ── Action Buttons ──────────────────────────────────── */
+.ap-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.4rem;
+}
+
+.ap-action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.ap-action-btn:active:not(:disabled) { transform: scale(0.92); }
+
+.ap-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ap-action-shortlist {
+    color: #16833a;
+}
+.ap-action-shortlist:hover:not(:disabled) { background: #e8f7ee; }
+
+.ap-action-reject {
+    color: #b42318;
+}
+.ap-action-reject:hover:not(:disabled) { background: #fff0ee; }
+
+.ap-action-undo {
+    color: #414753;
+}
+.ap-action-undo:hover:not(:disabled) { background: #f0edef; }
+
+.ap-action-view {
+    color: #414753;
+}
+.ap-action-view:hover:not(:disabled) { background: #f0edef; }
+
+.ap-saving {
+    font-size: 0.72rem;
+    color: #6e6e73;
+    font-style: italic;
+    margin-left: 0.25rem;
+}
+
+/* ── Mobile Cards ────────────────────────────────────── */
+.ap-mobile-cards {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (max-width: 767px) {
+    .ap-mobile-cards { display: flex; }
+}
+
+.ap-mobile-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.ap-mobile-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.ap-mobile-skills {
+    margin-bottom: 1.25rem;
+}
+
+.ap-mobile-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.5rem;
+}
+
+.ap-mobile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.ap-mobile-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ap-mobile-shortlist { background: #e8f7ee; color: #16833a; }
+.ap-mobile-reject    { background: #fff0ee; color: #b42318; }
+.ap-mobile-undo      { background: #f0edef; color: #414753; }
+
+/* ── Pagination ──────────────────────────────────────── */
+.ap-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.ap-pagination-text {
+    font-size: 0.82rem;
+    color: #6e6e73;
+    margin: 0;
+}
+
+.ap-pagination-btns {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.ap-page-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    background: #fff;
+    color: #414753;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.ap-page-btn:hover:not(:disabled) { background: #f0edef; }
+
+.ap-page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ── Empty State ─────────────────────────────────────── */
+.ap-empty {
+    margin-top: 3rem;
+    text-align: center;
+    padding: 5rem 2rem;
+    border: 2px dashed #e0e0e0;
+    border-radius: 16px;
+    background: #fafafc;
+}
+
+.ap-empty-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+
+.ap-empty-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1b1b1d;
+    margin: 0 0 0.5rem;
+}
+
+.ap-empty-text {
+    font-size: 0.88rem;
+    color: #6e6e73;
+    max-width: 360px;
+    margin: 0 auto 1.5rem;
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.ap-btn-primary {
+    background: #004e9f;
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ap-btn-primary:hover { background: #003a7a; }
+
+/* ── Error State ─────────────────────────────────────── */
+.ap-error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.ap-error-box {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: #414753;
+}
+
+.ap-error-icon { font-size: 2.5rem; }

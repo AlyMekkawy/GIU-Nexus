@@ -1,0 +1,40 @@
+.save-job-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    background: #fff;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.save-job-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.18s ease;
+}
+
+.save-job-btn:hover:not(:disabled) {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.save-job-btn:hover:not(:disabled) svg {
+    transform: scale(1.15);
+}
+
+.save-job-btn.saved {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.save-job-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
