@@ -5,9 +5,11 @@
 //   Navbar, Footer, MetricCard, Skeleton variants,
 //   UsersByRoleChart, ProgressList, TopJobsLeaderboard
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
+import { gsap } from "gsap";
 import api from "../services/api";
+import ParticleCanvas from "../components/ParticleCanvas";
 
 // ── Shared components ──────────────────────────────────────────────────────
 import Navbar  from "../components/Navbar";
@@ -69,6 +71,10 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
 
+  const headerRef  = useRef(null);
+  const metricsRef = useRef(null);
+  const panelRef   = useRef(null);
+
   const fetchStats = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -83,6 +89,36 @@ function AdminDashboard() {
   }, []);
 
   useEffect(() => { fetchStats(); }, [fetchStats]);
+
+  // Header entrance — runs once on mount
+  useEffect(() => {
+    if (!headerRef.current) return;
+    gsap.fromTo(
+      headerRef.current,
+      { opacity: 0, y: -28 },
+      { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+    );
+  }, []);
+
+  // Metric cards stagger — runs when loading clears
+  useEffect(() => {
+    if (loading || !metricsRef.current) return;
+    gsap.fromTo(
+      metricsRef.current.children,
+      { opacity: 0, y: 36, scale: 0.96 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.1, ease: "power3.out" }
+    );
+  }, [loading]);
+
+  // Panel sections slide in — runs when loading clears
+  useEffect(() => {
+    if (loading || !panelRef.current) return;
+    gsap.fromTo(
+      panelRef.current.querySelectorAll(".glass-card"),
+      { opacity: 0, y: 28 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power3.out", delay: 0.15 }
+    );
+  }, [loading]);
 
   // ── Derived values ───────────────────────────────────────────────────────
   const usersByRole  = stats?.usersByRole  || {};
@@ -99,6 +135,9 @@ function AdminDashboard() {
   return (
     <div className="adm-page">
 
+      {/* ── Particle background ─────────────────────────────────────── */}
+      <ParticleCanvas className="adm-particle-canvas" />
+
       {/* ── Navigation ──────────────────────────────────────────────── */}
       <Navbar />
 
@@ -106,7 +145,7 @@ function AdminDashboard() {
       <main className="adm-main" id="main-content">
 
         {/* Page heading */}
-        <div className="adm-header">
+        <div className="adm-header" ref={headerRef}>
           <h1>Admin Overview</h1>
           <p>Managing the ecosystem of academic and professional excellence.</p>
         </div>
@@ -131,7 +170,7 @@ function AdminDashboard() {
           <>
             {/* ── Metric cards ──────────────────────────────────────── */}
             <section aria-label="Platform summary metrics">
-              <div className="adm-metrics-grid">
+              <div className="adm-metrics-grid" ref={metricsRef}>
                 {loading ? (
                   <>
                     <MetricCardSkeleton />
@@ -175,7 +214,7 @@ function AdminDashboard() {
             </section>
 
             {/* ── Two-column panel ──────────────────────────────────── */}
-            <div className="adm-panel-grid">
+            <div className="adm-panel-grid" ref={panelRef}>
 
               {/* Left column: charts */}
               <div className="adm-left-col">
