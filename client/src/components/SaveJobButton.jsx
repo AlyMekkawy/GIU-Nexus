@@ -1,39 +1,50 @@
 import { useState } from 'react';
 import api from '../services/api';
-import './SaveJobButton.css';
 
-function SaveJobButton({ jobId, initialSaved = false, jobStatus }) {
-    const [saved, setSaved] = useState(initialSaved);
-    const [loading, setLoading] = useState(false);
+export default function SaveJobButton({ jobId, isSaved = false, onSaveChange }) {
+  const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(isSaved);
+  const [error, setError] = useState(null);
 
-    const isDisabled = jobStatus !== 'open' || loading;
+  const handleSaveClick = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-    async function handleToggle() {
-        if (isDisabled) return;
-        setLoading(true);
-        try {
-            const res = await api.post(`/jobs/${jobId}/save`);
-            setSaved(res.data.saved);
-        } catch (err) {
-            console.error('Save toggle failed:', err.message);
-        } finally {
-            setLoading(false);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await api.post(`/jobs/${jobId}/save`);
+      
+      if (res.data.success) {
+        setSaved(res.data.saved);
+        if (onSaveChange) {
+          onSaveChange(res.data.saved);
         }
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to save job');
+      console.error('Error saving job:', err);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-        <button
-            className={`save-job-btn ${saved ? 'saved' : ''}`}
-            onClick={handleToggle}
-            disabled={isDisabled}
-            title={saved ? 'Unsave job' : 'Save job'}
-        >
-            <svg viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-            </svg>
-            {saved ? 'Saved' : 'Save'}
-        </button>
-    );
+  return (
+    <button
+      onClick={handleSaveClick}
+      disabled={loading}
+      className={`save-job-btn ${saved ? 'saved' : ''} ${loading ? 'loading' : ''}`}
+      title={saved ? 'Remove from saved jobs' : 'Save this job'}
+      aria-label={saved ? 'Remove from saved jobs' : 'Save this job'}
+    >
+      <span className="save-icon">
+        {loading ? '⏳' : saved ? '❤️' : '🤍'}
+      </span>
+      <span className="save-text">
+        {loading ? 'Saving...' : saved ? 'Saved' : 'Save'}
+      </span>
+      {error && <span className="error-tooltip">{error}</span>}
+    </button>
+  );
 }
-
-export default SaveJobButton;
