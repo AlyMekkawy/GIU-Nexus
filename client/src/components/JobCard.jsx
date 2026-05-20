@@ -14,9 +14,6 @@ const CATEGORY_COLORS = {
   Other:            { bg: "#f3f4f6", text: "#374151", border: "#d1d5db" },
 };
 
-// Make the category color map available as a named export for other components
-export const categoryConfig = CATEGORY_COLORS;
-
 export default function JobCard({ job, initialSaved = false, onUnsave }) {
   const navigate = useNavigate();
   const [saved, setSaved] = useState(initialSaved);

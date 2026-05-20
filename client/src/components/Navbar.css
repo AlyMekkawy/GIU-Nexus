@@ -1,218 +1,427 @@
-/* Navbar.css — Frosted sticky navigation bar
-   Self-contained: design tokens are defined here so Navbar works
-   independently of any page CSS. */
+/* components/Navbar.css */
 
-/* ── Tokens (scoped to navbar, no global pollution) ──────────────────────── */
-.nexus-nav {
-    --nav-primary:   #0066cc;
-    --nav-ink:       #1d1d1f;
-    --nav-muted:     #6e6e73;
-    --nav-hairline:  #e0e0e0;
-    --nav-danger:    #b42318;
-    --nav-pearl:     #fafafc;
-    --nav-font: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    height: 64px;
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    font-family: var(--nav-font);
+/* ── Shell ────────────────────────────────────────────────────────────────── */
+/*
+  IMPORTANT: .nav must NOT create a CSS stacking context so that the dropdown
+  (position:absolute; z-index:9999) floats correctly over all page content.
+  The blur is applied via ::before pseudo-element — NOT directly on .nav.
+*/
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  overflow: visible;
 }
 
-.nexus-nav-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+/* Blur via pseudo-element — keeps .nav out of stacking context */
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  z-index: -1;
 }
 
-/* ── Brand ────────────────────────────────────────────────────────────────── */
-.nexus-nav-brand {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--nav-primary);
-    letter-spacing: -0.01em;
-    text-decoration: none;
-    flex-shrink: 0;
+.nav__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 62px;
+  display: flex;
+  align-items: center;
 }
 
-/* ── Desktop links ────────────────────────────────────────────────────────── */
-.nexus-nav-links {
-    display: flex;
-    align-items: center;
-    gap: 28px;
+/* ── Logo ─────────────────────────────────────────────────────────────────── */
+.nav__logo {
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: #0066cc;
+  flex-shrink: 0;
+  margin-right: 36px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
-.nexus-nav-links a {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--nav-muted);
-    text-decoration: none;
-    transition: color 150ms ease;
-    padding-bottom: 2px;
+.nav__logo-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #0066cc;
+  display: inline-block;
+  flex-shrink: 0;
+  transform-origin: center;
 }
 
-.nexus-nav-links a:hover {
-    color: var(--nav-primary);
+/* ── Desktop nav links ────────────────────────────────────────────────────── */
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
 }
 
-.nexus-nav-links a.nav-active {
-    color: var(--nav-primary);
-    font-weight: 600;
-    border-bottom: 2px solid var(--nav-primary);
+.nav__item {
+  position: relative;
 }
 
-/* ── Right actions ────────────────────────────────────────────────────────── */
-.nexus-nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.nav__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  padding: 7px 13px;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  white-space: nowrap;
+  transition: color 0.18s;
 }
 
-/* Auth buttons (unauthenticated) */
-.nexus-nav-login {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--nav-primary);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 9999px;
-    border: 1px solid var(--nav-primary);
-    transition: background 150ms ease;
-}
-.nexus-nav-login:hover { background: #e8f2ff; }
-
-.nexus-nav-register {
-    font-size: 14px;
-    font-weight: 500;
-    color: #fff;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 9999px;
-    background: var(--nav-primary);
-    transition: background 150ms ease;
-}
-.nexus-nav-register:hover { background: #0057b8; }
-
-/* User chip (authenticated) */
-.nexus-nav-user-chip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 12px 5px 5px;
-    background: var(--nav-pearl);
-    border: 1px solid var(--nav-hairline);
-    border-radius: 9999px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--nav-ink);
+.nav__link:hover {
+  color: #0066cc;
 }
 
-.nexus-nav-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--nav-primary);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+.nav__link--active {
+  color: #0066cc;
+  background: #e8f2ff;
 }
 
-.nexus-nav-logout {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--nav-muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px 0;
-    transition: color 150ms ease;
-    font-family: var(--nav-font);
-}
-.nexus-nav-logout:hover { color: var(--nav-danger); }
-
-/* ── Mobile hamburger ─────────────────────────────────────────────────────── */
-.nexus-nav-hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 40px;
-    height: 40px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
-    transition: background 150ms ease;
-}
-.nexus-nav-hamburger:hover { background: rgba(0,0,0,0.05); }
-
-.nexus-nav-hamburger span {
-    display: block;
-    height: 2px;
-    background: var(--nav-ink);
-    border-radius: 2px;
-    transition: transform 200ms ease, opacity 200ms ease;
+/* Sliding underline bar — GSAP animates scaleX 0→1 on hover, 1→0 on leave */
+.nav__link-bar {
+  position: absolute;
+  bottom: 5px;
+  left: 13px;
+  right: 13px;
+  height: 2px;
+  border-radius: 2px;
+  background: #0066cc;
+  transform: scaleX(0);
+  transform-origin: left center;
 }
 
-/* Mobile drawer */
-.nexus-nav-drawer {
-    display: none;
-    position: fixed;
-    top: 64px;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--nav-hairline);
-    padding: 16px 24px 24px;
-    flex-direction: column;
-    gap: 4px;
-    z-index: 49;
+.nav__link--active .nav__link-bar {
+  transform: scaleX(1);
 }
 
-.nexus-nav-drawer.open {
-    display: flex;
+/* ── Right-side actions ───────────────────────────────────────────────────── */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
-.nexus-nav-drawer a,
-.nexus-nav-drawer button {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--nav-ink);
-    text-decoration: none;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--nav-hairline);
-    background: none;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    text-align: left;
-    cursor: pointer;
-    font-family: var(--nav-font);
-    transition: color 150ms ease;
+/* Bell icon button */
+.nav__icon-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: background 0.15s, color 0.15s;
 }
-.nexus-nav-drawer a:last-child,
-.nexus-nav-drawer button:last-child { border-bottom: none; }
-.nexus-nav-drawer a:hover,
-.nexus-nav-drawer button:hover { color: var(--nav-primary); }
 
-/* ── Responsive ───────────────────────────────────────────────────────────── */
-@media (max-width: 834px) {
-    .nexus-nav-links { display: none; }
-    .nexus-nav-hamburger { display: flex; }
-    .nexus-nav-user-chip span { display: none; } /* hide name, keep avatar */
+.nav__icon-btn:hover {
+  background: #e8f2ff;
+  color: #0066cc;
+}
+
+.nav__notif-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e53e3e;
+  border: 2px solid #fff;
+}
+
+/* Vertical divider */
+.nav__divider {
+  width: 1px;
+  height: 22px;
+  background: #e0e0e0;
+  margin: 0 2px;
+}
+
+/* Greeting */
+.nav__greeting {
+  font-size: 0.875rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.nav__greeting strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+/* Role pill badge */
+.nav__role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.nav__role-pill--admin     { background: #f2f2f2;  color: #555;    }
+.nav__role-pill--recruiter { background: #f1eaff;  color: #6b3fd1; }
+.nav__role-pill--jobSeeker { background: #e8f2ff;  color: #0066cc; }
+
+/* Avatar button (initials) */
+.nav__avatar-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #0066cc;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  transition: background 0.15s, box-shadow 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.nav__avatar-btn:hover,
+.nav__avatar-btn--open {
+  background: #0057b8;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+}
+
+/* Auth links (unauthenticated) */
+.nav__auth-login {
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 9px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #444;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.nav__auth-login:hover {
+  background: #f0f4f3;
+  color: #0066cc;
+}
+
+.nav__auth-register {
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 9px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: #0066cc;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.nav__auth-register:hover {
+  background: #0057b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+/* Mobile logout button */
+.nav__logout-btn {
+  padding: 7px 14px;
+  border-radius: 9px;
+  border: 1.5px solid #e0e0e0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #666;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.nav__logout-btn:hover {
+  border-color: #e53e3e;
+  color: #e53e3e;
+  background: #fff5f5;
+}
+
+/* ── Dropdown ─────────────────────────────────────────────────────────────── */
+/*
+  .nav__dropdown-wrap has position:relative so the dropdown anchors to it.
+  .nav__dropdown uses position:absolute + z-index:9999 and floats over
+  all page content because .nav does NOT create a stacking context (blur
+  is on ::before, not .nav itself).
+*/
+.nav__dropdown-wrap {
+  position: relative;
+}
+
+.nav__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+  min-width: 215px;
+  padding: 8px;
+  z-index: 9999;
+  transform-origin: top right;
+}
+
+.nav__dropdown-header {
+  padding: 10px 12px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 4px;
+}
+
+.nav__dropdown-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.nav__dropdown-email {
+  font-size: 0.75rem;
+  color: #6e6e73;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.13s, color 0.13s;
+}
+
+.nav__dropdown-item:hover {
+  background: #f5f5f7;
+  color: #0066cc;
+}
+
+.nav__dropdown-item--danger:hover {
+  background: #fff5f5;
+  color: #e53e3e;
+}
+
+.nav__dropdown-sep {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 4px 0;
+}
+
+/* ── Hamburger ────────────────────────────────────────────────────────────── */
+.nav__hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  transition: background 0.15s;
+}
+
+.nav__hamburger:hover {
+  background: #f0f4f3;
+}
+
+/* ── Mobile menu ──────────────────────────────────────────────────────────── */
+.nav__mobile {
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  background: #fff;
+  overflow: hidden;
+}
+
+.nav__mobile-inner {
+  padding: 10px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nav__mobile-link {
+  display: block;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #333;
+  transition: background 0.13s, color 0.13s;
+}
+
+.nav__mobile-link:hover,
+.nav__mobile-link--active {
+  background: #e8f2ff;
+  color: #0066cc;
+}
+
+.nav__mobile-sep {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 6px 0;
+}
+
+/* ── Responsive breakpoints ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav__links    { display: none; }
+  .nav__greeting { display: none; }
+  .nav__role-pill { display: none; }
+  .nav__divider  { display: none; }
+  .nav__hamburger { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .nav__inner { padding: 0 16px; }
+  .nav__logo  { margin-right: 0; }
 }
