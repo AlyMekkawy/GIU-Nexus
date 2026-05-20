@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
-import { categoryConfig } from "./JobCard";
+
+const categoryConfig = {
+  Frontend:          { bg: "#d1fae5", color: "#065f46", icon: "web" },
+  Backend:           { bg: "#dbeafe", color: "#1e40af", icon: "dns" },
+  "AI/ML":           { bg: "#ede9fe", color: "#5b21b6", icon: "psychology" },
+  DevOps:            { bg: "#ccfbf1", color: "#0f766e", icon: "cloud" },
+  "Data Engineering":{ bg: "#ffedd5", color: "#9a3412", icon: "storage" },
+  Other:             { bg: "#f3f4f6", color: "#374151", icon: "work" },
+};
 
 function RecommendedJobCard({ job }) {
   const cat = categoryConfig[job.category] || categoryConfig.Other;

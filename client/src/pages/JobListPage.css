@@ -1,0 +1,79 @@
+/* ── JobListPage.css ─────────────────────────────────────────── */
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  form {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  form {
+    grid-template-columns: 1fr !important;
+  }
+
+  select,
+  input {
+    font-size: 16px !important;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  p {
+    font-size: 0.95rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  section {
+    padding: 0 1rem !important;
+  }
+}
+
+/* Scrollbar styling for consistent look */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Focus styles for accessibility */
+button:focus,
+select:focus,
+input:focus {
+  outline: 2px solid #004e9f;
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+div[style*="grid-template-columns: repeat"] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Print styles */
+@media print {
+  nav,
+  footer,
+  div[style*="position: fixed"],
+  button {
+    display: none;
+  }
+}
+

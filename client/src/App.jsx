@@ -13,7 +13,6 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
-import DevPreviewPage from "./pages/DevPreviewPage";
 
 import JobListPage from "./pages/JobListPage";
 import JobDetailPage from "./pages/JobDetailPage";
@@ -40,16 +39,22 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        <Route path="/dev-preview/profile/change-password" element={<DevPreviewPage />} />
 
         <Route path="/jobs" element={<JobListPage />} />
         <Route path="/jobs/:id" element={<JobDetailPage />} />
 
           {/* Private / Role specific */}
-        {/* TODO: restore RoleRoute before production */}
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={
+            <RoleRoute allowedRoles={["jobSeeker"]}>
+            <ProfilePage/>
+            </RoleRoute>
+        } />
 
-        <Route path="/profile/edit" element={<EditProfilePage />} />
+        <Route path="/profile/edit" element={
+            <PrivateRoute>
+            <EditProfilePage/>
+            </PrivateRoute>}
+        />
 
         <Route
             path="/profile/change-password"

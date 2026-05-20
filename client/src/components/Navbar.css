@@ -1,143 +1,427 @@
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 100;
-    background: rgba(245, 245, 247, 0.82);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid #e0e0e0;
-    height: 64px;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+/* components/Navbar.css */
+
+/* ── Shell ────────────────────────────────────────────────────────────────── */
+/*
+  IMPORTANT: .nav must NOT create a CSS stacking context so that the dropdown
+  (position:absolute; z-index:9999) floats correctly over all page content.
+  The blur is applied via ::before pseudo-element — NOT directly on .nav.
+*/
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  overflow: visible;
 }
 
-.navbar-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
+/* Blur via pseudo-element — keeps .nav out of stacking context */
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  z-index: -1;
 }
 
-.navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
+.nav__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 62px;
+  display: flex;
+  align-items: center;
 }
 
-.navbar-logo {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: #004e9f;
-    letter-spacing: -0.02em;
-    cursor: pointer;
-    user-select: none;
-    transition: opacity 0.15s;
+/* ── Logo ─────────────────────────────────────────────────────────────────── */
+.nav__logo {
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: #0066cc;
+  flex-shrink: 0;
+  margin-right: 36px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
-.navbar-logo:hover { opacity: 0.8; }
-
-.navbar-links {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
+.nav__logo-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #0066cc;
+  display: inline-block;
+  flex-shrink: 0;
+  transform-origin: center;
 }
 
-.navbar-link {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #414753;
-    text-decoration: none;
-    transition: color 0.2s;
+/* ── Desktop nav links ────────────────────────────────────────────────────── */
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
 }
 
-.navbar-link:hover { color: #004e9f; }
-
-.navbar-link.active {
-    color: #004e9f;
-    font-weight: 700;
-    border-bottom: 2px solid #004e9f;
-    padding-bottom: 2px;
+.nav__item {
+  position: relative;
 }
 
-.navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+.nav__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  padding: 7px 13px;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  white-space: nowrap;
+  transition: color 0.18s;
 }
 
-.navbar-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #004e9f;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    border: 2px solid #e0e0e0;
-    text-decoration: none;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
+.nav__link:hover {
+  color: #0066cc;
 }
 
-.navbar-avatar:hover { opacity: 0.85; }
-
-.navbar-logout {
-    background: none;
-    border: 1.5px solid #e0e0e0;
-    color: #414753;
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-    font-family: inherit;
+.nav__link--active {
+  color: #0066cc;
+  background: #e8f2ff;
 }
 
-.navbar-logout:hover {
-    background: #fff0ee;
-    border-color: #b42318;
-    color: #b42318;
+/* Sliding underline bar — GSAP animates scaleX 0→1 on hover, 1→0 on leave */
+.nav__link-bar {
+  position: absolute;
+  bottom: 5px;
+  left: 13px;
+  right: 13px;
+  height: 2px;
+  border-radius: 2px;
+  background: #0066cc;
+  transform: scaleX(0);
+  transform-origin: left center;
 }
 
-.navbar-link-btn {
-    background: none;
-    border: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #414753;
-    cursor: pointer;
-    font-family: inherit;
-    transition: color 0.2s;
-    padding: 0;
+.nav__link--active .nav__link-bar {
+  transform: scaleX(1);
 }
 
-.navbar-link-btn:hover { color: #004e9f; }
-
-.navbar-btn-register {
-    background: #004e9f;
-    color: #fff;
-    border: none;
-    padding: 0.45rem 1.1rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-    font-family: inherit;
+/* ── Right-side actions ───────────────────────────────────────────────────── */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
-.navbar-btn-register:hover { background: #003a7a; }
+/* Bell icon button */
+.nav__icon-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: background 0.15s, color 0.15s;
+}
 
+.nav__icon-btn:hover {
+  background: #e8f2ff;
+  color: #0066cc;
+}
+
+.nav__notif-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e53e3e;
+  border: 2px solid #fff;
+}
+
+/* Vertical divider */
+.nav__divider {
+  width: 1px;
+  height: 22px;
+  background: #e0e0e0;
+  margin: 0 2px;
+}
+
+/* Greeting */
+.nav__greeting {
+  font-size: 0.875rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.nav__greeting strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+/* Role pill badge */
+.nav__role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.nav__role-pill--admin     { background: #f2f2f2;  color: #555;    }
+.nav__role-pill--recruiter { background: #f1eaff;  color: #6b3fd1; }
+.nav__role-pill--jobSeeker { background: #e8f2ff;  color: #0066cc; }
+
+/* Avatar button (initials) */
+.nav__avatar-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #0066cc;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  transition: background 0.15s, box-shadow 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.nav__avatar-btn:hover,
+.nav__avatar-btn--open {
+  background: #0057b8;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+}
+
+/* Auth links (unauthenticated) */
+.nav__auth-login {
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 9px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #444;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.nav__auth-login:hover {
+  background: #f0f4f3;
+  color: #0066cc;
+}
+
+.nav__auth-register {
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 9px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: #0066cc;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.nav__auth-register:hover {
+  background: #0057b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+/* Mobile logout button */
+.nav__logout-btn {
+  padding: 7px 14px;
+  border-radius: 9px;
+  border: 1.5px solid #e0e0e0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #666;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.nav__logout-btn:hover {
+  border-color: #e53e3e;
+  color: #e53e3e;
+  background: #fff5f5;
+}
+
+/* ── Dropdown ─────────────────────────────────────────────────────────────── */
+/*
+  .nav__dropdown-wrap has position:relative so the dropdown anchors to it.
+  .nav__dropdown uses position:absolute + z-index:9999 and floats over
+  all page content because .nav does NOT create a stacking context (blur
+  is on ::before, not .nav itself).
+*/
+.nav__dropdown-wrap {
+  position: relative;
+}
+
+.nav__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+  min-width: 215px;
+  padding: 8px;
+  z-index: 9999;
+  transform-origin: top right;
+}
+
+.nav__dropdown-header {
+  padding: 10px 12px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 4px;
+}
+
+.nav__dropdown-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.nav__dropdown-email {
+  font-size: 0.75rem;
+  color: #6e6e73;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.13s, color 0.13s;
+}
+
+.nav__dropdown-item:hover {
+  background: #f5f5f7;
+  color: #0066cc;
+}
+
+.nav__dropdown-item--danger:hover {
+  background: #fff5f5;
+  color: #e53e3e;
+}
+
+.nav__dropdown-sep {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 4px 0;
+}
+
+/* ── Hamburger ────────────────────────────────────────────────────────────── */
+.nav__hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  transition: background 0.15s;
+}
+
+.nav__hamburger:hover {
+  background: #f0f4f3;
+}
+
+/* ── Mobile menu ──────────────────────────────────────────────────────────── */
+.nav__mobile {
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  background: #fff;
+  overflow: hidden;
+}
+
+.nav__mobile-inner {
+  padding: 10px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nav__mobile-link {
+  display: block;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #333;
+  transition: background 0.13s, color 0.13s;
+}
+
+.nav__mobile-link:hover,
+.nav__mobile-link--active {
+  background: #e8f2ff;
+  color: #0066cc;
+}
+
+.nav__mobile-sep {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 6px 0;
+}
+
+/* ── Responsive breakpoints ───────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .navbar-links { display: none; }
-    .navbar-logo { font-size: 1.1rem; }
+  .nav__links    { display: none; }
+  .nav__greeting { display: none; }
+  .nav__role-pill { display: none; }
+  .nav__divider  { display: none; }
+  .nav__hamburger { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .nav__inner { padding: 0 16px; }
+  .nav__logo  { margin-right: 0; }
 }
