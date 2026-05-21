@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { gsap } from "gsap";
 import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -94,6 +95,7 @@ function PendingRecruitersPage() {
     const [recruiters,    setRecruiters]    = useState([]);
     const [loading,       setLoading]       = useState(true);
     const [error,         setError]         = useState("");
+    const headerRef = useRef(null);
     const [searchTerm,    setSearchTerm]    = useState("");
     const [actionLoading, setActionLoading] = useState({});
     const [actionError,   setActionError]   = useState("");
@@ -147,6 +149,16 @@ function PendingRecruitersPage() {
         setActionError("");
     }, [fetchRecruiters, statusFilter]);
 
+    // Header entrance
+    useEffect(() => {
+        if (!headerRef.current) return;
+        gsap.fromTo(
+            headerRef.current.children,
+            { y: 18, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.55, stagger: 0.08, ease: "power3.out" }
+        );
+    }, []);
+
     const handleStatusChange = useCallback(async (userId, nextStatus) => {
         setActionError("");
         setActionLoading((prev) => ({ ...prev, [userId]: true }));
@@ -178,8 +190,12 @@ function PendingRecruitersPage() {
             <main className="prp-container">
 
                 {/* Page header */}
-                <header className="prp-header">
+                <header className="prp-header" ref={headerRef}>
                     <div>
+                        <span className="prp-header__label">
+                            <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>verified_user</span>
+                            Admin Console
+                        </span>
                         <h1>Pending Recruiters</h1>
                         <p>Review and manage employer access requests for the GIU Nexus network.</p>
                     </div>

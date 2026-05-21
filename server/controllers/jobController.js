@@ -369,50 +369,59 @@ const getRecommendedJobs = async (req, res, next) => {
       });
     }
 
-    // Get embeddings for user skills
+    // ── Keyword fallback scorer (no AI needed) ────────────────────────
+    // Counts how many user skills appear in the job requirements (case-insensitive).
+    const keywordScore = (job) => {
+      const reqs = (job.requirements || []).join(' ').toLowerCase();
+      return userSkills.reduce((count, skill) =>
+        reqs.includes(skill.toLowerCase()) ? count + 1 : count, 0
+      );
+    };
+
+    // ── Try AI embeddings, fall back to keyword matching if HF is down ─
     const userSkillsText = userSkills.join(' ');
+    let useEmbeddings = true;
     let userEmbedding;
+
     try {
       userEmbedding = await hf.featureExtraction({
         model: 'sentence-transformers/all-MiniLM-L6-v2',
-        inputs: userSkillsText
+        inputs: userSkillsText,
+        options: { wait_for_model: true }
       });
     } catch (err) {
-      console.error('HuggingFace embedding error:', err.message);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to compute skill embeddings'
-      });
+      console.warn('HuggingFace embedding unavailable, using keyword fallback:', err.message);
+      useEmbeddings = false;
     }
 
-    // Score each job based on similarity
+    // Score each job
     const jobsWithScores = await Promise.all(
       jobs.map(async (job) => {
-        const jobRequirementsText = (job.requirements || []).join(' ');
-        
-        if (!jobRequirementsText.trim()) {
-          return { ...job, score: 0 };
+        if (!useEmbeddings) {
+          const score = keywordScore(job) / userSkills.length;
+          return { ...job, score };
         }
+
+        const jobRequirementsText = (job.requirements || []).join(' ');
+        if (!jobRequirementsText.trim()) return { ...job, score: 0 };
 
         try {
           const jobEmbedding = await hf.featureExtraction({
             model: 'sentence-transformers/all-MiniLM-L6-v2',
-            inputs: jobRequirementsText
+            inputs: jobRequirementsText,
+            options: { wait_for_model: true }
           });
-
-          const score = cosineSimilarity(userEmbedding, jobEmbedding);
-          return { ...job, score };
+          return { ...job, score: cosineSimilarity(userEmbedding, jobEmbedding) };
         } catch (err) {
-          console.error(`Error embedding job ${job._id}:`, err.message);
-          return { ...job, score: 0 };
+          // Single job embedding failed — fall back to keyword for this job
+          return { ...job, score: keywordScore(job) / userSkills.length };
         }
       })
     );
 
-    // Sort by score (highest first) and return
     const recommendedJobs = jobsWithScores
       .sort((a, b) => b.score - a.score)
-      .filter(job => job.score > 0); // Optional: filter out zero-score jobs
+      .filter(job => job.score > 0);
 
     res.status(200).json({
       success: true,

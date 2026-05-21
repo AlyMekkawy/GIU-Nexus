@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { gsap } from "gsap";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
@@ -78,6 +79,7 @@ function RecruiterDashboard() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    const heroRef = useRef(null);
     const isPending = user?.status === "pending";
     const pageSize = 5;
 
@@ -115,6 +117,16 @@ function RecruiterDashboard() {
 
         loadJobs();
         return () => { isMounted = false; };
+    }, []);
+
+    // Hero entrance
+    useEffect(() => {
+        if (!heroRef.current) return;
+        gsap.fromTo(
+            heroRef.current.children,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.55, stagger: 0.08, ease: "power3.out" }
+        );
     }, []);
 
     const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -156,8 +168,12 @@ function RecruiterDashboard() {
                 )}
 
                 {/* Hero */}
-                <section className="rd-hero">
+                <section className="rd-hero" ref={heroRef}>
                     <div className="rd-hero-text">
+                        <span className="rd-header__label">
+                            <span className="material-symbols-outlined" style={{ fontSize: "13px" }}>work</span>
+                            Recruiter Console
+                        </span>
                         <h1>Welcome{user?.name ? `, ${user.name}` : ""}</h1>
                         <div className="rd-hero-meta">
                             <span className="rd-hero-status">

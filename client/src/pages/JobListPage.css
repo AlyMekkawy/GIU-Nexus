@@ -1,79 +1,429 @@
-/* ── JobListPage.css ─────────────────────────────────────────── */
+/* ── JobListPage.css ─────────────────────────────────────────────── */
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  form {
-    grid-template-columns: 1fr 1fr !important;
-  }
+/* ── Page shell ──────────────────────────────────────────────────── */
+.jl-page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif;
 }
 
-@media (max-width: 768px) {
-  form {
-    grid-template-columns: 1fr !important;
-  }
-
-  select,
-  input {
-    font-size: 16px !important;
-  }
-
-  h1 {
-    font-size: 2rem !important;
-  }
-
-  p {
-    font-size: 0.95rem !important;
-  }
+/* ── Hero / Header ───────────────────────────────────────────────── */
+.jl-hero {
+  position: relative;
+  padding: 7rem 1.5rem 3rem;
+  overflow: hidden;
 }
 
-@media (max-width: 640px) {
-  section {
-    padding: 0 1rem !important;
-  }
+/* dot-grid texture */
+.jl-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
 }
 
-/* Scrollbar styling for consistent look */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+/* red glow top-left */
+.jl-hero::after {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: -60px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(221,0,0,0.10) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.jl-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.jl-hero__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: rgba(221,0,0,0.09);
+  border: 1px solid rgba(221,0,0,0.18);
+  border-radius: 999px;
+  padding: 0.28rem 0.85rem;
+  margin-bottom: 1.1rem;
+}
+
+.jl-hero__title {
+  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.jl-hero__subtitle {
+  font-size: 1.0625rem;
+  color: var(--text-muted);
   margin: 0;
 }
 
-input[type="number"] {
-  -moz-appearance: textfield;
+/* ── Search + Chips wrapper ──────────────────────────────────────── */
+.jl-search {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 2.5rem;
 }
 
-/* Focus styles for accessibility */
-button:focus,
-select:focus,
-input:focus {
-  outline: 2px solid #004e9f;
-  outline-offset: 2px;
+/* ── Search form ─────────────────────────────────────────────────── */
+.jl-search__form {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  gap: 0.75rem;
+  align-items: stretch;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+.jl-search__input-wrap {
+  position: relative;
+}
+
+.jl-search__icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  pointer-events: none;
+  font-variation-settings: 'FILL' 0, 'wght' 300;
+  line-height: 1;
+}
+
+.jl-search__input,
+.jl-search__select {
+  height: 48px;
+  padding: 0 1rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border-s);
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.jl-search__input {
+  width: 100%;
+  padding-left: 2.6rem;
+}
+
+.jl-search__input::placeholder { color: var(--placeholder); }
+
+.jl-search__input:focus,
+.jl-search__select:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(221,0,0,0.11);
+}
+
+.jl-search__select {
+  padding: 0 2rem 0 0.9rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 4.5L11 1' stroke='%239A9690' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+/* select option colours in dropdown */
+.jl-search__select option {
+  background: var(--input-bg);
+  color: var(--text);
+}
+
+.jl-search__btn {
+  padding: 0 1.8rem;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 16px rgba(221,0,0,0.26);
+}
+
+.jl-search__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(221,0,0,0.36);
+}
+
+.jl-search__btn:active { transform: translateY(0); }
+
+/* ── Category chips ──────────────────────────────────────────────── */
+.jl-chips {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.jl-chips__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  flex-shrink: 0;
+}
+
+.jl-chip {
+  padding: 0.38rem 1rem;
+  border: 1px solid var(--border-s);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.jl-chip:hover {
+  border-color: var(--red);
+  color: var(--text);
+}
+
+.jl-chip.active {
+  border-color: var(--red);
+  background: rgba(221,0,0,0.10);
+  color: var(--red);
+  font-weight: 600;
+}
+
+.jl-chip--clear {
+  border: none;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.jl-chip--clear:hover {
+  background: var(--surface-3);
+  border-color: transparent;
+  color: var(--text);
+}
+
+/* ── Content wrapper ─────────────────────────────────────────────── */
+.jl-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+}
+
+/* ── Results bar ─────────────────────────────────────────────────── */
+.jl-results-bar {
+  margin-bottom: 1.5rem;
+}
+
+.jl-results-bar__text {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* ── Spinner wrap ────────────────────────────────────────────────── */
+.jl-spinner-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 5rem 1rem;
+}
+
+/* ── Job grid ────────────────────────────────────────────────────── */
+.jl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────── */
+.jl-empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.jl-empty__icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.jl-empty__title {
+  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.jl-empty__body {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem;
+}
+
+.jl-empty__btn {
+  padding: 0.65rem 1.5rem;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.jl-empty__btn:hover { background: #C00000; }
+
+/* ── Error state ─────────────────────────────────────────────────── */
+.jl-error {
+  background: rgba(221,0,0,0.07);
+  border: 1px solid rgba(221,0,0,0.18);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.jl-error__text {
+  color: var(--red);
+  font-size: 0.95rem;
+  margin: 0 0 1rem;
+}
+
+.jl-error__btn {
+  padding: 0.5rem 1.25rem;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+/* ── Pagination ──────────────────────────────────────────────────── */
+.jl-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding-top: 3rem;
+}
+
+.jl-page-btn {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--border-s);
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.jl-page-btn:hover:not(:disabled) {
+  border-color: var(--red);
+  color: var(--text);
+}
+
+.jl-page-btn.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  font-weight: 700;
+}
+
+.jl-page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.jl-page-dots {
+  color: var(--text-dim);
+  padding: 0 0.2rem;
+  font-size: 0.875rem;
+  line-height: 38px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .jl-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 820px) {
+  .jl-search__form {
+    grid-template-columns: 1fr 1fr;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .jl-search__input-wrap { grid-column: 1 / -1; }
+  .jl-search__btn         { grid-column: 1 / -1; height: 48px; }
 }
 
-div[style*="grid-template-columns: repeat"] {
-  animation: fadeIn 0.3s ease-out;
+@media (max-width: 600px) {
+  .jl-hero     { padding: 6rem 1rem 2rem; }
+  .jl-search   { padding: 0 1rem 2rem; }
+  .jl-content  { padding: 0 1rem 4rem; }
+  .jl-grid     { grid-template-columns: 1fr; }
+  .jl-search__form { grid-template-columns: 1fr; }
+  .jl-search__input-wrap { grid-column: auto; }
+  .jl-search__btn        { grid-column: auto; }
 }
 
-/* Print styles */
-@media print {
-  nav,
-  footer,
-  div[style*="position: fixed"],
-  button {
-    display: none;
-  }
+/* ── Light mode overrides ────────────────────────────────────────── */
+[data-theme="light"] .jl-hero::before {
+  background-image: radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px);
 }
 
+[data-theme="light"] .jl-hero::after {
+  background: radial-gradient(circle, rgba(204,0,0,0.07) 0%, transparent 68%);
+}
+
+[data-theme="light"] .jl-search__select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 4.5L11 1' stroke='%236B6459' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+[data-theme="light"] .jl-chip.active {
+  background: rgba(204,0,0,0.09);
+  color: #CC0000;
+}
+
+[data-theme="light"] .jl-search__btn {
+  box-shadow: 0 4px 14px rgba(204,0,0,0.22);
+}

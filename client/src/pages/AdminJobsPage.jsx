@@ -7,8 +7,9 @@
 //
 // Components: Navbar, Footer, Modal
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
+import { gsap } from "gsap";
 import api    from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -16,13 +17,13 @@ import Modal  from "../components/Modal";
 import "./AdminJobsPage.css";
 
 // ── Badge maps ────────────────────────────────────────────────────────────────
-const CATEGORY_STYLES = {
-  Frontend:           { bg: "#e8f7ee", text: "#16833a", border: "#bfe8cd" },
-  Backend:            { bg: "#e8f2ff", text: "#0066cc", border: "#b9d8ff" },
-  "AI/ML":            { bg: "#f1eaff", text: "#6b3fd1", border: "#d8c8ff" },
-  DevOps:             { bg: "#e6f7f6", text: "#007c78", border: "#bce9e6" },
-  "Data Engineering": { bg: "#fff3e0", text: "#b26a00", border: "#ffd99a" },
-  Other:              { bg: "#f2f2f2", text: "#666666", border: "#dedede" },
+const CATEGORY_CLASS = {
+  Frontend:           "frontend",
+  Backend:            "backend",
+  "AI/ML":            "ai",
+  DevOps:             "devops",
+  "Data Engineering": "data",
+  Other:              "other",
 };
 
 const TYPE_LABELS = {
@@ -31,15 +32,16 @@ const TYPE_LABELS = {
   internship:   "Internship",
 };
 
-const TYPE_STYLES = {
-  "full-time":  { bg: "#e8f2ff", text: "#0066cc" },
-  "part-time":  { bg: "#f1eaff", text: "#6b3fd1" },
-  internship:   { bg: "#e6f7f6", text: "#007c78" },
+const TYPE_CLASS = {
+  "full-time":  "fulltime",
+  "part-time":  "parttime",
+  internship:   "internship",
 };
 
 const PAGE_LIMIT = 12;
 
 // Relative date helper
+
 function relativeDate(iso) {
   if (!iso) return "";
   const d = new Date(iso);
@@ -55,6 +57,36 @@ function relativeDate(iso) {
 // Company initials avatar
 const toInitials = (s = "") =>
   s.trim().split(/\s+/).map((w) => w[0] || "").slice(0, 2).join("").toUpperCase() || "?";
+
+// ── Badge components ──────────────────────────────────────────────────────────
+function CategoryBadge({ category }) {
+  const cls = CATEGORY_CLASS[category] ?? "other";
+  return (
+    <span className={`aj-cat-badge aj-cat-${cls}`}>
+      {category || "Other"}
+    </span>
+  );
+}
+
+function TypeBadge({ type }) {
+  const cls   = TYPE_CLASS[type] ?? "fulltime";
+  const label = TYPE_LABELS[type] ?? type;
+  return (
+    <span className={`aj-type-badge aj-type-${cls}`}>
+      {label}
+    </span>
+  );
+}
+
+function StatusBadge({ status }) {
+  const isOpen = status === "open";
+  return (
+    <span className={`aj-status-badge ${isOpen ? "aj-status-open" : "aj-status-closed"}`}>
+      <span className="aj-status-dot" aria-hidden="true" />
+      {isOpen ? "Open" : "Closed"}
+    </span>
+  );
+}
 
 // ── SVG icons ─────────────────────────────────────────────────────────────────
 const IconSearch = () => (
@@ -129,6 +161,7 @@ function AdminJobsPage() {
   const [jobs,         setJobs]         = useState([]);
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState(null);
+  const headerRef = useRef(null);
 
   // Filters
   const [keyword,      setKeyword]      = useState("");
@@ -180,6 +213,16 @@ function AdminJobsPage() {
   useEffect(() => { fetchJobs(); }, [fetchJobs]);
   useEffect(() => { setPage(1); }, [keyword, typeFilter, statusFilter]);
 
+  // Header entrance
+  useEffect(() => {
+    if (!headerRef.current) return;
+    gsap.fromTo(
+      headerRef.current.children,
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.55, stagger: 0.08, ease: "power3.out" }
+    );
+  }, []);
+
   // ── Delete ─────────────────────────────────────────────────────────────────
   async function confirmDelete() {
     if (!deleteTarget) return;
@@ -200,38 +243,6 @@ function AdminJobsPage() {
   // ── Helpers ────────────────────────────────────────────────────────────────
   const hasFilters = keyword || typeFilter || statusFilter;
 
-  function CategoryBadge({ category }) {
-    const style = CATEGORY_STYLES[category] ?? CATEGORY_STYLES.Other;
-    return (
-      <span
-        className="aj-cat-badge"
-        style={{ background: style.bg, color: style.text, borderColor: style.border }}
-      >
-        {category || "Other"}
-      </span>
-    );
-  }
-
-  function TypeBadge({ type }) {
-    const style  = TYPE_STYLES[type]  ?? { bg: "#f2f2f2", text: "#666" };
-    const label  = TYPE_LABELS[type]  ?? type;
-    return (
-      <span className="aj-type-badge" style={{ background: style.bg, color: style.text }}>
-        {label}
-      </span>
-    );
-  }
-
-  function StatusBadge({ status }) {
-    const isOpen = status === "open";
-    return (
-      <span className={`aj-status-badge ${isOpen ? "aj-status-open" : "aj-status-closed"}`}>
-        <span className="aj-status-dot" aria-hidden="true" />
-        {isOpen ? "Open" : "Closed"}
-      </span>
-    );
-  }
-
   const deleteModalBody = deleteTarget ? (
     <>
       This will permanently remove the listing{" "}
@@ -249,11 +260,13 @@ function AdminJobsPage() {
       <main className="aj-main" id="main-content">
 
         {/* Page header */}
-        <div className="aj-header">
-          <div>
-            <h1>Job Management</h1>
-            <p>Review and moderate all listings across the platform.</p>
-          </div>
+        <div className="aj-header" ref={headerRef}>
+          <span className="aj-header__label">
+            <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>work</span>
+            Admin Console
+          </span>
+          <h1>Job Management</h1>
+          <p>Review and moderate all listings across the platform.</p>
         </div>
 
         {/* Filters */}

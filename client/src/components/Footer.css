@@ -1,9 +1,9 @@
 .footer {
-    background: #f0edef;
-    border-top: 1px solid #e0e0e0;
+    background: #1e1e1e;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding: 3rem 1.5rem;
     margin-top: 4rem;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif;
 }
 
 .footer-inner {
@@ -19,20 +19,21 @@
 .footer-logo {
     font-size: 1.1rem;
     font-weight: 800;
-    color: #004e9f;
+    color: #DD0000;
     display: block;
     margin-bottom: 0.25rem;
+    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
 }
 
 .footer-tagline {
     font-size: 0.78rem;
-    color: #6e6e73;
+    color: #9A9690;
     margin: 0 0 0.2rem;
 }
 
 .footer-copy {
     font-size: 0.75rem;
-    color: #6e6e73;
+    color: #9A9690;
     margin: 0;
 }
 
@@ -45,17 +46,28 @@
 .footer-heading {
     font-size: 0.82rem;
     font-weight: 700;
-    color: #1b1b1d;
+    color: #F0EDE6;
     margin: 0 0 0.75rem;
 }
 
 .footer-link {
     display: block;
     font-size: 0.78rem;
-    color: #6e6e73;
+    color: #9A9690;
     text-decoration: underline;
     margin-bottom: 0.4rem;
     transition: color 0.15s;
 }
 
-.footer-link:hover { color: #004e9f; }
+.footer-link:hover { color: #FFCE00; }
+
+/* ── Light theme ─────────────────────────────────────────────────── */
+[data-theme="light"] .footer {
+  background: #EDE6D8;
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .footer-tagline { color: #6B6459; }
+[data-theme="light"] .footer-copy    { color: #6B6459; }
+[data-theme="light"] .footer-heading { color: #1A1410; }
+[data-theme="light"] .footer-link    { color: #6B6459; }
+[data-theme="light"] .footer-link:hover { color: #B8920A; }

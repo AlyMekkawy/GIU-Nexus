@@ -10,8 +10,8 @@
   position: sticky;
   top: 0;
   z-index: 200;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   overflow: visible;
 }
 
@@ -20,10 +20,11 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--nav-bg, rgba(20, 20, 20, 0.92));
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   z-index: -1;
+  transition: background 0.25s ease;
 }
 
 .nav__inner {
@@ -39,21 +40,22 @@
 .nav__logo {
   text-decoration: none;
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.4px;
-  color: #0066cc;
+  color: #DD0000;
   flex-shrink: 0;
   margin-right: 36px;
   display: flex;
   align-items: center;
   gap: 7px;
+  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
 }
 
 .nav__logo-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #0066cc;
+  background: #FFCE00;
   display: inline-block;
   flex-shrink: 0;
   transform-origin: center;
@@ -84,18 +86,18 @@
   border-radius: 9px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #444;
+  color: #9A9690;
   white-space: nowrap;
   transition: color 0.18s;
 }
 
 .nav__link:hover {
-  color: #0066cc;
+  color: #F0EDE6;
 }
 
 .nav__link--active {
-  color: #0066cc;
-  background: #e8f2ff;
+  color: #FFCE00;
+  background: rgba(255, 206, 0, 0.08);
 }
 
 /* Sliding underline bar — GSAP animates scaleX 0→1 on hover, 1→0 on leave */
@@ -106,7 +108,7 @@
   right: 13px;
   height: 2px;
   border-radius: 2px;
-  background: #0066cc;
+  background: #FFCE00;
   transform: scaleX(0);
   transform-origin: left center;
 }
@@ -136,13 +138,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  color: #9A9690;
   transition: background 0.15s, color 0.15s;
 }
 
 .nav__icon-btn:hover {
-  background: #e8f2ff;
-  color: #0066cc;
+  background: rgba(255, 206, 0, 0.08);
+  color: #FFCE00;
 }
 
 .nav__notif-dot {
@@ -152,27 +154,27 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #e53e3e;
-  border: 2px solid #fff;
+  background: #DD0000;
+  border: 2px solid #0d0d0d;
 }
 
 /* Vertical divider */
 .nav__divider {
   width: 1px;
   height: 22px;
-  background: #e0e0e0;
+  background: rgba(255, 255, 255, 0.08);
   margin: 0 2px;
 }
 
 /* Greeting */
 .nav__greeting {
   font-size: 0.875rem;
-  color: #555;
+  color: #9A9690;
   white-space: nowrap;
 }
 
 .nav__greeting strong {
-  color: #1d1d1f;
+  color: #F0EDE6;
   font-weight: 600;
 }
 
@@ -190,16 +192,16 @@
   flex-shrink: 0;
 }
 
-.nav__role-pill--admin     { background: #f2f2f2;  color: #555;    }
-.nav__role-pill--recruiter { background: #f1eaff;  color: #6b3fd1; }
-.nav__role-pill--jobSeeker { background: #e8f2ff;  color: #0066cc; }
+.nav__role-pill--admin     { background: #252525;                     color: #9A9690; }
+.nav__role-pill--recruiter { background: rgba(221, 0, 0, 0.15);       color: #DD0000; }
+.nav__role-pill--jobSeeker { background: rgba(255, 206, 0, 0.12);     color: #FFCE00; }
 
 /* Avatar button (initials) */
 .nav__avatar-btn {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #0066cc;
+  background: #DD0000;
   color: #fff;
   font-size: 0.78rem;
   font-weight: 700;
@@ -215,8 +217,8 @@
 
 .nav__avatar-btn:hover,
 .nav__avatar-btn--open {
-  background: #0057b8;
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+  background: #C00000;
+  box-shadow: 0 0 0 3px rgba(221, 0, 0, 0.25);
 }
 
 /* Auth links (unauthenticated) */
@@ -226,14 +228,14 @@
   border-radius: 9px;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #444;
+  color: #9A9690;
   transition: background 0.15s, color 0.15s;
   white-space: nowrap;
 }
 
 .nav__auth-login:hover {
-  background: #f0f4f3;
-  color: #0066cc;
+  background: rgba(255, 255, 255, 0.06);
+  color: #F0EDE6;
 }
 
 .nav__auth-register {
@@ -243,45 +245,39 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: #fff;
-  background: #0066cc;
+  background: #DD0000;
   white-space: nowrap;
   transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
 .nav__auth-register:hover {
-  background: #0057b8;
+  background: #C00000;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  box-shadow: 0 4px 12px rgba(221, 0, 0, 0.35);
 }
 
 /* Mobile logout button */
 .nav__logout-btn {
   padding: 7px 14px;
   border-radius: 9px;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
   background: transparent;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #666;
+  color: #9A9690;
   font-family: inherit;
   white-space: nowrap;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .nav__logout-btn:hover {
-  border-color: #e53e3e;
-  color: #e53e3e;
-  background: #fff5f5;
+  border-color: #DD0000;
+  color: #DD0000;
+  background: rgba(221, 0, 0, 0.08);
 }
 
 /* ── Dropdown ─────────────────────────────────────────────────────────────── */
-/*
-  .nav__dropdown-wrap has position:relative so the dropdown anchors to it.
-  .nav__dropdown uses position:absolute + z-index:9999 and floats over
-  all page content because .nav does NOT create a stacking context (blur
-  is on ::before, not .nav itself).
-*/
 .nav__dropdown-wrap {
   position: relative;
 }
@@ -290,10 +286,10 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.09);
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 14px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
   min-width: 215px;
   padding: 8px;
   z-index: 9999;
@@ -302,19 +298,19 @@
 
 .nav__dropdown-header {
   padding: 10px 12px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 4px;
 }
 
 .nav__dropdown-name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1d1d1f;
+  color: #F0EDE6;
 }
 
 .nav__dropdown-email {
   font-size: 0.75rem;
-  color: #6e6e73;
+  color: #9A9690;
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -330,7 +326,7 @@
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #333;
+  color: #9A9690;
   cursor: pointer;
   border: none;
   background: transparent;
@@ -341,18 +337,18 @@
 }
 
 .nav__dropdown-item:hover {
-  background: #f5f5f7;
-  color: #0066cc;
+  background: #252525;
+  color: #FFCE00;
 }
 
 .nav__dropdown-item--danger:hover {
-  background: #fff5f5;
-  color: #e53e3e;
+  background: rgba(221, 0, 0, 0.12);
+  color: #DD0000;
 }
 
 .nav__dropdown-sep {
   height: 1px;
-  background: #f0f0f0;
+  background: rgba(255, 255, 255, 0.08);
   margin: 4px 0;
 }
 
@@ -367,18 +363,18 @@
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  color: #555;
+  color: #9A9690;
   transition: background 0.15s;
 }
 
 .nav__hamburger:hover {
-  background: #f0f4f3;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* ── Mobile menu ──────────────────────────────────────────────────────────── */
 .nav__mobile {
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
-  background: #fff;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: #1a1a1a;
   overflow: hidden;
 }
 
@@ -396,21 +392,80 @@
   border-radius: 9px;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #333;
+  color: #9A9690;
   transition: background 0.13s, color 0.13s;
 }
 
 .nav__mobile-link:hover,
 .nav__mobile-link--active {
-  background: #e8f2ff;
-  color: #0066cc;
+  background: rgba(255, 206, 0, 0.08);
+  color: #FFCE00;
 }
 
 .nav__mobile-sep {
   height: 1px;
-  background: #f0f0f0;
+  background: rgba(255, 255, 255, 0.08);
   margin: 6px 0;
 }
+
+/* ── Light theme overrides ────────────────────────────────────────────────── */
+[data-theme="light"] .nav {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Explicit bg override so navbar turns cream in light mode regardless of var() */
+[data-theme="light"] .nav::before {
+  background: rgba(245, 240, 232, 0.96);
+}
+
+[data-theme="light"] .nav__logo { color: #CC0000; }
+
+[data-theme="light"] .nav__link { color: #6B6459; }
+[data-theme="light"] .nav__link:hover { color: #1A1410; background: rgba(0, 0, 0, 0.04); }
+[data-theme="light"] .nav__link--active { color: #B8920A; background: rgba(184, 146, 10, 0.10); }
+[data-theme="light"] .nav__link-bar { background: #B8920A; }
+
+[data-theme="light"] .nav__icon-btn { color: #6B6459; }
+[data-theme="light"] .nav__icon-btn:hover { background: rgba(184, 146, 10, 0.10); color: #B8920A; }
+[data-theme="light"] .nav__notif-dot { border-color: #F5F0E8; }
+
+[data-theme="light"] .nav__divider { background: rgba(0, 0, 0, 0.10); }
+[data-theme="light"] .nav__greeting { color: #6B6459; }
+[data-theme="light"] .nav__greeting strong { color: #1A1410; }
+
+[data-theme="light"] .nav__role-pill--admin     { background: #EDE6D8; color: #6B6459; }
+[data-theme="light"] .nav__role-pill--recruiter  { background: rgba(204, 0, 0, 0.10); color: #CC0000; }
+[data-theme="light"] .nav__role-pill--jobSeeker  { background: rgba(184, 146, 10, 0.12); color: #B8920A; }
+
+[data-theme="light"] .nav__auth-login { color: #6B6459; }
+[data-theme="light"] .nav__auth-login:hover { background: rgba(0, 0, 0, 0.05); color: #1A1410; }
+[data-theme="light"] .nav__auth-register { background: #CC0000; }
+[data-theme="light"] .nav__auth-register:hover { background: #AA0000; box-shadow: 0 4px 12px rgba(204, 0, 0, 0.30); }
+
+[data-theme="light"] .nav__logout-btn { border-color: rgba(0, 0, 0, 0.12); color: #6B6459; }
+[data-theme="light"] .nav__logout-btn:hover { border-color: #CC0000; color: #CC0000; background: rgba(204, 0, 0, 0.06); }
+
+[data-theme="light"] .nav__dropdown {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.10);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] .nav__dropdown-header { border-bottom-color: rgba(0, 0, 0, 0.08); }
+[data-theme="light"] .nav__dropdown-name  { color: #1A1410; }
+[data-theme="light"] .nav__dropdown-email { color: #6B6459; }
+[data-theme="light"] .nav__dropdown-item  { color: #6B6459; }
+[data-theme="light"] .nav__dropdown-item:hover { background: #F0EBE0; color: #B8920A; }
+[data-theme="light"] .nav__dropdown-item--danger:hover { background: rgba(204, 0, 0, 0.08); color: #CC0000; }
+[data-theme="light"] .nav__dropdown-sep { background: rgba(0, 0, 0, 0.08); }
+
+[data-theme="light"] .nav__hamburger { color: #6B6459; }
+[data-theme="light"] .nav__hamburger:hover { background: rgba(0, 0, 0, 0.05); }
+
+[data-theme="light"] .nav__mobile { background: #FFFFFF; border-top-color: rgba(0, 0, 0, 0.08); }
+[data-theme="light"] .nav__mobile-link { color: #6B6459; }
+[data-theme="light"] .nav__mobile-link:hover,
+[data-theme="light"] .nav__mobile-link--active { background: rgba(184, 146, 10, 0.10); color: #B8920A; }
+[data-theme="light"] .nav__mobile-sep { background: rgba(0, 0, 0, 0.08); }
 
 /* ── Responsive breakpoints ───────────────────────────────────────────────── */
 @media (max-width: 768px) {

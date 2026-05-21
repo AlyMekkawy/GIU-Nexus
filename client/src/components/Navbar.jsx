@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import "./Navbar.css";
 
 // ── Icons ──────────────────────────────────────────────────────────────────
@@ -112,26 +113,23 @@ function toInitials(name = "") {
 }
 
 // ── AnimatedNavLink ────────────────────────────────────────────────────────
+// Color transitions handled by CSS — GSAP only drives the underbar scaleX.
 function AnimatedNavLink({ to, label, active }) {
-  const barRef  = useRef(null);
-  const linkRef = useRef(null);
+  const barRef = useRef(null);
 
   function onEnter() {
     if (active) return;
-    gsap.to(barRef.current,  { scaleX: 1, duration: 0.22, ease: "power2.out" });
-    gsap.to(linkRef.current, { color: "#0066cc", duration: 0.18 });
+    gsap.to(barRef.current, { scaleX: 1, duration: 0.22, ease: "power2.out" });
   }
 
   function onLeave() {
     if (active) return;
-    gsap.to(barRef.current,  { scaleX: 0, duration: 0.18, ease: "power2.in" });
-    gsap.to(linkRef.current, { color: "#444", duration: 0.18 });
+    gsap.to(barRef.current, { scaleX: 0, duration: 0.18, ease: "power2.in" });
   }
 
   return (
     <li className="nav__item">
       <Link
-        ref={linkRef}
         to={to}
         className={`nav__link${active ? " nav__link--active" : ""}`}
         onMouseEnter={onEnter}
@@ -152,12 +150,14 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
-  const navRef      = useRef(null);
-  const logoRef     = useRef(null);
-  const dropWrapRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const mobileRef   = useRef(null);
+  const navRef        = useRef(null);
+  const logoRef       = useRef(null);
+  const dropWrapRef   = useRef(null);
+  const dropdownRef   = useRef(null);
+  const mobileRef     = useRef(null);
+  const themeIconRef  = useRef(null);
 
   const role   = user?.role;
   const links  = getNavLinks(role);
@@ -232,6 +232,7 @@ export default function Navbar() {
     navigate("/");
   }
 
+  // Logo dot — scale only (color handled by CSS)
   function handleLogoHover(entering) {
     const dot = logoRef.current?.querySelector(".nav__logo-dot");
     if (!dot) return;
@@ -240,10 +241,25 @@ export default function Navbar() {
       duration: 0.2,
       ease: entering ? "back.out(2)" : "power2.out",
     });
-    gsap.to(logoRef.current, {
-      color: entering ? "#0057b8" : "#0066cc",
-      duration: 0.18,
-    });
+  }
+
+  // Theme toggle — flip animation on the icon
+  function handleThemeToggle() {
+    const icon = themeIconRef.current;
+    if (icon) {
+      gsap.to(icon, {
+        scale: 0, rotate: 90, duration: 0.15, ease: "power2.in",
+        onComplete: () => {
+          toggleTheme();
+          gsap.fromTo(icon,
+            { scale: 0, rotate: -90 },
+            { scale: 1, rotate: 0, duration: 0.25, ease: "back.out(2)" }
+          );
+        },
+      });
+    } else {
+      toggleTheme();
+    }
   }
 
   return (
@@ -366,6 +382,22 @@ export default function Navbar() {
               <Link to="/register" className="nav__auth-register">Get Started</Link>
             </>
           )}
+
+          {/* ── Theme toggle ── */}
+          <button
+            className="nav__icon-btn nav__theme-btn"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            onClick={handleThemeToggle}
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+          >
+            <span
+              ref={themeIconRef}
+              className="material-symbols-outlined"
+              style={{ fontSize: "18px", fontVariationSettings: "'FILL' 1", display: "block" }}
+            >
+              {theme === "dark" ? "light_mode" : "dark_mode"}
+            </span>
+          </button>
 
           {/* Hamburger */}
           <button

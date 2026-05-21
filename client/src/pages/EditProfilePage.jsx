@@ -4,55 +4,26 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import './EditProfilePage.css';
 
-/* ─── Avatar Placeholder ─────────────────────────────────────── */
-function AvatarPlaceholder({ name, size = 80 }) {
-  const initials = name
-    ? name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
-    : 'U';
-  return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: '50%',
-        background: 'linear-gradient(135deg, var(--color-primary) 0%, #0066cc 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#fff',
-        fontWeight: 700,
-        fontSize: size * 0.32,
-        userSelect: 'none',
-        flexShrink: 0,
-      }}
-    >
-      {initials}
-    </div>
-  );
-}
-
-/* ─── EditProfilePage ─────────────────────────────────────────── */
 const BIO_MAX = 500;
 
 function EditProfilePage() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
-  /* ── Form state ── */
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const [profilePicture, setProfilePicture] = useState(null); // URL string
-  const [previewUrl, setPreviewUrl] = useState(null);          // local blob preview
+  const { user }   = useAuth();
+  const navigate   = useNavigate();
   const fileInputRef = useRef(null);
 
-  /* ── API state ── */
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [name, setName]               = useState('');
+  const [bio, setBio]                 = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [previewUrl, setPreviewUrl]   = useState(null);
 
-  /* ── Load current profile ── */
+  const [loading, setLoading]         = useState(true);
+  const [saving, setSaving]           = useState(false);
+  const [error, setError]             = useState('');
+  const [success, setSuccess]         = useState('');
+
+  /* ── Load profile ── */
   useEffect(() => {
     let mounted = true;
     async function load() {
@@ -66,7 +37,6 @@ function EditProfilePage() {
           setProfilePicture(profileData.profilePicture || null);
         }
       } catch {
-        /* Fallback to auth user data if API fails */
         if (mounted && user) {
           setName(user.name || '');
           setBio('');
@@ -80,22 +50,18 @@ function EditProfilePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* ── Handle photo file pick ── */
   function handleFileChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
+    setPreviewUrl(URL.createObjectURL(file));
   }
 
-  /* ── Handle "Remove" photo ── */
   function handleRemovePhoto() {
     setPreviewUrl(null);
     setProfilePicture(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
-  /* ── Save changes ── */
   async function handleSave(e) {
     e.preventDefault();
     try {
@@ -103,21 +69,13 @@ function EditProfilePage() {
       setError('');
       setSuccess('');
 
-      // Create FormData to handle both JSON fields and file upload
       const formData = new FormData();
       formData.append('name', name.trim());
       formData.append('bio', bio.trim());
-      
-      // Add photo file if one was selected
       const photoFile = fileInputRef.current?.files?.[0];
-      if (photoFile) {
-        formData.append('profilePicture', photoFile);
-      }
+      if (photoFile) formData.append('profilePicture', photoFile);
 
-      // Single PATCH request with both data and file
-      // Don't set Content-Type header - let axios handle it automatically with correct boundary
       await api.patch('/profile', formData);
-
       setSuccess('Profile updated successfully!');
       setTimeout(() => navigate('/profile'), 1200);
     } catch (err) {
@@ -127,170 +85,74 @@ function EditProfilePage() {
     }
   }
 
-  /* ── Bio character count ── */
-  const bioCount = bio.length;
-
-  /* ── Current avatar to display ── */
+  const bioCount  = bio.length;
   const avatarSrc = previewUrl || profilePicture;
+  const initials  = name
+    ? name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+    : 'U';
 
-  /* ────────────────────────────────────── */
+  const profileStrength = bio.trim() ? 70 : 40;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--color-canvas-parchment)' }}>
+    <div className="ep-page">
       <Navbar />
 
-      <main
-        style={{
-          paddingTop: '88px',
-          paddingBottom: '80px',
-          paddingLeft: '24px',
-          paddingRight: '24px',
-          maxWidth: '980px',
-          margin: '0 auto',
-          width: '100%',
-          flex: 1,
-          boxSizing: 'border-box',
-        }}
-      >
-        {/* ── Page Header ── */}
-        <header style={{ marginBottom: '32px' }} className="animate-fade-up">
-          <h1
-            style={{
-              margin: 0,
-              fontSize: '34px',
-              fontWeight: 700,
-              color: 'var(--color-on-surface)',
-              letterSpacing: '-0.015em',
-              lineHeight: 1.15,
-            }}
+      <main className="ep-main">
+        {/* ── Page header ── */}
+        <header className="ep-header">
+          <button
+            className="ep-header__back"
+            type="button"
+            onClick={() => navigate('/profile')}
           >
-            Edit Profile
-          </h1>
-          <p
-            style={{
-              margin: '8px 0 0',
-              fontSize: '16px',
-              color: 'var(--color-ink-muted)',
-              lineHeight: 1.5,
-            }}
-          >
+            <span className="material-symbols-outlined">arrow_back</span>
+            Back to Profile
+          </button>
+          <h1 className="ep-header__title">Edit Profile</h1>
+          <p className="ep-header__subtitle">
             Keep your profile sharp so recruiters and recommendations understand you better.
           </p>
         </header>
 
-        {/* ── Loading skeleton ── */}
+        {/* ── Loading ── */}
         {loading && (
-          <div
-            style={{
-              background: 'var(--color-surface-container-lowest)',
-              borderRadius: '12px',
-              padding: '40px',
-              border: '1px solid rgba(0,0,0,0.07)',
-              boxShadow: '0 4px 24px -1px rgba(0,0,0,0.05)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '300px',
-            }}
-          >
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                border: '3px solid var(--color-outline-variant)',
-                borderTop: '3px solid var(--color-primary)',
-                borderRadius: '50%',
-                animation: 'spin 0.8s linear infinite',
-              }}
-            />
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          <div className="ep-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '260px' }}>
+            <div style={{
+              width: 32, height: 32, borderRadius: '50%',
+              border: '3px solid var(--border-s)', borderTopColor: 'var(--red)',
+              animation: 'ep-spin 0.75s linear infinite',
+            }} />
           </div>
         )}
 
         {!loading && (
-          <form onSubmit={handleSave} noValidate className="animate-fade-up">
+          <form onSubmit={handleSave} noValidate>
 
-            {/* ─── Main Card ─── */}
-            <div
-              style={{
-                background: 'var(--color-surface-container-lowest)',
-                borderRadius: '12px',
-                padding: '32px',
-                border: '1px solid rgba(0,0,0,0.07)',
-                boxShadow: '0 4px 24px -1px rgba(0,0,0,0.05)',
-                marginBottom: '24px',
-              }}
-            >
+            {/* ── Main card ── */}
+            <div className="ep-card">
 
-
-
-              {/* ── Profile Photo ── */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '20px',
-                  marginBottom: '28px',
-                  paddingBottom: '28px',
-                  borderBottom: '1px solid var(--color-hairline)',
-                }}
-              >
-                {/* Avatar */}
-                <div style={{ position: 'relative', flexShrink: 0 }}>
-                  <div
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      overflow: 'hidden',
-                      border: '3px solid var(--color-surface-container)',
-                      boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
-                    }}
-                  >
+              {/* Photo section */}
+              <div className="ep-photo">
+                <div className="ep-photo__avatar-wrap">
+                  <div className="ep-photo__avatar">
                     {avatarSrc ? (
-                      <img
-                        src={avatarSrc}
-                        alt="Profile"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
+                      <img src={avatarSrc} alt="Profile" />
                     ) : (
-                      <AvatarPlaceholder name={name} size={80} />
+                      <div className="ep-photo__initials">{initials}</div>
                     )}
                   </div>
-                  {/* SVG camera overlay — always renders, no icon-font dependency */}
                   <button
                     type="button"
-                    id="trigger-photo-upload-btn"
+                    className="ep-photo__camera"
                     onClick={() => fileInputRef.current?.click()}
                     title="Change photo"
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      right: 0,
-                      background: '#000',
-                      color: '#fff',
-                      border: '2.5px solid #fff',
-                      borderRadius: '50%',
-                      width: '28px',
-                      height: '28px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      padding: 0,
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.22)',
-                      transition: 'transform 0.15s',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.12)')}
-                    onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                    aria-label="Change photo"
                   >
-                    <svg viewBox="0 0 24 24" fill="white" width="14" height="14" aria-hidden="true">
-                      <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
-                      <path d="M9 2 7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 14.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/>
-                    </svg>
+                    <span className="material-symbols-outlined" style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                      photo_camera
+                    </span>
                   </button>
                   <input
-                    id="photo-file-input"
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
@@ -299,54 +161,21 @@ function EditProfilePage() {
                   />
                 </div>
 
-                {/* Photo info + actions */}
-                <div>
-                  <p style={{ margin: 0, fontWeight: 600, fontSize: '15px', color: 'var(--color-on-surface)' }}>
-                    Profile Photo
-                  </p>
-                  <p style={{ margin: '4px 0 10px', fontSize: '13px', color: 'var(--color-ink-muted)', lineHeight: 1.4 }}>
-                    Update your photo to help others recognize you.
-                  </p>
-                  <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                <div className="ep-photo__text">
+                  <h3>Profile Photo</h3>
+                  <p>Update your photo to help others recognize you.</p>
+                  <div className="ep-photo__actions">
                     <button
-                      id="upload-photo-btn"
                       type="button"
+                      className="ep-photo__upload"
                       onClick={() => fileInputRef.current?.click()}
-                      style={{
-                        background: '#000',
-                        border: 'none',
-                        padding: '8px 16px',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        fontWeight: 600,
-                        color: '#fff',
-                        textDecoration: 'none',
-                        fontFamily: 'Inter, sans-serif',
-                        transition: 'opacity 0.15s, background 0.15s',
-                        borderRadius: '6px',
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
-                      onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
                     >
                       Upload New
                     </button>
                     <button
-                      id="remove-photo-btn"
                       type="button"
+                      className="ep-photo__remove"
                       onClick={handleRemovePhoto}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        padding: 0,
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        fontWeight: 600,
-                        color: 'var(--color-error)',
-                        fontFamily: 'Inter, sans-serif',
-                        transition: 'opacity 0.15s',
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
-                      onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
                     >
                       Remove
                     </button>
@@ -354,305 +183,93 @@ function EditProfilePage() {
                 </div>
               </div>
 
-              {/* ── Full Name Field ── */}
-              <div style={{ marginBottom: '24px' }}>
-                <label
-                  htmlFor="full-name-input"
-                  style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    color: 'var(--color-on-surface)',
-                    marginBottom: '8px',
-                  }}
-                >
-                  Full Name
-                </label>
+              {/* Full Name */}
+              <div className="ep-field">
+                <label className="ep-label" htmlFor="ep-name">Full Name</label>
                 <input
-                  id="full-name-input"
+                  id="ep-name"
+                  className="ep-input"
                   type="text"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="Your full name"
                   required
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: '8px',
-                    border: '1.5px solid var(--color-outline-variant)',
-                    background: 'var(--color-surface-container-lowest)',
-                    fontSize: '15px',
-                    color: 'var(--color-on-surface)',
-                    outline: 'none',
-                    fontFamily: 'Inter, sans-serif',
-                    transition: 'border-color 0.2s',
-                    boxSizing: 'border-box',
-                  }}
-                  onFocus={e => (e.currentTarget.style.borderColor = 'var(--color-primary)')}
-                  onBlur={e => (e.currentTarget.style.borderColor = 'var(--color-outline-variant)')}
                 />
               </div>
 
-              {/* ── Bio Field ── */}
-              <div style={{ marginBottom: '28px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <label
-                    htmlFor="bio-textarea"
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      color: 'var(--color-on-surface)',
-                    }}
-                  >
-                    Bio
-                  </label>
-                </div>
+              {/* Bio */}
+              <div className="ep-field">
+                <label className="ep-label" htmlFor="ep-bio">
+                  Bio
+                  <span style={{ float: 'right', fontWeight: 400, color: 'var(--text-dim)', fontSize: '0.78rem' }}>
+                    {bioCount}/{BIO_MAX}
+                  </span>
+                </label>
                 <textarea
-                  id="bio-textarea"
+                  id="ep-bio"
+                  className="ep-textarea"
                   value={bio}
                   onChange={e => setBio(e.target.value)}
                   rows={7}
                   maxLength={BIO_MAX}
                   placeholder="Describe your professional background, skills, and what you're looking for…"
-                  style={{
-                    width: '100%',
-                    padding: '14px 16px',
-                    borderRadius: '8px',
-                    border: '1.5px solid var(--color-outline-variant)',
-                    background: 'var(--color-surface-container-lowest)',
-                    fontSize: '15px',
-                    lineHeight: 1.6,
-                    color: 'var(--color-on-surface)',
-                    resize: 'none',
-                    outline: 'none',
-                    fontFamily: 'Inter, sans-serif',
-                    transition: 'border-color 0.2s',
-                    boxSizing: 'border-box',
-                  }}
-                  onFocus={e => (e.currentTarget.style.borderColor = 'var(--color-primary)')}
-                  onBlur={e => (e.currentTarget.style.borderColor = 'var(--color-outline-variant)')}
                 />
-                <p
-                  style={{
-                    margin: '8px 0 0',
-                    fontSize: '13px',
-                    color: 'var(--color-ink-muted)',
-                    fontStyle: 'italic',
-                  }}
-                >
+                <p className="ep-hint">
                   Recruiters use your bio to understand your unique value proposition beyond just skills.
                 </p>
               </div>
 
-              {/* ── Error / Success banners ── */}
-              {error && (
-                <div
-                  id="edit-profile-error"
-                  style={{
-                    background: 'var(--color-error-container)',
-                    color: 'var(--color-status-rejected-text)',
-                    padding: '12px 16px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    marginBottom: '20px',
-                    border: '1px solid rgba(180,35,24,0.15)',
-                  }}
-                >
-                  {error}
-                </div>
-              )}
+              {/* Banners */}
+              {error   && <div className="ep-error">{error}</div>}
               {success && (
-                <div
-                  id="edit-profile-success"
-                  style={{
-                    background: 'var(--color-cat-frontend-bg)',
-                    color: 'var(--color-cat-frontend-text)',
-                    padding: '12px 16px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    marginBottom: '20px',
-                    border: '1px solid rgba(22,131,58,0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                  }}
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>check_circle</span>
+                <div className="ep-success">
+                  <span className="material-symbols-outlined">check_circle</span>
                   {success}
                 </div>
               )}
 
-              {/* ── Action Buttons ── */}
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+              {/* Actions */}
+              <div className="ep-actions">
                 <button
-                  id="save-profile-btn"
                   type="submit"
+                  className="ep-btn-save"
                   disabled={saving || bioCount > BIO_MAX}
-                  style={{
-                    background: '#000',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '9999px',
-                    padding: '12px 28px',
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    cursor: saving ? 'not-allowed' : 'pointer',
-                    fontFamily: 'Inter, sans-serif',
-                    opacity: saving ? 0.75 : 1,
-                    transition: 'opacity 0.15s, transform 0.1s, box-shadow 0.15s',
-                    boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                  }}
-                  onMouseEnter={e => { if (!saving) { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
-                  onMouseLeave={e => { e.currentTarget.style.opacity = saving ? '0.75' : '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
                 >
-                  {saving && (
-                    <span
-                      style={{
-                        width: '14px',
-                        height: '14px',
-                        border: '2px solid rgba(255,255,255,0.4)',
-                        borderTop: '2px solid #fff',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                        animation: 'spin 0.8s linear infinite',
-                      }}
-                    />
-                  )}
+                  {saving && <span className="ep-btn-spinner" />}
                   {saving ? 'Saving…' : 'Save Changes'}
                 </button>
-
                 <button
-                  id="cancel-edit-btn"
                   type="button"
+                  className="ep-btn-cancel"
                   onClick={() => navigate('/profile')}
                   disabled={saving}
-                  style={{
-                    background: 'var(--color-surface-container-lowest)',
-                    color: 'var(--color-on-surface-variant)',
-                    border: '1.5px solid var(--color-outline-variant)',
-                    borderRadius: '9999px',
-                    padding: '12px 28px',
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    fontFamily: 'Inter, sans-serif',
-                    transition: 'background 0.15s, border-color 0.15s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-surface-container)'; e.currentTarget.style.borderColor = 'var(--color-outline)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-surface-container-lowest)'; e.currentTarget.style.borderColor = 'var(--color-outline-variant)'; }}
                 >
                   Cancel
                 </button>
               </div>
-            </div>{/* /Main Card */}
+            </div>
 
-            {/* ─── Bottom Info Cards ─── */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '16px',
-              }}
-            >
-              {/* Privacy Control Card */}
-              <div
-                style={{
-                  background: 'var(--color-surface-container-lowest)',
-                  borderRadius: '12px',
-                  padding: '24px',
-                  border: '1px solid rgba(0,0,0,0.07)',
-                  boxShadow: '0 2px 12px -1px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <span
-                    className="material-symbols-outlined"
-                    style={{ fontSize: '22px', color: 'var(--color-primary)' }}
-                  >
-                    visibility
-                  </span>
-                  <h2
-                    style={{
-                      margin: 0,
-                      fontSize: '16px',
-                      fontWeight: 700,
-                      color: 'var(--color-on-surface)',
-                    }}
-                  >
-                    Privacy Control
-                  </h2>
+            {/* ── Info cards ── */}
+            <div className="ep-info-grid">
+              <div className="ep-info-card">
+                <div className="ep-info-card__head">
+                  <span className="material-symbols-outlined ep-info-card__icon">visibility</span>
+                  <h2 className="ep-info-card__title">Privacy Control</h2>
                 </div>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: '13px',
-                    color: 'var(--color-ink-muted)',
-                    lineHeight: 1.55,
-                  }}
-                >
+                <p className="ep-info-card__body">
                   Your full profile is only visible to verified GIU Nexus recruiters and partners you have applied to.
                 </p>
               </div>
 
-              {/* Profile Strength Card */}
-              <div
-                style={{
-                  background: 'var(--color-surface-container-lowest)',
-                  borderRadius: '12px',
-                  padding: '24px',
-                  border: '1px solid rgba(0,0,0,0.07)',
-                  boxShadow: '0 2px 12px -1px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <span
-                    className="material-symbols-outlined"
-                    style={{ fontSize: '22px', color: 'var(--color-primary)' }}
-                  >
-                    bar_chart
-                  </span>
-                  <h2
-                    style={{
-                      margin: 0,
-                      fontSize: '16px',
-                      fontWeight: 700,
-                      color: 'var(--color-on-surface)',
-                    }}
-                  >
-                    Profile Strength
-                  </h2>
+              <div className="ep-info-card">
+                <div className="ep-info-card__head">
+                  <span className="material-symbols-outlined ep-info-card__icon">bar_chart</span>
+                  <h2 className="ep-info-card__title">Profile Strength</h2>
                 </div>
-                {/* Progress bar */}
-                <div
-                  style={{
-                    height: '6px',
-                    background: 'var(--color-surface-container-high)',
-                    borderRadius: '9999px',
-                    overflow: 'hidden',
-                    marginBottom: '10px',
-                  }}
-                >
-                  <div
-                    style={{
-                      height: '100%',
-                      width: bio.trim() ? '70%' : '40%',
-                      background: 'var(--color-primary)',
-                      borderRadius: '9999px',
-                      transition: 'width 0.5s ease',
-                    }}
-                  />
+                <div className="ep-progress">
+                  <div className="ep-progress__fill" style={{ width: `${profileStrength}%` }} />
                 </div>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: '13px',
-                    color: 'var(--color-ink-muted)',
-                    lineHeight: 1.55,
-                  }}
-                >
+                <p className="ep-info-card__body">
                   Adding a professional bio increases profile views by 40%.
                 </p>
               </div>

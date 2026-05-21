@@ -1,5 +1,6 @@
 // client/src/App.jsx
-import { Routes, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
+import PageTransition from "./components/PageTransition";
 
 import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -32,138 +33,72 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 
 function App() {
   return (
-      <Routes>
-          {/* Public routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+    /*
+      PageTransition owns the <Routes> internally.
+      It delays swapping the displayed location until the wipe panel
+      is fully covering the screen, then reveals the new page as it exits.
+    */
+    <PageTransition>
 
-        <Route path="/jobs" element={<JobListPage />} />
-        <Route path="/jobs/:id" element={<JobDetailPage />} />
+      {/* ── Public ──────────────────────────────────────────────── */}
+      <Route path="/"                    element={<HomePage />} />
+      <Route path="/login"               element={<LoginPage />} />
+      <Route path="/register"            element={<RegisterPage />} />
+      <Route path="/forgot-password"     element={<ForgotPasswordPage />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
-          {/* Private / Role specific */}
-        <Route path="/profile" element={
-            <RoleRoute allowedRoles={["jobSeeker"]}>
-            <ProfilePage/>
-            </RoleRoute>
-        } />
+      <Route path="/jobs"    element={<JobListPage />} />
+      <Route path="/jobs/:id" element={<JobDetailPage />} />
 
-        <Route path="/profile/edit" element={
-            <PrivateRoute>
-            <EditProfilePage/>
-            </PrivateRoute>}
-        />
+      {/* ── Job seeker ──────────────────────────────────────────── */}
+      <Route path="/profile" element={
+        <RoleRoute allowedRoles={["jobSeeker"]}><ProfilePage /></RoleRoute>
+      } />
+      <Route path="/profile/edit" element={
+        <PrivateRoute><EditProfilePage /></PrivateRoute>
+      } />
+      <Route path="/profile/change-password" element={
+        <PrivateRoute><ChangePasswordPage /></PrivateRoute>
+      } />
+      <Route path="/jobs/recommended" element={
+        <RoleRoute allowedRoles={["jobSeeker"]}><RecommendedJobsPage /></RoleRoute>
+      } />
+      <Route path="/jobs/saved" element={
+        <RoleRoute allowedRoles={["jobSeeker"]}><SavedJobsPage /></RoleRoute>
+      } />
+      <Route path="/applications/my" element={
+        <RoleRoute allowedRoles={["jobSeeker"]}><MyApplicationsPage /></RoleRoute>
+      } />
 
-        <Route
-            path="/profile/change-password"
-            element={
-              <PrivateRoute>
-                <ChangePasswordPage />
-              </PrivateRoute>
-            }
-        />
+      {/* ── Recruiter ───────────────────────────────────────────── */}
+      <Route path="/recruiter/dashboard" element={
+        <RoleRoute allowedRoles={["recruiter"]}><RecruiterDashboard /></RoleRoute>
+      } />
+      <Route path="/recruiter/jobs/create" element={
+        <RoleRoute allowedRoles={["recruiter"]}><CreateJobPage /></RoleRoute>
+      } />
+      <Route path="/recruiter/jobs/:id/edit" element={
+        <RoleRoute allowedRoles={["recruiter"]}><EditJobPage /></RoleRoute>
+      } />
+      <Route path="/recruiter/applicants/:jobId" element={
+        <RoleRoute allowedRoles={["recruiter"]}><ApplicantsPage /></RoleRoute>
+      } />
 
-        <Route
-            path="/jobs/recommended"
-            element={
-              <RoleRoute allowedRoles={["jobSeeker"]}>
-                <RecommendedJobsPage />
-              </RoleRoute>
-            }
-        />
+      {/* ── Admin ───────────────────────────────────────────────── */}
+      <Route path="/admin/dashboard" element={
+        <RoleRoute allowedRoles={["admin"]}><AdminDashboard /></RoleRoute>
+      } />
+      <Route path="/admin/recruiters" element={
+        <RoleRoute allowedRoles={["admin"]}><PendingRecruitersPage /></RoleRoute>
+      } />
+      <Route path="/admin/jobs" element={
+        <RoleRoute allowedRoles={["admin"]}><AdminJobsPage /></RoleRoute>
+      } />
+      <Route path="/admin/users" element={
+        <RoleRoute allowedRoles={["admin"]}><AdminUsersPage /></RoleRoute>
+      } />
 
-        <Route
-            path="/jobs/saved"
-            element={
-              <RoleRoute allowedRoles={["jobSeeker"]}>
-                <SavedJobsPage />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/applications/my"
-            element={
-              <RoleRoute allowedRoles={["jobSeeker"]}>
-                <MyApplicationsPage />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/recruiter/dashboard"
-            element={
-              <RoleRoute allowedRoles={["recruiter"]}>
-                <RecruiterDashboard />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/recruiter/jobs/create"
-            element={
-              <RoleRoute allowedRoles={["recruiter"]}>
-                <CreateJobPage />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/recruiter/jobs/:id/edit"
-            element={
-              <RoleRoute allowedRoles={["recruiter"]}>
-                <EditJobPage />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/recruiter/applicants/:jobId"
-            element={
-              <RoleRoute allowedRoles={["recruiter"]}>
-                <ApplicantsPage />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/admin/dashboard"
-            element={
-              <RoleRoute allowedRoles={["admin"]}>
-                <AdminDashboard />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/admin/recruiters"
-            element={
-              <RoleRoute allowedRoles={["admin"]}>
-                <PendingRecruitersPage />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/admin/jobs"
-            element={
-              <RoleRoute allowedRoles={["admin"]}>
-                <AdminJobsPage />
-              </RoleRoute>
-            }
-        />
-
-        <Route
-            path="/admin/users"
-            element={
-              <RoleRoute allowedRoles={["admin"]}>
-                <AdminUsersPage />
-              </RoleRoute>
-            }
-        />
-      </Routes>
+    </PageTransition>
   );
 }
 
