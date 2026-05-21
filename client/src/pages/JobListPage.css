@@ -1,14 +1,14 @@
-/* ── JobListPage.css ─────────────────────────────────────────────── */
+﻿/* â”€â”€ JobListPage.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-/* ── Page shell ──────────────────────────────────────────────────── */
+/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-page {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
-/* ── Hero / Header ───────────────────────────────────────────────── */
+/* â”€â”€ Hero / Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-hero {
   position: relative;
   padding: 7rem 1.5rem 3rem;
@@ -33,7 +33,7 @@
   left: -60px;
   width: 480px;
   height: 480px;
-  background: radial-gradient(circle, rgba(221,0,0,0.10) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(123,38,49,0.10) 0%, transparent 68%);
   pointer-events: none;
 }
 
@@ -53,15 +53,15 @@
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--red);
-  background: rgba(221,0,0,0.09);
-  border: 1px solid rgba(221,0,0,0.18);
+  background: rgba(123,38,49,0.09);
+  border: 1px solid rgba(123,38,49,0.18);
   border-radius: 999px;
   padding: 0.28rem 0.85rem;
   margin-bottom: 1.1rem;
 }
 
 .jl-hero__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   color: var(--text);
@@ -76,14 +76,14 @@
   margin: 0;
 }
 
-/* ── Search + Chips wrapper ──────────────────────────────────────── */
+/* â”€â”€ Search + Chips wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-search {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem 2.5rem;
 }
 
-/* ── Search form ─────────────────────────────────────────────────── */
+/* â”€â”€ Search form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-search__form {
   display: grid;
   grid-template-columns: 1fr auto auto auto auto;
@@ -133,7 +133,7 @@
 .jl-search__select:focus {
   outline: none;
   border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(221,0,0,0.11);
+  box-shadow: 0 0 0 3px rgba(123,38,49,0.11);
 }
 
 .jl-search__select {
@@ -162,17 +162,17 @@
   cursor: pointer;
   white-space: nowrap;
   transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 16px rgba(221,0,0,0.26);
+  box-shadow: 0 4px 16px rgba(123,38,49,0.26);
 }
 
 .jl-search__btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 22px rgba(221,0,0,0.36);
+  box-shadow: 0 6px 22px rgba(123,38,49,0.36);
 }
 
 .jl-search__btn:active { transform: translateY(0); }
 
-/* ── Category chips ──────────────────────────────────────────────── */
+/* â”€â”€ Category chips â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-chips {
   display: flex;
   gap: 0.6rem;
@@ -210,7 +210,7 @@
 
 .jl-chip.active {
   border-color: var(--red);
-  background: rgba(221,0,0,0.10);
+  background: rgba(123,38,49,0.10);
   color: var(--red);
   font-weight: 600;
 }
@@ -228,14 +228,14 @@
   color: var(--text);
 }
 
-/* ── Content wrapper ─────────────────────────────────────────────── */
+/* â”€â”€ Content wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem 5rem;
 }
 
-/* ── Results bar ─────────────────────────────────────────────────── */
+/* â”€â”€ Results bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-results-bar {
   margin-bottom: 1.5rem;
 }
@@ -246,21 +246,21 @@
   margin: 0;
 }
 
-/* ── Spinner wrap ────────────────────────────────────────────────── */
+/* â”€â”€ Spinner wrap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-spinner-wrap {
   display: flex;
   justify-content: center;
   padding: 5rem 1rem;
 }
 
-/* ── Job grid ────────────────────────────────────────────────────── */
+/* â”€â”€ Job grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
-/* ── Empty state ─────────────────────────────────────────────────── */
+/* â”€â”€ Empty state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-empty {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -276,7 +276,7 @@
 }
 
 .jl-empty__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text);
@@ -302,12 +302,12 @@
   transition: background 0.15s;
 }
 
-.jl-empty__btn:hover { background: #C00000; }
+.jl-empty__btn:hover { background: #63212B; }
 
-/* ── Error state ─────────────────────────────────────────────────── */
+/* â”€â”€ Error state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-error {
-  background: rgba(221,0,0,0.07);
-  border: 1px solid rgba(221,0,0,0.18);
+  background: rgba(123,38,49,0.07);
+  border: 1px solid rgba(123,38,49,0.18);
   border-radius: 20px;
   padding: 2.5rem 2rem;
   text-align: center;
@@ -330,7 +330,7 @@
   font-family: inherit;
 }
 
-/* ── Pagination ──────────────────────────────────────────────────── */
+/* â”€â”€ Pagination â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .jl-pagination {
   display: flex;
   justify-content: center;
@@ -383,7 +383,7 @@
   line-height: 38px;
 }
 
-/* ── Responsive ──────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1024px) {
   .jl-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -406,9 +406,9 @@
   .jl-search__btn        { grid-column: auto; }
 }
 
-/* ── Light mode overrides ────────────────────────────────────────── */
+/* â”€â”€ Light mode overrides â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-theme="light"] .jl-hero::before {
-  background-image: radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(18,16,15,0.055) 1px, transparent 1px);
 }
 
 [data-theme="light"] .jl-hero::after {
@@ -427,3 +427,6 @@
 [data-theme="light"] .jl-search__btn {
   box-shadow: 0 4px 14px rgba(204,0,0,0.22);
 }
+
+
+

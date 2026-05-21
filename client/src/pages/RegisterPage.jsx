@@ -7,6 +7,8 @@ import AuthBrandPanel from "../components/AuthBrandPanel";
 import CursorEffect from "../components/CursorEffect";
 import "../styles/AuthPage.css";
 
+const ENABLE_CURSOR_EFFECT = false;
+
 function RegisterPage() {
   const [fullName,         setFullName]         = useState("");
   const [email,            setEmail]            = useState("");
@@ -101,7 +103,7 @@ function RegisterPage() {
 
   return (
     <div className="auth-page">
-      <CursorEffect />
+      {ENABLE_CURSOR_EFFECT && <CursorEffect />}
 
       {/* ── Left — form ─────────────────────────────────────────── */}
       <div className="auth-page__left" ref={formRef}>

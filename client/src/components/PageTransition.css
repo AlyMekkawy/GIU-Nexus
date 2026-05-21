@@ -1,7 +1,7 @@
-/* ── PageTransition.css ────────────────────────────────────────────
+﻿/* â”€â”€ PageTransition.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Full-screen wipe overlay.
    Starts off-screen left (x: -200%), GSAP controls everything else.
-──────────────────────────────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .page-overlay {
   position: fixed;
@@ -10,12 +10,12 @@
   transform: translateX(-200%); /* GSAP takes over after first render */
   pointer-events: none;
   will-change: transform;
-  background: #141414;
+  background: #171514;
 }
 
-/* ── Branded leading-edge stripe ────────────────────────────────── */
-/* Sits on the RIGHT side of the panel — that's the leading edge    */
-/* as it sweeps left→right across the screen.                       */
+/* â”€â”€ Branded leading-edge stripe â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Sits on the RIGHT side of the panel â€” that's the leading edge    */
+/* as it sweeps leftâ†’right across the screen.                       */
 .page-overlay::before {
   content: "";
   position: absolute;
@@ -23,11 +23,12 @@
   bottom: 0;
   right: 0;
   width: 3px;
-  background: linear-gradient(180deg, #DD0000 0%, #FFCE00 60%, #DD0000 100%);
+  background: linear-gradient(180deg, #7B2631 0%, #B8893B 60%, #7B2631 100%);
   opacity: 0.9;
 }
 
-/* ── Light mode ─────────────────────────────────────────────────── */
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-theme="light"] .page-overlay {
   background: #F5F0E8;
 }
+

@@ -1,78 +1,78 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
-/* ─── Google Fonts ─────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Figtree:wght@400;500;600&display=swap');
+/* â”€â”€â”€ Google Fonts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
-/* ─── Tailwind v4 Theme Tokens ──────────────────────────────────────── */
+/* â”€â”€â”€ Tailwind v4 Theme Tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @theme {
   /* Colors */
-  --color-surface-container-lowest: #1a1a1a;
-  --color-surface-dim: #0d0d0d;
-  --color-error: #DD0000;
-  --color-on-tertiary: #F0EDE6;
-  --color-cat-backend-text: #DD0000;
-  --color-secondary: #9A9690;
-  --color-cat-ai-text: #FFCE00;
-  --color-surface-container-low: #252525;
-  --color-primary-container: #DD0000;
-  --color-secondary-fixed-dim: #303030;
-  --color-primary: #DD0000;
-  --color-surface: #1a1a1a;
-  --color-surface-container: #252525;
-  --color-inverse-on-surface: #0d0d0d;
-  --color-tertiary: #9A9690;
-  --color-status-rejected-text: #DD0000;
+  --color-surface-container-lowest: #1C1A18;
+  --color-surface-dim: #111010;
+  --color-error: #7B2631;
+  --color-on-tertiary: #F2ECE2;
+  --color-cat-backend-text: #7B2631;
+  --color-secondary: #A79F95;
+  --color-cat-ai-text: #B8893B;
+  --color-surface-container-low: #23201E;
+  --color-primary-container: #7B2631;
+  --color-secondary-fixed-dim: #2D2A27;
+  --color-primary: #7B2631;
+  --color-surface: #1C1A18;
+  --color-surface-container: #23201E;
+  --color-inverse-on-surface: #111010;
+  --color-tertiary: #A79F95;
+  --color-status-rejected-text: #7B2631;
   --color-cat-frontend-text: #22c55e;
-  --color-outline-variant: #303030;
-  --color-on-surface-variant: #9A9690;
-  --color-on-tertiary-fixed: #F0EDE6;
-  --color-inverse-primary: #FFCE00;
+  --color-outline-variant: #2D2A27;
+  --color-on-surface-variant: #A79F95;
+  --color-on-tertiary-fixed: #F2ECE2;
+  --color-inverse-primary: #B8893B;
   --color-on-primary: #ffffff;
-  --color-outline: #9A9690;
-  --color-surface-pearl: #1a1a1a;
-  --color-on-secondary: #F0EDE6;
-  --color-inverse-surface: #F0EDE6;
-  --color-on-surface: #F0EDE6;
-  --color-on-primary-fixed: #0d0d0d;
-  --color-on-secondary-fixed-variant: #9A9690;
-  --color-status-pending-bg: rgba(255,206,0,0.12);
-  --color-cat-backend-bg: rgba(221,0,0,0.12);
-  --color-ink-muted: #9A9690;
-  --color-surface-container-high: #303030;
-  --color-cat-ai-bg: rgba(255,206,0,0.12);
-  --color-primary-fixed: rgba(221,0,0,0.15);
+  --color-outline: #A79F95;
+  --color-surface-pearl: #1C1A18;
+  --color-on-secondary: #F2ECE2;
+  --color-inverse-surface: #F2ECE2;
+  --color-on-surface: #F2ECE2;
+  --color-on-primary-fixed: #111010;
+  --color-on-secondary-fixed-variant: #A79F95;
+  --color-status-pending-bg: rgba(184,137,59,0.12);
+  --color-cat-backend-bg: rgba(123,38,49,0.12);
+  --color-ink-muted: #A79F95;
+  --color-surface-container-high: #2D2A27;
+  --color-cat-ai-bg: rgba(184,137,59,0.12);
+  --color-primary-fixed: rgba(123,38,49,0.15);
   --color-cat-frontend-bg: rgba(34,197,94,0.12);
-  --color-surface-bright: #252525;
-  --color-surface-tint: #DD0000;
-  --color-on-tertiary-container: #F0EDE6;
-  --color-on-background: #F0EDE6;
-  --color-on-error-container: #DD0000;
+  --color-surface-bright: #23201E;
+  --color-surface-tint: #7B2631;
+  --color-on-tertiary-container: #F2ECE2;
+  --color-on-background: #F2ECE2;
+  --color-on-error-container: #7B2631;
   --color-hairline: rgba(255,255,255,0.08);
-  --color-canvas-parchment: #0d0d0d;
-  --color-tertiary-fixed: #252525;
-  --color-status-pending-text: #FFCE00;
-  --color-surface-container-highest: #303030;
-  --color-on-primary-container: #F0EDE6;
-  --color-secondary-fixed: #252525;
-  --color-tertiary-fixed-dim: #303030;
-  --color-on-secondary-container: #9A9690;
-  --color-primary-fixed-dim: #FFCE00;
-  --color-background: #0d0d0d;
-  --color-on-secondary-fixed: #F0EDE6;
-  --color-on-primary-fixed-variant: #C00000;
-  --color-secondary-container: #252525;
-  --color-surface-variant: #252525;
-  --color-tertiary-container: #303030;
-  --color-on-tertiary-fixed-variant: #9A9690;
-  --color-error-container: rgba(221,0,0,0.12);
+  --color-canvas-parchment: #111010;
+  --color-tertiary-fixed: #23201E;
+  --color-status-pending-text: #B8893B;
+  --color-surface-container-highest: #2D2A27;
+  --color-on-primary-container: #F2ECE2;
+  --color-secondary-fixed: #23201E;
+  --color-tertiary-fixed-dim: #2D2A27;
+  --color-on-secondary-container: #A79F95;
+  --color-primary-fixed-dim: #B8893B;
+  --color-background: #111010;
+  --color-on-secondary-fixed: #F2ECE2;
+  --color-on-primary-fixed-variant: #63212B;
+  --color-secondary-container: #23201E;
+  --color-surface-variant: #23201E;
+  --color-tertiary-container: #2D2A27;
+  --color-on-tertiary-fixed-variant: #A79F95;
+  --color-error-container: rgba(123,38,49,0.12);
   --color-on-error: #ffffff;
-  --color-status-rejected-bg: rgba(221,0,0,0.12);
+  --color-status-rejected-bg: rgba(123,38,49,0.12);
 
   /* Font family */
-  --font-family-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
-  --font-family-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
-  --font-family-body: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  --font-family-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-family-display: 'IBM Plex Serif', ui-serif, Georgia, serif;
+  --font-family-body: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
 
   /* Border radius */
   --radius-DEFAULT: 0.25rem;
@@ -81,30 +81,30 @@
   --radius-full: 9999px;
 }
 
-/* ─── CSS Theme Tokens ──────────────────────────────────────────────────── */
-/* Dark theme (default) — softened: #141414 bg instead of pitch black        */
+/* â”€â”€â”€ CSS Theme Tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Dark theme (default) â€” softened: #171514 bg instead of pitch black        */
 :root {
-  --bg:          #141414;
+  --bg:          #171514;
   --surface:     #1e1e1e;
   --surface-2:   #282828;
   --surface-3:   #323232;
-  --text:        #F0EDE6;
-  --text-muted:  #9A9690;
-  --text-dim:    #6A6660;
+  --text:        #F2ECE2;
+  --text-muted:  #A79F95;
+  --text-dim:    #7B736A;
   --border:      rgba(255, 255, 255, 0.08);
   --border-s:    rgba(255, 255, 255, 0.13);
-  --red:         #DD0000;
-  --gold:        #FFCE00;
+  --red:         #7B2631;
+  --gold:        #B8893B;
   --nav-bg:      rgba(20, 20, 20, 0.92);
-  --input-bg:    #1a1a1a;
-  --placeholder: #4A4640;
+  --input-bg:    #1C1A18;
+  --placeholder: #5E564D;
   /* SkillChip category tokens */
-  --cat-ai-bg:         rgba(255,206,0,0.12);
-  --cat-ai-text:       #FFCE00;
+  --cat-ai-bg:         rgba(184,137,59,0.12);
+  --cat-ai-text:       #B8893B;
   --cat-frontend-bg:   rgba(34,197,94,0.12);
   --cat-frontend-text: #4ade80;
-  --cat-backend-bg:    rgba(221,0,0,0.12);
-  --cat-backend-text:  #DD0000;
+  --cat-backend-bg:    rgba(123,38,49,0.12);
+  --cat-backend-text:  #7B2631;
 }
 
 /* Light theme overrides */
@@ -116,14 +116,14 @@
   --text:        #1A1410;
   --text-muted:  #6B6459;
   --text-dim:    #9A9089;
-  --border:      rgba(0, 0, 0, 0.09);
-  --border-s:    rgba(0, 0, 0, 0.14);
+  --border:      rgba(18,16,15, 0.09);
+  --border-s:    rgba(18,16,15, 0.14);
   --red:         #CC0000;
   --gold:        #B8920A;
   --nav-bg:      rgba(245, 240, 232, 0.95);
   --input-bg:    #FFFFFF;
   --placeholder: #BFB8AE;
-  /* SkillChip category tokens — light */
+  /* SkillChip category tokens â€” light */
   --cat-ai-bg:         #fff8e0;
   --cat-ai-text:       #8a6400;
   --cat-frontend-bg:   #e8f7ee;
@@ -132,14 +132,14 @@
   --cat-backend-text:  #CC0000;
 }
 
-/* ─── Base Styles ───────────────────────────────────────────────────── */
+/* â”€â”€â”€ Base Styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
   background-color: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -147,9 +147,9 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* ─── Material Symbols ──────────────────────────────────────────────── */
+/* â”€â”€â”€ Material Symbols â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: 'Material Symbols Outlined', sans-serif;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   font-style: normal;
   font-size: 24px;
@@ -166,7 +166,7 @@ body {
   font-feature-settings: 'liga';
 }
 
-/* ─── Shared Utility Classes ────────────────────────────────────────── */
+/* â”€â”€â”€ Shared Utility Classes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .glass-nav {
   background: rgba(13, 13, 13, 0.92);
   backdrop-filter: blur(20px) saturate(180%);
@@ -178,10 +178,10 @@ body {
 }
 
 .card-shadow {
-  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 24px -1px rgba(18,16,15, 0.4);
 }
 
-/* ─── Animations ────────────────────────────────────────────────────── */
+/* â”€â”€â”€ Animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -201,8 +201,10 @@ body {
 .spinner {
   width: 36px;
   height: 36px;
-  border: 3px solid #252525;
-  border-top-color: #DD0000;
+  border: 3px solid #23201E;
+  border-top-color: #7B2631;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
+
+

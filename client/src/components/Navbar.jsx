@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { isRecruiterPending } from "../utils/recruiterAccess";
 import "./Navbar.css";
 
 // ── Icons ──────────────────────────────────────────────────────────────────
@@ -64,8 +65,19 @@ const LogoutIcon = () => (
   </svg>
 );
 
+const LockIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="4" y="10" width="16" height="10" rx="2"/>
+    <path d="M7 10V7a5 5 0 0 1 10 0v3"/>
+  </svg>
+);
+
 // ── Helpers ────────────────────────────────────────────────────────────────
-function getNavLinks(role) {
+function getNavLinks(user) {
+  const role = user?.role;
+  const isPending = isRecruiterPending(user);
+
   switch (role) {
     case "admin":
       return [
@@ -77,7 +89,12 @@ function getNavLinks(role) {
     case "recruiter":
       return [
         { label: "Dashboard",  to: "/recruiter/dashboard"   },
-        { label: "Post a Job", to: "/recruiter/jobs/create" },
+        {
+          label: "Post a Job",
+          to: "/recruiter/jobs/create",
+          disabled: isPending,
+          helperText: isPending ? "Pending Approval" : null,
+        },
       ];
     case "jobSeeker":
       return [
@@ -114,30 +131,54 @@ function toInitials(name = "") {
 
 // ── AnimatedNavLink ────────────────────────────────────────────────────────
 // Color transitions handled by CSS — GSAP only drives the underbar scaleX.
-function AnimatedNavLink({ to, label, active }) {
+function NavLinkItem({ to, label, active, disabled, helperText }) {
   const barRef = useRef(null);
 
   function onEnter() {
-    if (active) return;
+    if (active || disabled) return;
     gsap.to(barRef.current, { scaleX: 1, duration: 0.22, ease: "power2.out" });
   }
 
   function onLeave() {
-    if (active) return;
+    if (active || disabled) return;
     gsap.to(barRef.current, { scaleX: 0, duration: 0.18, ease: "power2.in" });
   }
 
+  const content = (
+    <>
+      <span className="nav__link-content">
+        <span className="nav__link-title-row">
+          {disabled && <LockIcon />}
+          <span>{label}</span>
+        </span>
+        {helperText && <span className="nav__link-subtext">{helperText}</span>}
+      </span>
+      {!disabled && <span ref={barRef} className="nav__link-bar" />}
+    </>
+  );
+
   return (
     <li className="nav__item">
-      <Link
-        to={to}
-        className={`nav__link${active ? " nav__link--active" : ""}`}
-        onMouseEnter={onEnter}
-        onMouseLeave={onLeave}
-      >
-        {label}
-        <span ref={barRef} className="nav__link-bar" />
-      </Link>
+      {disabled ? (
+        <button
+          type="button"
+          className="nav__link nav__link--disabled"
+          disabled
+          aria-disabled="true"
+          title="Account pending approval"
+        >
+          {content}
+        </button>
+      ) : (
+        <Link
+          to={to}
+          className={`nav__link${active ? " nav__link--active" : ""}`}
+          onMouseEnter={onEnter}
+          onMouseLeave={onLeave}
+        >
+          {content}
+        </Link>
+      )}
     </li>
   );
 }
@@ -149,7 +190,7 @@ export default function Navbar() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, login } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const navRef        = useRef(null);
@@ -160,11 +201,32 @@ export default function Navbar() {
   const themeIconRef  = useRef(null);
 
   const role   = user?.role;
-  const links  = getNavLinks(role);
+  const links  = getNavLinks(user);
   const homeTo = getHomeTo(role);
 
   const isActive = (path) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+
+  // Fetch full profile data on mount to ensure profilePicture is synced
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    async function syncProfile() {
+      try {
+        const response = await api.get('/profile');
+        if (response.data?.success && response.data?.user) {
+          // Update auth context with full profile data
+          const updatedUser = { ...user, ...response.data.user };
+          login(localStorage.getItem('token'), updatedUser);
+        }
+      } catch (err) {
+        // Silently fail - navbar still works with cached initials
+        console.debug('Profile sync failed (non-critical)', err);
+      }
+    }
+
+    syncProfile();
+  }, [isAuthenticated]);
 
   // Navbar slides down from y:-62 on mount
   useEffect(() => {
@@ -234,9 +296,9 @@ export default function Navbar() {
 
   // Logo dot — scale only (color handled by CSS)
   function handleLogoHover(entering) {
-    const dot = logoRef.current?.querySelector(".nav__logo-dot");
-    if (!dot) return;
-    gsap.to(dot, {
+    const logo = logoRef.current?.querySelector(".nav__logo-image");
+    if (!logo) return;
+    gsap.to(logo, {
       scale: entering ? 1.4 : 1,
       duration: 0.2,
       ease: entering ? "back.out(2)" : "power2.out",
@@ -273,15 +335,22 @@ export default function Navbar() {
           className="nav__logo"
           onMouseEnter={() => handleLogoHover(true)}
           onMouseLeave={() => handleLogoHover(false)}
+          aria-label="GIU Nexus home"
         >
-          <span className="nav__logo-dot" />
-          GIU Nexus
+          <img className="nav__logo-image" src="/logo.png" alt="GIU Nexus" />
         </Link>
 
         {/* Desktop nav links */}
         <ul className="nav__links">
-          {links.map(({ label, to }) => (
-            <AnimatedNavLink key={to} to={to} label={label} active={isActive(to)} />
+          {links.map(({ label, to, disabled, helperText }) => (
+            <NavLinkItem
+              key={to}
+              to={to}
+              label={label}
+              active={isActive(to)}
+              disabled={disabled}
+              helperText={helperText}
+            />
           ))}
         </ul>
 
@@ -289,12 +358,6 @@ export default function Navbar() {
         <div className="nav__actions">
           {isAuthenticated ? (
             <>
-              {/* Bell */}
-              <button className="nav__icon-btn" aria-label="Notifications">
-                <BellIcon />
-                <span className="nav__notif-dot" aria-hidden="true" />
-              </button>
-
               <div className="nav__divider" />
 
               {/* Greeting + role pill */}
@@ -315,7 +378,15 @@ export default function Navbar() {
                   aria-label="User menu"
                   aria-expanded={dropdownOpen}
                 >
-                  {toInitials(user?.name)}
+                  {user?.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt={user?.name || "User avatar"}
+                      className="nav__avatar-image"
+                    />
+                  ) : (
+                    <span className="nav__avatar-initials">{toInitials(user?.name)}</span>
+                  )}
                 </button>
 
                 {dropdownOpen && (
@@ -414,15 +485,34 @@ export default function Navbar() {
       {/* Mobile menu */}
       <nav ref={mobileRef} className="nav__mobile" style={{ height: 0, opacity: 0 }} aria-label="Mobile navigation">
         <div className="nav__mobile-inner">
-          {links.map(({ label, to }) => (
-            <Link
-              key={to}
-              to={to}
-              className={`nav__mobile-link${isActive(to) ? " nav__mobile-link--active" : ""}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              {label}
-            </Link>
+          {links.map(({ label, to, disabled, helperText }) => (
+            disabled ? (
+              <button
+                key={to}
+                type="button"
+                className="nav__mobile-link nav__mobile-link--disabled"
+                disabled
+                aria-disabled="true"
+                title="Account pending approval"
+              >
+                <span className="nav__mobile-link-content">
+                  <span className="nav__mobile-link-title">
+                    <LockIcon />
+                    <span>{label}</span>
+                  </span>
+                  {helperText && <span className="nav__mobile-link-subtext">{helperText}</span>}
+                </span>
+              </button>
+            ) : (
+              <Link
+                key={to}
+                to={to}
+                className={`nav__mobile-link${isActive(to) ? " nav__mobile-link--active" : ""}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {label}
+              </Link>
+            )
           ))}
 
           {isAuthenticated ? (

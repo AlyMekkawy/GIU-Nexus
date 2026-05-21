@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const JobPost = require('../models/JobPost');
+const Application = require('../models/Application');
 
 const getUserByID = async (req,res,next)=>{
     try {
@@ -16,6 +17,7 @@ const getUserByID = async (req,res,next)=>{
                     email: user.email,
                     role: user.role,
                     status: user.status,
+                    profilePicture: user.profilePicture,
                 },
             })
         }
@@ -36,6 +38,9 @@ const deleteUser = async (req,res,next) =>{
         // Delete all job posts created by this user
         // deleting jobposts of the user
         await JobPost.deleteMany({ createdBy: req.params.id });
+
+        // Delete all applications created by this user
+        await Application.deleteMany({user: req.params.id});
 
         // Now delete the user
         await User.findByIdAndDelete(req.params.id);

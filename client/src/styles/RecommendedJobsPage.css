@@ -1,14 +1,14 @@
-/* ── RecommendedJobsPage.css ─────────────────────────────────────── */
+﻿/* â”€â”€ RecommendedJobsPage.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-/* ── Page shell ──────────────────────────────────────────────────── */
+/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-page {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
-/* ── Hero ────────────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-hero {
   position: relative;
   padding: 7rem 1.5rem 3rem;
@@ -25,7 +25,7 @@
   pointer-events: none;
 }
 
-/* gold glow top-right — AI/recommended motif */
+/* gold glow top-right â€” AI/recommended motif */
 .rj-hero::after {
   content: "";
   position: absolute;
@@ -33,7 +33,7 @@
   right: -60px;
   width: 480px;
   height: 480px;
-  background: radial-gradient(circle, rgba(255,206,0,0.09) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(184,137,59,0.09) 0%, transparent 68%);
   pointer-events: none;
 }
 
@@ -53,15 +53,15 @@
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--gold);
-  background: rgba(255,206,0,0.09);
-  border: 1px solid rgba(255,206,0,0.2);
+  background: rgba(184,137,59,0.09);
+  border: 1px solid rgba(184,137,59,0.2);
   border-radius: 999px;
   padding: 0.28rem 0.85rem;
   margin-bottom: 1.1rem;
 }
 
 .rj-hero__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   color: var(--text);
@@ -77,35 +77,35 @@
   max-width: 560px;
 }
 
-/* ── Content ─────────────────────────────────────────────────────── */
+/* â”€â”€ Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem 5rem;
 }
 
-/* ── Count bar ───────────────────────────────────────────────────── */
+/* â”€â”€ Count bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-count {
   font-size: 0.875rem;
   color: var(--text-dim);
   margin: 0 0 1.75rem;
 }
 
-/* ── Grid ────────────────────────────────────────────────────────── */
+/* â”€â”€ Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
-/* ── Spinner wrap ────────────────────────────────────────────────── */
+/* â”€â”€ Spinner wrap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-spinner-wrap {
   display: flex;
   justify-content: center;
   padding: 5rem 1rem;
 }
 
-/* ── Card ────────────────────────────────────────────────────────── */
+/* â”€â”€ Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -119,11 +119,11 @@
 
 .rj-card:hover {
   border-color: var(--border-s);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 28px rgba(18,16,15,0.35);
   transform: translateY(-2px);
 }
 
-/* ── Card header ─────────────────────────────────────────────────── */
+/* â”€â”€ Card header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-card__head {
   display: flex;
   justify-content: space-between;
@@ -144,7 +144,7 @@
   font-weight: 800;
   color: var(--red);
   flex-shrink: 0;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .rj-card__badges {
@@ -154,7 +154,7 @@
   gap: 0.4rem;
 }
 
-/* ── Category badge ──────────────────────────────────────────────── */
+/* â”€â”€ Category badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-badge {
   display: inline-flex;
   align-items: center;
@@ -169,21 +169,21 @@
 
 .rj-badge--frontend { background: rgba(34,197,94,0.12);  color: #4ade80; }
 .rj-badge--backend  { background: rgba(59,130,246,0.12); color: #60a5fa; }
-.rj-badge--ai       { background: rgba(255,206,0,0.12);  color: #FFCE00; }
+.rj-badge--ai       { background: rgba(184,137,59,0.12);  color: #B8893B; }
 .rj-badge--devops   { background: rgba(20,184,166,0.12); color: #2dd4bf; }
 .rj-badge--data     { background: rgba(249,115,22,0.12); color: #fb923c; }
 .rj-badge--other    { background: var(--surface-2);      color: var(--text-muted); }
 
-/* ── Match score ─────────────────────────────────────────────────── */
+/* â”€â”€ Match score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-badge--score {
-  background: rgba(255,206,0,0.12);
+  background: rgba(184,137,59,0.12);
   color: var(--gold);
-  border: 1px solid rgba(255,206,0,0.2);
+  border: 1px solid rgba(184,137,59,0.2);
 }
 
-/* ── Card body ───────────────────────────────────────────────────── */
+/* â”€â”€ Card body â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-card__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--text);
@@ -198,7 +198,7 @@
   margin: 0 0 1rem;
 }
 
-/* ── Skill tags ──────────────────────────────────────────────────── */
+/* â”€â”€ Skill tags â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-card__skills {
   display: flex;
   flex-wrap: wrap;
@@ -215,7 +215,7 @@
   font-size: 0.75rem;
 }
 
-/* ── Card footer ─────────────────────────────────────────────────── */
+/* â”€â”€ Card footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-card__foot {
   margin-top: auto;
   padding-top: 1rem;
@@ -256,7 +256,7 @@
 
 .rj-card__bookmark .material-symbols-outlined { font-size: 22px; }
 
-/* ── Empty / Error states ────────────────────────────────────────── */
+/* â”€â”€ Empty / Error states â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rj-empty,
 .rj-error {
   margin-top: 1rem;
@@ -288,7 +288,7 @@
 
 .rj-empty__title,
 .rj-error__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text);
@@ -315,16 +315,16 @@
   font-weight: 700;
   text-decoration: none;
   transition: background 0.15s, transform 0.15s;
-  box-shadow: 0 4px 14px rgba(221,0,0,0.26);
+  box-shadow: 0 4px 14px rgba(123,38,49,0.26);
 }
 
 .rj-empty__btn:hover,
 .rj-error__btn:hover {
-  background: #C00000;
+  background: #63212B;
   transform: translateY(-1px);
 }
 
-/* ── Responsive ──────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1024px) { .rj-grid { grid-template-columns: repeat(2, 1fr); } }
 
 @media (max-width: 640px) {
@@ -333,9 +333,9 @@
   .rj-grid    { grid-template-columns: 1fr; }
 }
 
-/* ── Light mode ──────────────────────────────────────────────────── */
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-theme="light"] .rj-hero::before {
-  background-image: radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(18,16,15,0.055) 1px, transparent 1px);
 }
 
 [data-theme="light"] .rj-hero::after {
@@ -350,5 +350,7 @@
 [data-theme="light"] .rj-badge--score    { background: #fffbeb; color: #92680a; border-color: rgba(184,146,10,0.25); }
 
 [data-theme="light"] .rj-card:hover {
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 24px rgba(18,16,15,0.1);
 }
+
+

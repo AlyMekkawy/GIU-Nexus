@@ -1,0 +1,144 @@
+.rac-card {
+    width: min(100%, 680px);
+    margin: 3rem auto 0;
+    padding: 2.25rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background:
+        radial-gradient(circle at top, rgba(184, 137, 59, 0.12), transparent 52%),
+        var(--surface);
+    box-shadow: 0 20px 45px rgba(18, 16, 15, 0.12);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.rac-card__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #B8893B;
+    background: rgba(184, 137, 59, 0.14);
+    border: 1px solid rgba(184, 137, 59, 0.2);
+}
+
+.rac-card__icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.rac-card__eyebrow {
+    margin: 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.rac-card__title {
+    margin: 0;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
+    color: var(--text);
+}
+
+.rac-card__body {
+    margin: 0;
+    max-width: 56ch;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+}
+
+.rac-card__actions {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.rac-card__primary,
+.rac-card__secondary {
+    min-height: 44px;
+    padding: 0.8rem 1.2rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.rac-card__primary {
+    border: none;
+    background: var(--red);
+    color: #fff;
+    cursor: pointer;
+}
+
+.rac-card__primary:hover {
+    transform: translateY(-1px);
+    background: #63212B;
+}
+
+.rac-card__secondary {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rac-card__secondary:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-s);
+    background: var(--surface-2);
+}
+
+[data-theme="light"] .rac-card {
+    box-shadow: 0 20px 45px rgba(18, 16, 15, 0.08);
+    background:
+        radial-gradient(circle at top, rgba(184, 146, 10, 0.12), transparent 52%),
+        var(--surface);
+}
+
+[data-theme="light"] .rac-card__icon {
+    color: #B8920A;
+    background: rgba(184, 146, 10, 0.12);
+    border-color: rgba(184, 146, 10, 0.18);
+}
+
+[data-theme="light"] .rac-card__primary {
+    background: #CC0000;
+}
+
+[data-theme="light"] .rac-card__primary:hover {
+    background: #AA0000;
+}
+
+@media (max-width: 640px) {
+    .rac-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .rac-card__actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .rac-card__primary,
+    .rac-card__secondary {
+        width: 100%;
+    }
+}
+

@@ -1,8 +1,8 @@
-/* ── ProfilePage.css ─────────────────────────────────────────────── */
+﻿/* â”€â”€ ProfilePage.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-.pf-page { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif; }
+.pf-page { min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-family-body), system-ui, sans-serif; }
 
-/* ── Hero / identity section ────────────────────────────────────── */
+/* â”€â”€ Hero / identity section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-hero {
   position: relative; padding: 6rem 1.5rem 0; overflow: hidden;
 }
@@ -14,7 +14,7 @@
 .pf-hero::after {
   content: ""; position: absolute; top: -80px; right: -60px;
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(221,0,0,0.09) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(123,38,49,0.09) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -26,14 +26,14 @@
 .pf-avatar-wrap { position: relative; flex-shrink: 0; }
 .pf-avatar {
   width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
-  border: 3px solid var(--border-s); box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  border: 3px solid var(--border-s); box-shadow: 0 4px 20px rgba(18,16,15,0.35);
 }
 .pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .pf-avatar-initials {
   width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-weight: 800; font-size: 2.5rem; color: #fff; user-select: none;
-  background: linear-gradient(135deg, var(--red) 0%, #8B0000 100%);
+  background: linear-gradient(135deg, var(--red) 0%, #6A2331 100%);
 }
 .pf-avatar-edit {
   position: absolute; bottom: 4px; right: 4px;
@@ -49,7 +49,7 @@
 /* Identity text */
 .pf-identity-text { flex: 1; min-width: 220px; padding-bottom: 4px; }
 .pf-name {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800;
   color: var(--text); margin: 0 0 0.3rem; letter-spacing: -0.02em; line-height: 1.1;
 }
@@ -58,7 +58,7 @@
 .pf-meta-item { display: flex; align-items: center; gap: 4px; }
 .pf-meta-item .material-symbols-outlined { font-size: 15px; }
 
-/* ── Sub-navigation tabs ────────────────────────────────────────── */
+/* â”€â”€ Sub-navigation tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-tabs {
   display: flex; gap: 0;
   border-bottom: 1px solid var(--border);
@@ -76,18 +76,18 @@
 .pf-tab:hover { color: var(--text); }
 .pf-tab.active { font-weight: 700; color: var(--red); border-bottom-color: var(--red); }
 
-/* ── Content area ───────────────────────────────────────────────── */
+/* â”€â”€ Content area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-content { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem 5rem; display: flex; flex-direction: column; gap: 1.5rem; }
 
-/* ── Cards ──────────────────────────────────────────────────────── */
+/* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 20px; padding: 2rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 4px rgba(18,16,15,0.25);
 }
 .pf-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
 .pf-card__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0;
 }
 .pf-card__subtitle { font-size: 0.82rem; color: var(--text-dim); margin: 2px 0 0; }
@@ -98,7 +98,7 @@
 }
 .pf-card__action:hover { color: var(--text); }
 
-/* ── Bio card ───────────────────────────────────────────────────── */
+/* â”€â”€ Bio card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-bio-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; margin: 0; white-space: pre-wrap; }
 .pf-bio-empty { color: var(--text-dim); font-size: 0.9rem; font-style: italic; margin: 0; }
 
@@ -110,11 +110,11 @@
   line-height: 1.7; font-family: inherit; resize: vertical;
   transition: border-color 0.15s, box-shadow 0.15s; box-sizing: border-box;
 }
-.pf-bio-textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(221,0,0,0.1); }
+.pf-bio-textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(123,38,49,0.1); }
 .pf-bio-hint { font-size: 0.8rem; color: var(--text-dim); font-style: italic; margin: 0.5rem 0 1rem; }
 .pf-bio-actions { display: flex; gap: 0.75rem; align-items: center; }
 
-/* ── Skills card ────────────────────────────────────────────────── */
+/* â”€â”€ Skills card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-skills-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
 
 .pf-add-skill-inline { display: flex; align-items: center; gap: 0.5rem; }
@@ -125,20 +125,20 @@
   outline: none; width: 130px;
 }
 
-/* ── Error banner ───────────────────────────────────────────────── */
+/* â”€â”€ Error banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-error-banner {
-  background: rgba(221,0,0,0.1); color: var(--red);
+  background: rgba(123,38,49,0.1); color: var(--red);
   padding: 0.75rem 1rem; border-radius: 10px;
-  font-size: 0.85rem; border: 1px solid rgba(221,0,0,0.18); margin-bottom: 1rem;
+  font-size: 0.85rem; border: 1px solid rgba(123,38,49,0.18); margin-bottom: 1rem;
 }
 
-/* ── Shared button styles ───────────────────────────────────────── */
+/* â”€â”€ Shared button styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pf-btn-primary {
   background: var(--red); color: #fff; border: none; border-radius: 999px;
   padding: 0.6rem 1.4rem; font-size: 0.88rem; font-weight: 700;
   cursor: pointer; font-family: inherit; transition: background 0.15s, transform 0.1s;
 }
-.pf-btn-primary:hover:not(:disabled) { background: #C00000; transform: translateY(-1px); }
+.pf-btn-primary:hover:not(:disabled) { background: #63212B; transform: translateY(-1px); }
 .pf-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .pf-btn-ghost {
@@ -166,7 +166,7 @@
 }
 .pf-btn-icon:hover { color: var(--red); }
 
-/* ── Responsive ─────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 640px) {
   .pf-hero { padding: 5.5rem 1rem 0; }
   .pf-content { padding: 1.5rem 1rem 4rem; }
@@ -175,7 +175,10 @@
   .pf-avatar-initials { font-size: 1.8rem; }
 }
 
-/* ── Light mode ─────────────────────────────────────────────────── */
-[data-theme="light"] .pf-hero::before { background-image: radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px); }
-[data-theme="light"] .pf-card { box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+[data-theme="light"] .pf-hero::before { background-image: radial-gradient(rgba(18,16,15,0.055) 1px, transparent 1px); }
+[data-theme="light"] .pf-card { box-shadow: 0 1px 6px rgba(18,16,15,0.07); }
 [data-theme="light"] .pf-avatar { border-color: var(--border-s); }
+
+
+

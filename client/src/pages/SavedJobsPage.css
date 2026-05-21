@@ -1,14 +1,14 @@
-/* ── SavedJobsPage.css ───────────────────────────────────────────── */
+﻿/* â”€â”€ SavedJobsPage.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-/* ── Page shell ──────────────────────────────────────────────────── */
+/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-page {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
-/* ── Hero ────────────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-hero {
   position: relative;
   padding: 7rem 1.5rem 3rem;
@@ -33,7 +33,7 @@
   left: -60px;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(221,0,0,0.09) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(123,38,49,0.09) 0%, transparent 68%);
   pointer-events: none;
 }
 
@@ -53,15 +53,15 @@
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--red);
-  background: rgba(221,0,0,0.09);
-  border: 1px solid rgba(221,0,0,0.18);
+  background: rgba(123,38,49,0.09);
+  border: 1px solid rgba(123,38,49,0.18);
   border-radius: 999px;
   padding: 0.28rem 0.85rem;
   margin-bottom: 1.1rem;
 }
 
 .sj-hero__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   color: var(--text);
@@ -76,28 +76,28 @@
   margin: 0;
 }
 
-/* ── Content ─────────────────────────────────────────────────────── */
+/* â”€â”€ Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem 5rem;
 }
 
-/* ── Count bar ───────────────────────────────────────────────────── */
+/* â”€â”€ Count bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-count {
   font-size: 0.875rem;
   color: var(--text-dim);
   margin: 0 0 1.5rem;
 }
 
-/* ── Grid ────────────────────────────────────────────────────────── */
+/* â”€â”€ Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
-/* ── Spinner wrap ────────────────────────────────────────────────── */
+/* â”€â”€ Spinner wrap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-spinner-wrap {
   display: flex;
   flex-direction: column;
@@ -108,7 +108,7 @@
   font-size: 0.9rem;
 }
 
-/* ── Error state ─────────────────────────────────────────────────── */
+/* â”€â”€ Error state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-error {
   display: flex;
   flex-direction: column;
@@ -142,7 +142,7 @@
   color: #fff;
 }
 
-/* ── Empty state ─────────────────────────────────────────────────── */
+/* â”€â”€ Empty state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sj-empty {
   background: var(--surface);
   border: 1px dashed var(--border-s);
@@ -173,7 +173,7 @@
 }
 
 .sj-empty__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text);
@@ -198,15 +198,15 @@
   font-weight: 700;
   text-decoration: none;
   transition: background 0.15s, transform 0.15s;
-  box-shadow: 0 4px 14px rgba(221,0,0,0.26);
+  box-shadow: 0 4px 14px rgba(123,38,49,0.26);
 }
 
 .sj-empty__btn:hover {
-  background: #C00000;
+  background: #63212B;
   transform: translateY(-1px);
 }
 
-/* ── Responsive ──────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1024px) { .sj-grid { grid-template-columns: repeat(2, 1fr); } }
 
 @media (max-width: 640px) {
@@ -215,11 +215,13 @@
   .sj-grid    { grid-template-columns: 1fr; }
 }
 
-/* ── Light mode ──────────────────────────────────────────────────── */
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-theme="light"] .sj-hero::before {
-  background-image: radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(18,16,15,0.055) 1px, transparent 1px);
 }
 
 [data-theme="light"] .sj-hero::after {
   background: radial-gradient(circle, rgba(204,0,0,0.07) 0%, transparent 68%);
 }
+
+

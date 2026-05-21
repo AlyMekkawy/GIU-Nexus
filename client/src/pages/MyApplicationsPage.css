@@ -1,8 +1,8 @@
-/* ── MyApplicationsPage.css ──────────────────────────────────────── */
+﻿/* â”€â”€ MyApplicationsPage.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-.ma-page { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif; }
+.ma-page { min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-family-body), system-ui, sans-serif; }
 
-/* ── Hero ──────────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ma-hero {
   position: relative;
   padding: 7rem 1.5rem 3rem;
@@ -19,27 +19,27 @@
   content: "";
   position: absolute; top: -80px; left: -60px;
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(221,0,0,0.09) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(123,38,49,0.09) 0%, transparent 68%);
   pointer-events: none;
 }
 .ma-hero__inner { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
 .ma-hero__label {
   display: inline-flex; align-items: center; gap: 0.4rem;
   font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
-  color: var(--red); background: rgba(221,0,0,0.09); border: 1px solid rgba(221,0,0,0.18);
+  color: var(--red); background: rgba(123,38,49,0.09); border: 1px solid rgba(123,38,49,0.18);
   border-radius: 999px; padding: 0.28rem 0.85rem; margin-bottom: 1.1rem;
 }
 .ma-hero__title {
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: var(--text);
   margin: 0 0 0.5rem; letter-spacing: -0.025em; line-height: 1.1;
 }
 .ma-hero__subtitle { font-size: 1.0625rem; color: var(--text-muted); margin: 0; }
 
-/* ── Content ───────────────────────────────────────────────────── */
+/* â”€â”€ Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ma-content { max-width: 860px; margin: 0 auto; padding: 0 1.5rem 5rem; }
 
-/* ── Filter pills ──────────────────────────────────────────────── */
+/* â”€â”€ Filter pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ma-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem; }
 
 .ma-pill {
@@ -52,25 +52,25 @@
   font-family: inherit;
 }
 .ma-pill:hover { border-color: var(--gold); color: var(--gold); }
-.ma-pill.active { border-color: var(--gold); background: rgba(255,206,0,0.09); color: var(--gold); }
+.ma-pill.active { border-color: var(--gold); background: rgba(184,137,59,0.09); color: var(--gold); }
 
 .ma-pill__count {
   background: var(--surface-2); color: var(--text-dim);
   font-size: 0.72rem; font-weight: 600;
   border-radius: 999px; padding: 0 6px; min-width: 20px; text-align: center;
 }
-.ma-pill.active .ma-pill__count { background: var(--gold); color: #0d0d0d; }
+.ma-pill.active .ma-pill__count { background: var(--gold); color: #111010; }
 
-/* ── App list ──────────────────────────────────────────────────── */
+/* â”€â”€ App list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ma-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.85rem; }
 
-/* ── App card ──────────────────────────────────────────────────── */
+/* â”€â”€ App card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ma-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 16px; padding: 1.25rem 1.5rem;
   cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
 }
-.ma-card:hover { border-color: var(--border-s); box-shadow: 0 6px 22px rgba(0,0,0,0.3); transform: translateY(-1px); }
+.ma-card:hover { border-color: var(--border-s); box-shadow: 0 6px 22px rgba(18,16,15,0.3); transform: translateY(-1px); }
 .ma-card:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 
 .ma-card__main { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
@@ -92,7 +92,7 @@
 }
 .ma-card__status { flex-shrink: 0; padding-top: 2px; }
 
-/* ── States ────────────────────────────────────────────────────── */
+/* â”€â”€ States â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ma-spinner-wrap { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 5rem 1rem; color: var(--text-muted); font-size: 0.9rem; }
 
 .ma-error { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 4rem 0; text-align: center; }
@@ -103,12 +103,12 @@
 .ma-empty { display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; background: var(--surface); border: 1px dashed var(--border-s); border-radius: 20px; padding: 4rem 2rem; }
 .ma-empty__icon-wrap { width: 72px; height: 72px; background: var(--surface-2); border-radius: 999px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
 .ma-empty__icon-wrap .material-symbols-outlined { font-size: 34px; color: var(--text-dim); font-variation-settings: 'FILL' 1; }
-.ma-empty__title { font-family: 'Syne', ui-sans-serif, system-ui, sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 0 0 0.5rem; }
+.ma-empty__title { font-family: var(--font-family-display), ui-serif, Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 0 0 0.5rem; }
 .ma-empty__body { font-size: 0.95rem; color: var(--text-muted); max-width: 360px; margin: 0 0 1.5rem; line-height: 1.6; }
 .ma-empty__btn { display: inline-block; padding: 0.65rem 1.5rem; background: var(--red); color: #fff; border-radius: 999px; font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: background 0.15s; }
-.ma-empty__btn:hover { background: #C00000; }
+.ma-empty__btn:hover { background: #63212B; }
 
-/* ── Responsive ────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 560px) {
   .ma-hero { padding: 6rem 1rem 2rem; }
   .ma-content { padding: 0 1rem 4rem; }
@@ -116,7 +116,9 @@
   .ma-card__status { align-self: flex-start; }
 }
 
-/* ── Light mode ────────────────────────────────────────────────── */
-[data-theme="light"] .ma-hero::before { background-image: radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px); }
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+[data-theme="light"] .ma-hero::before { background-image: radial-gradient(rgba(18,16,15,0.055) 1px, transparent 1px); }
 [data-theme="light"] .ma-hero::after { background: radial-gradient(circle, rgba(204,0,0,0.07) 0%, transparent 68%); }
-[data-theme="light"] .ma-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+[data-theme="light"] .ma-card:hover { box-shadow: 0 6px 18px rgba(18,16,15,0.1); }
+
+

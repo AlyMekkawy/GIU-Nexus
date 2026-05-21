@@ -1,54 +1,54 @@
-/* ===== CSS Variables ===== */
+﻿/* ===== CSS Variables ===== */
 :root {
   /* Colors */
-  --surface-container-lowest: #1a1a1a;
-  --surface-dim: #0d0d0d;
-  --error: #DD0000;
-  --on-tertiary: #F0EDE6;
-  --cat-backend-text: #DD0000;
-  --secondary: #9A9690;
-  --cat-ai-text: #FFCE00;
-  --surface-container-low: #252525;
+  --surface-container-lowest: #1C1A18;
+  --surface-dim: #111010;
+  --error: #7B2631;
+  --on-tertiary: #F2ECE2;
+  --cat-backend-text: #7B2631;
+  --secondary: #A79F95;
+  --cat-ai-text: #B8893B;
+  --surface-container-low: #23201E;
   --surface-glass: rgba(255, 255, 255, 0.04);
-  --primary-container: #DD0000;
-  --primary: #DD0000;
-  --surface: #1a1a1a;
-  --surface-container: #252525;
-  --tertiary: #9A9690;
+  --primary-container: #7B2631;
+  --primary: #7B2631;
+  --surface: #1C1A18;
+  --surface-container: #23201E;
+  --tertiary: #A79F95;
   --cat-frontend-text: #22c55e;
-  --outline-variant: #303030;
-  --on-surface-variant: #9A9690;
-  --inverse-primary: #FFCE00;
+  --outline-variant: #2D2A27;
+  --on-surface-variant: #A79F95;
+  --inverse-primary: #B8893B;
   --on-primary: #ffffff;
-  --outline: #9A9690;
-  --surface-pearl: #1a1a1a;
-  --on-secondary: #F0EDE6;
-  --on-surface: #F0EDE6;
-  --status-pending-bg: rgba(255,206,0,0.12);
-  --cat-backend-bg: rgba(221,0,0,0.12);
-  --ink-muted: #9A9690;
-  --surface-container-high: #303030;
-  --cat-ai-bg: rgba(255,206,0,0.12);
-  --primary-fixed: rgba(221,0,0,0.15);
+  --outline: #A79F95;
+  --surface-pearl: #1C1A18;
+  --on-secondary: #F2ECE2;
+  --on-surface: #F2ECE2;
+  --status-pending-bg: rgba(184,137,59,0.12);
+  --cat-backend-bg: rgba(123,38,49,0.12);
+  --ink-muted: #A79F95;
+  --surface-container-high: #2D2A27;
+  --cat-ai-bg: rgba(184,137,59,0.12);
+  --primary-fixed: rgba(123,38,49,0.15);
   --cat-frontend-bg: rgba(34,197,94,0.12);
-  --surface-bright: #252525;
-  --on-tertiary-container: #F0EDE6;
-  --on-background: #F0EDE6;
+  --surface-bright: #23201E;
+  --on-tertiary-container: #F2ECE2;
+  --on-background: #F2ECE2;
   --hairline: rgba(255,255,255,0.08);
-  --canvas-parchment: #0d0d0d;
-  --status-pending-text: #FFCE00;
-  --surface-container-highest: #303030;
-  --on-primary-container: #F0EDE6;
-  --background: #0d0d0d;
-  --secondary-container: #252525;
+  --canvas-parchment: #111010;
+  --status-pending-text: #B8893B;
+  --surface-container-highest: #2D2A27;
+  --on-primary-container: #F2ECE2;
+  --background: #111010;
+  --secondary-container: #23201E;
   --on-error: #ffffff;
-  --status-rejected-bg: rgba(221,0,0,0.12);
-  --status-rejected-text: #DD0000;
-  --on-primary-fixed: #0d0d0d;
-  --primary-fixed-dim: #FFCE00;
+  --status-rejected-bg: rgba(123,38,49,0.12);
+  --status-rejected-text: #7B2631;
+  --on-primary-fixed: #111010;
+  --primary-fixed-dim: #B8893B;
 
   /* Typography */
-  --font-family: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family: var(--font-family-body), system-ui, sans-serif;
 
   /* Spacing */
   --space-1: 4px;
@@ -91,8 +91,8 @@ body {
 }
 
 ::selection {
-  background-color: rgba(221,0,0,0.3);
-  color: #F0EDE6;
+  background-color: rgba(123,38,49,0.3);
+  color: #F2ECE2;
 }
 
 /* ===== Typography ===== */
@@ -104,7 +104,7 @@ h5,
 h6 {
   font-weight: 700;
   line-height: 1.2;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .text-display {
@@ -645,7 +645,7 @@ h6 {
 }
 
 .bg-white {
-  background-color: #1a1a1a;
+  background-color: #1C1A18;
 }
 
 .bg-white\/65 {
@@ -716,11 +716,11 @@ h6 {
 
 /* ===== Effects ===== */
 .shadow-sm {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 2px 0 rgba(18,16,15, 0.4);
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(18,16,15, 0.5);
 }
 
 .backdrop-blur-xl {
@@ -770,7 +770,7 @@ h6 {
 }
 
 .hover\:bg-white:hover {
-  background-color: #252525;
+  background-color: #23201E;
 }
 
 .hover\:text-primary-container:hover {
@@ -790,7 +790,7 @@ h6 {
 }
 
 .hover\:shadow-lg:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(18,16,15, 0.5);
 }
 
 .hover\:underline:hover {
@@ -826,7 +826,7 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-  color: #6A6660;
+  color: #7B736A;
 }
 
 input:focus,
@@ -967,8 +967,8 @@ nav.navbar > div {
 nav.navbar-logo {
   font-size: 32px;
   font-weight: 800;
-  color: #DD0000;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  color: #7B2631;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 nav.navbar-links {
@@ -978,19 +978,19 @@ nav.navbar-links {
 
 nav.navbar-link {
   font-size: 17px;
-  color: #9A9690;
+  color: #A79F95;
   font-weight: 500;
   transition: color 0.2s ease;
   cursor: pointer;
 }
 
 nav.navbar-link:hover {
-  color: #F0EDE6;
+  color: #F2ECE2;
 }
 
 nav.navbar-link.active {
-  color: #FFCE00;
-  border-bottom: 2px solid #FFCE00;
+  color: #B8893B;
+  border-bottom: 2px solid #B8893B;
   padding-bottom: 0.25rem;
   font-weight: 700;
 }
@@ -1035,7 +1035,7 @@ button,
 }
 
 .btn-primary {
-  background-color: #DD0000;
+  background-color: #7B2631;
   color: white;
   padding: 0.75rem 2rem;
   border-radius: var(--radius-full);
@@ -1063,7 +1063,7 @@ button,
 
 .btn-secondary:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: #FFCE00;
+  color: #B8893B;
 }
 
 /* ===== Card Styles ===== */
@@ -1074,7 +1074,7 @@ button,
 }
 
 .card-recommended {
-  background-color: #1a1a1a;
+  background-color: #1C1A18;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 18px;
   padding: 1.5rem;
@@ -1082,11 +1082,11 @@ button,
 }
 
 .card-recommended:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(18,16,15, 0.5);
 }
 
 .card-trending {
-  background-color: #1a1a1a;
+  background-color: #1C1A18;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 0.75rem;
   padding: 1.25rem;
@@ -1098,7 +1098,7 @@ button,
 }
 
 .card-trending:hover {
-  background-color: #252525;
+  background-color: #23201E;
 }
 
 /* ===== Platform Intelligence Cards ===== */
@@ -1115,7 +1115,7 @@ button,
 }
 
 .intelligence-card-left {
-  background-color: #1a1a1a;
+  background-color: #1C1A18;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 0.75rem;
   padding: 2rem;
@@ -1132,7 +1132,7 @@ button,
 }
 
 .intelligence-card-right {
-  background-color: #DD0000;
+  background-color: #7B2631;
   color: white;
   border-radius: 0.75rem;
   padding: 2rem;
@@ -1153,12 +1153,12 @@ button,
 }
 
 .badge-ai {
-  background-color: rgba(255,206,0,0.12);
-  color: #FFCE00;
+  background-color: rgba(184,137,59,0.12);
+  color: #B8893B;
 }
 
 .badge-match {
-  background-color: #DD0000;
+  background-color: #7B2631;
   color: #fff;
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-full);
@@ -1168,7 +1168,7 @@ button,
 
 /* ===== Footer ===== */
 footer {
-  background-color: #1a1a1a;
+  background-color: #1C1A18;
   border-top: 1px solid rgba(255,255,255,0.08);
   padding-top: 3rem;
   padding-bottom: 5rem;
@@ -1195,7 +1195,7 @@ footer h5 {
   font-size: 17px;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #F0EDE6;
+  color: #F2ECE2;
 }
 
 footer ul {
@@ -1207,13 +1207,13 @@ footer ul {
 
 footer a {
   font-size: 14px;
-  color: #9A9690;
+  color: #A79F95;
   text-decoration: underline;
   transition: color 0.2s ease;
 }
 
 footer a:hover {
-  color: #FFCE00;
+  color: #B8893B;
 }
 
 footer .footer-divider {
@@ -1224,7 +1224,7 @@ footer .footer-divider {
 
 footer .footer-copyright {
   font-size: 14px;
-  color: #9A9690;
+  color: #A79F95;
   text-align: center;
 }
 
@@ -1233,3 +1233,6 @@ footer .footer-copyright {
     text-align: left;
   }
 }
+
+
+

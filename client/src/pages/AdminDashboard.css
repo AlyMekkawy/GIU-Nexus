@@ -1,12 +1,12 @@
-/* ── AdminDashboard.css ──────────────────────────────────────────────────────
+﻿/* â”€â”€ AdminDashboard.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Page-level layout styles ONLY.
    Component styles live in their own CSS files:
-   MetricCard.css · Skeleton.css · Navbar.css · Footer.css
-────────────────────────────────────────────────────────────────────────────── */
+   MetricCard.css Â· Skeleton.css Â· Navbar.css Â· Footer.css
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-/* ── Page shell ───────────────────────────────────────────────────────────── */
+/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-page {
-  font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
   background: var(--bg);
   min-height: 100vh;
   color: var(--text);
@@ -15,7 +15,7 @@
   position: relative;
 }
 
-/* ── Particle canvas overlay ──────────────────────────────────────────────── */
+/* â”€â”€ Particle canvas overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-particle-canvas {
   position: fixed;
   inset: 0;
@@ -30,24 +30,24 @@
   z-index: 1;
 }
 
-/* ── Glass card utility ───────────────────────────────────────────────────── */
+/* â”€â”€ Glass card utility â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .glass-card {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
   border-radius: 18px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 1px 4px rgba(18,16,15, 0.45);
 }
 
 [data-theme="light"] .glass-card {
   background: var(--surface);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 6px rgba(18,16,15, 0.07);
 }
 
-/* ── Main content area ────────────────────────────────────────────────────── */
+/* â”€â”€ Main content area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-main {
   flex: 1;
   max-width: 1200px;
@@ -56,7 +56,7 @@
   padding: 7rem 24px 80px;
 }
 
-/* ── Page heading ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Page heading â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-header {
   margin-bottom: 2.5rem;
 }
@@ -70,8 +70,8 @@
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--red);
-  background: rgba(221, 0, 0, 0.09);
-  border: 1px solid rgba(221, 0, 0, 0.18);
+  background: rgba(123,38,49, 0.09);
+  border: 1px solid rgba(123,38,49, 0.18);
   border-radius: 999px;
   padding: 0.28rem 0.85rem;
   margin-bottom: 1rem;
@@ -86,7 +86,7 @@
   line-height: 1.1;
   color: var(--text);
   margin: 0 0 8px;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .adm-header p {
@@ -95,7 +95,7 @@
   margin: 0;
 }
 
-/* ── Metric cards grid ────────────────────────────────────────────────────── */
+/* â”€â”€ Metric cards grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -103,7 +103,7 @@
   margin-bottom: 2rem;
 }
 
-/* ── Two-column panel ─────────────────────────────────────────────────────── */
+/* â”€â”€ Two-column panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-panel-grid {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -117,7 +117,7 @@
   gap: 32px;
 }
 
-/* ── Section card (charts, progress bars) ─────────────────────────────────── */
+/* â”€â”€ Section card (charts, progress bars) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-section-card { padding: 32px; }
 
 .adm-section-title {
@@ -128,7 +128,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .adm-section-link {
@@ -140,7 +140,7 @@
 }
 .adm-section-link:hover { opacity: 0.75; }
 
-/* ── Bar chart (UsersByRoleChart) ─────────────────────────────────────────── */
+/* â”€â”€ Bar chart (UsersByRoleChart) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-bar-chart {
   display: flex;
   align-items: flex-end;
@@ -188,7 +188,7 @@
   color: var(--text);
 }
 
-/* ── Progress bars (ProgressList) ─────────────────────────────────────────── */
+/* â”€â”€ Progress bars (ProgressList) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-progress-list  { display: flex; flex-direction: column; gap: 20px; }
 
 .adm-progress-header {
@@ -215,7 +215,7 @@
   min-width: 4px;
 }
 
-/* ── Leaderboard ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Leaderboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-leaderboard { padding: 32px; }
 
 .adm-leaderboard-list {
@@ -315,7 +315,7 @@
 }
 .adm-leaderboard-btn:hover { background: var(--surface-3); }
 
-/* ── Error state ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Error state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .adm-error-card {
   padding: 48px 32px;
   text-align: center;
@@ -348,12 +348,12 @@
   cursor: pointer;
   font-family: inherit;
   transition: background 0.15s, transform 0.15s;
-  box-shadow: 0 4px 14px rgba(221, 0, 0, 0.28);
+  box-shadow: 0 4px 14px rgba(123,38,49, 0.28);
 }
-.adm-retry-btn:hover  { background: #C00000; }
+.adm-retry-btn:hover  { background: #63212B; }
 .adm-retry-btn:active { transform: scale(0.97); }
 
-/* ── Responsive ───────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1068px) {
   .adm-panel-grid { grid-template-columns: 1fr; }
 }
@@ -368,3 +368,6 @@
   .adm-section-card,
   .adm-leaderboard { padding: 20px; }
 }
+
+
+

@@ -1,4 +1,4 @@
-/* ── Page shell ─────────────────────────────────────────────────────────── */
+﻿/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-page {
     min-height: 100vh;
     background: var(--bg);
@@ -20,7 +20,7 @@
     flex: 1;
 }
 
-/* ── Header ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-header {
     display: flex;
     align-items: flex-end;
@@ -64,8 +64,8 @@
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--red);
-    background: rgba(221, 0, 0, 0.09);
-    border: 1px solid rgba(221, 0, 0, 0.18);
+    background: rgba(123,38,49, 0.09);
+    border: 1px solid rgba(123,38,49, 0.18);
     border-radius: 999px;
     padding: 0.28rem 0.85rem;
     margin-bottom: 0.6rem;
@@ -78,7 +78,7 @@
     margin: 0 0 0.25rem;
     letter-spacing: -0.02em;
     line-height: 1.1;
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .ap-subtitle {
@@ -112,21 +112,21 @@
 
 .ap-btn-back:hover {
     background: var(--surface-2);
-    border-color: rgba(221, 0, 0, 0.35);
+    border-color: rgba(123,38,49, 0.35);
 }
 
 .ap-btn-back .material-symbols-outlined {
     font-size: 16px;
 }
 
-/* ── Update error ────────────────────────────────────────────────────────── */
+/* â”€â”€ Update error â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-update-error {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(221, 0, 0, 0.08);
+    background: rgba(123,38,49, 0.08);
     color: var(--red);
-    border: 1px solid rgba(221, 0, 0, 0.3);
+    border: 1px solid rgba(123,38,49, 0.3);
     border-radius: 10px;
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
@@ -135,7 +135,7 @@
 
 .ap-update-error .material-symbols-outlined { font-size: 18px; }
 
-/* ── Loading / error states ──────────────────────────────────────────────── */
+/* â”€â”€ Loading / error states â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-state {
     display: flex;
     flex-direction: column;
@@ -165,7 +165,7 @@
 
 @keyframes ap-spin { to { transform: rotate(360deg); } }
 
-/* ── Table ───────────────────────────────────────────────────────────────── */
+/* â”€â”€ Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-table-wrapper {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -215,7 +215,7 @@
 
 .ap-td-right { text-align: right; }
 
-/* ── Applicant cell ──────────────────────────────────────────────────────── */
+/* â”€â”€ Applicant cell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-applicant-cell {
     display: flex;
     align-items: center;
@@ -226,7 +226,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(221, 0, 0, 0.12);
+    background: rgba(123,38,49, 0.12);
     color: var(--red);
     display: flex;
     align-items: center;
@@ -234,7 +234,7 @@
     font-weight: 700;
     font-size: 0.85rem;
     flex-shrink: 0;
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .ap-avatar-lg {
@@ -256,7 +256,7 @@
     margin-top: 2px;
 }
 
-/* ── Skills ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ Skills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-skills-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -269,7 +269,7 @@
     border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 500;
-    background: rgba(255, 206, 0, 0.12);
+    background: rgba(184,137,59, 0.12);
     color: #D4A800;
     white-space: nowrap;
 }
@@ -293,7 +293,7 @@
     color: var(--text-dim);
 }
 
-/* ── Status badge ────────────────────────────────────────────────────────── */
+/* â”€â”€ Status badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-status-badge {
     display: inline-flex;
     align-items: center;
@@ -308,8 +308,8 @@
 .ap-status-badge .material-symbols-outlined { font-size: 13px; }
 
 .ap-status-pending {
-    background: rgba(255, 206, 0, 0.12);
-    color: #FFCE00;
+    background: rgba(184,137,59, 0.12);
+    color: #B8893B;
 }
 
 .ap-status-shortlisted {
@@ -318,7 +318,7 @@
 }
 
 .ap-status-rejected {
-    background: rgba(221, 0, 0, 0.12);
+    background: rgba(123,38,49, 0.12);
     color: var(--red);
 }
 
@@ -326,7 +326,7 @@
 [data-theme="light"] .ap-status-shortlisted { background: #e8f7ee; color: #16833a; }
 [data-theme="light"] .ap-status-rejected   { background: #fce8e8; color: #b30000; }
 
-/* ── Action buttons ──────────────────────────────────────────────────────── */
+/* â”€â”€ Action buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-actions {
     display: flex;
     align-items: center;
@@ -356,7 +356,7 @@
 .ap-action-shortlist:hover:not(:disabled) { background: rgba(34, 197, 94, 0.12); }
 
 .ap-action-reject { color: var(--red); }
-.ap-action-reject:hover:not(:disabled) { background: rgba(221, 0, 0, 0.12); }
+.ap-action-reject:hover:not(:disabled) { background: rgba(123,38,49, 0.12); }
 
 .ap-action-undo { color: var(--text-muted); }
 .ap-action-undo:hover:not(:disabled) { background: var(--surface-2); }
@@ -375,7 +375,7 @@
     50% { opacity: 1; }
 }
 
-/* ── Mobile cards ────────────────────────────────────────────────────────── */
+/* â”€â”€ Mobile cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-mobile-cards {
     display: none;
     flex-direction: column;
@@ -431,10 +431,10 @@
 .ap-mobile-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .ap-mobile-shortlist { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
-.ap-mobile-reject    { background: rgba(221, 0, 0, 0.12); color: var(--red); }
+.ap-mobile-reject    { background: rgba(123,38,49, 0.12); color: var(--red); }
 .ap-mobile-undo      { background: var(--surface-2); color: var(--text-muted); }
 
-/* ── Footer row ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Footer row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-footer-row {
     display: flex;
     justify-content: flex-end;
@@ -448,7 +448,7 @@
     margin: 0;
 }
 
-/* ── Empty state ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Empty state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-empty {
     text-align: center;
     padding: 5rem 2rem;
@@ -465,8 +465,8 @@
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: rgba(221, 0, 0, 0.09);
-    border: 1.5px solid rgba(221, 0, 0, 0.2);
+    background: rgba(123,38,49, 0.09);
+    border: 1.5px solid rgba(123,38,49, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -483,7 +483,7 @@
     font-weight: 700;
     color: var(--text);
     margin: 0;
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .ap-empty__body {
@@ -494,7 +494,7 @@
     line-height: 1.55;
 }
 
-/* ── Shared button ───────────────────────────────────────────────────────── */
+/* â”€â”€ Shared button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ap-btn-primary {
     background: var(--red);
     color: #fff;
@@ -509,11 +509,11 @@
 }
 
 .ap-btn-primary:hover {
-    background: #C00000;
-    box-shadow: 0 4px 12px rgba(221, 0, 0, 0.35);
+    background: #63212B;
+    box-shadow: 0 4px 12px rgba(123,38,49, 0.35);
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 600px) {
     .ap-container { padding-top: 6rem; }
     .ap-title { font-size: 1.5rem; }
@@ -521,3 +521,6 @@
     .ap-header-actions { width: 100%; }
     .ap-btn-back { width: 100%; justify-content: center; }
 }
+
+
+

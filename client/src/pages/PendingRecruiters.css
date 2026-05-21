@@ -1,15 +1,15 @@
-/* ── PendingRecruiters.css ───────────────────────────────────────────────────
+﻿/* â”€â”€ PendingRecruiters.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Prefix: prp-  (pending recruiters page)
-────────────────────────────────────────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-/* ── Page shell ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-page {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
   display: flex;
   flex-direction: column;
-  font-family: 'Figtree', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
 .prp-container {
@@ -23,7 +23,7 @@
   gap: 2rem;
 }
 
-/* ── Page header ────────────────────────────────────────────────────────── */
+/* â”€â”€ Page header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-header {
   display: flex;
   align-items: flex-start;
@@ -41,8 +41,8 @@
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--red);
-  background: rgba(221, 0, 0, 0.09);
-  border: 1px solid rgba(221, 0, 0, 0.18);
+  background: rgba(123,38,49, 0.09);
+  border: 1px solid rgba(123,38,49, 0.18);
   border-radius: 999px;
   padding: 0.28rem 0.85rem;
   margin-bottom: 0.75rem;
@@ -53,7 +53,7 @@
   font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
   color: var(--text);
 }
 
@@ -63,7 +63,7 @@
   font-size: 0.95rem;
 }
 
-/* ── Layout ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-layout {
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -71,7 +71,7 @@
   align-items: start;
 }
 
-/* ── Sidebar ────────────────────────────────────────────────────────────── */
+/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-sidebar {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -116,7 +116,7 @@
 .prp-nav-icon { display: flex; align-items: center; opacity: 0.75; flex-shrink: 0; }
 .prp-nav.active .prp-nav-icon { opacity: 1; }
 
-/* ── Content area ───────────────────────────────────────────────────────── */
+/* â”€â”€ Content area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-content { display: flex; flex-direction: column; gap: 16px; }
 
 .prp-content-header {
@@ -135,13 +135,13 @@
 .prp-content-icon { display: flex; align-items: center; color: var(--text-muted); }
 
 .prp-count {
-  background: rgba(221, 0, 0, 0.1);
+  background: rgba(123,38,49, 0.1);
   color: var(--red);
   font-size: 0.78rem; font-weight: 700;
   padding: 2px 8px; border-radius: 999px;
 }
 
-/* ── Search ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Search â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-search { position: relative; display: flex; align-items: center; }
 
 .prp-search-icon {
@@ -162,10 +162,10 @@
   transition: border-color 0.15s;
   font-family: inherit;
 }
-.prp-search input:focus        { border-color: var(--red); box-shadow: 0 0 0 3px rgba(221,0,0,0.1); }
+.prp-search input:focus        { border-color: var(--red); box-shadow: 0 0 0 3px rgba(123,38,49,0.1); }
 .prp-search input::placeholder { color: var(--text-dim); }
 
-/* ── Cards ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-cards { display: flex; flex-direction: column; gap: 12px; }
 
 .prp-card {
@@ -180,18 +180,18 @@
   transition: box-shadow 0.15s, border-color 0.15s;
 }
 .prp-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 16px rgba(18,16,15,0.3);
   border-color: var(--border-s);
 }
 
 .prp-avatar {
   width: 52px; height: 52px;
   border-radius: 14px;
-  background: rgba(221, 0, 0, 0.1);
+  background: rgba(123,38,49, 0.1);
   display: grid; place-items: center;
   font-size: 1rem; font-weight: 700;
   color: var(--red); flex-shrink: 0;
-  border: 1px solid rgba(221, 0, 0, 0.2);
+  border: 1px solid rgba(123,38,49, 0.2);
 }
 
 .prp-name-row {
@@ -214,17 +214,17 @@
 }
 .prp-meta-item svg { flex-shrink: 0; }
 
-/* ── Status badges ──────────────────────────────────────────────────────── */
+/* â”€â”€ Status badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-badge {
   display: inline-flex; align-items: center;
   padding: 2px 10px; border-radius: 999px;
   font-size: 0.75rem; font-weight: 600;
 }
 .prp-badge-success { background: rgba(34,197,94,0.12); color: #22c55e; }
-.prp-badge-danger  { background: rgba(221,0,0,0.1);    color: var(--red); }
-.prp-badge-warning { background: rgba(255,206,0,0.12); color: var(--gold); }
+.prp-badge-danger  { background: rgba(123,38,49,0.1);    color: var(--red); }
+.prp-badge-warning { background: rgba(184,137,59,0.12); color: var(--gold); }
 
-/* ── Action buttons ─────────────────────────────────────────────────────── */
+/* â”€â”€ Action buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
 .prp-btn {
@@ -248,7 +248,7 @@
 }
 .prp-btn-outline-danger:hover:not(:disabled) {
   border-color: var(--red);
-  background: rgba(221,0,0,0.1);
+  background: rgba(123,38,49,0.1);
 }
 
 /* Approve (solid red) */
@@ -256,11 +256,11 @@
   background: var(--red);
   border-color: var(--red);
   color: #fff;
-  box-shadow: 0 4px 14px rgba(221,0,0,0.28);
+  box-shadow: 0 4px 14px rgba(123,38,49,0.28);
 }
 .prp-btn-solid-primary:hover:not(:disabled) {
-  background: #C00000; border-color: #C00000;
-  box-shadow: 0 6px 18px rgba(221,0,0,0.36);
+  background: #63212B; border-color: #63212B;
+  box-shadow: 0 6px 18px rgba(123,38,49,0.36);
 }
 
 /* Reinstate (outline red) */
@@ -270,10 +270,10 @@
   color: var(--red);
 }
 .prp-btn-outline-primary:hover:not(:disabled) {
-  background: rgba(221,0,0,0.1);
+  background: rgba(123,38,49,0.1);
 }
 
-/* ── Empty / loading / error states ─────────────────────────────────────── */
+/* â”€â”€ Empty / loading / error states â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prp-state {
   background: var(--surface);
   border: 1px dashed var(--border);
@@ -286,8 +286,8 @@
 }
 
 .prp-state-error {
-  border-color: rgba(221,0,0,0.25);
-  background: rgba(221,0,0,0.07);
+  border-color: rgba(123,38,49,0.25);
+  background: rgba(123,38,49,0.07);
   color: var(--red);
 }
 
@@ -300,7 +300,7 @@
 }
 @keyframes prp-spin { to { transform: rotate(360deg); } }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 900px) {
   .prp-layout { grid-template-columns: 1fr; }
   .prp-sidebar { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; }
@@ -321,6 +321,8 @@
   .prp-meta { flex-direction: column; gap: 4px; }
 }
 
-/* ── Light mode ─────────────────────────────────────────────────────────── */
-[data-theme="light"] .prp-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
-[data-theme="light"] .prp-sidebar    { box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+[data-theme="light"] .prp-card:hover { box-shadow: 0 4px 16px rgba(18,16,15,0.1); }
+[data-theme="light"] .prp-sidebar    { box-shadow: 0 1px 4px rgba(18,16,15,0.06); }
+
+

@@ -7,6 +7,8 @@ import AuthBrandPanel from "../components/AuthBrandPanel";
 import CursorEffect from "../components/CursorEffect";
 import "../styles/AuthPage.css";
 
+const ENABLE_CURSOR_EFFECT = false;
+
 function LoginPage() {
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +56,10 @@ function LoginPage() {
       const res   = await api.post("/auth/login", { email, password });
       const token = res?.data?.token;
       const user  = res?.data?.user;
-      if (!token || !user) throw new Error(res?.data?.message ?? "Unexpected server response");
+      if (!token || !user) {
+        setError(res?.data?.message ?? "Unexpected server response");
+        return;
+      }
       login(token, user);
       const dest = { admin: "/admin/dashboard", recruiter: "/recruiter/dashboard", jobSeeker: "/" }[user.role] ?? "/";
       navigate(dest, { replace: true });
@@ -67,7 +72,7 @@ function LoginPage() {
 
   return (
     <div className="auth-page">
-      <CursorEffect />
+      {ENABLE_CURSOR_EFFECT && <CursorEffect />}
 
       {/* ── Left — form ─────────────────────────────────────────── */}
       <div className="auth-page__left" ref={formRef}>
