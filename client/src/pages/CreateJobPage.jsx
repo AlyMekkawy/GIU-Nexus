@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import RecruiterAccessNotice from "../components/RecruiterAccessNotice";
+import { isRecruiterPending } from "../utils/recruiterAccess";
+import { useAuth } from "../context/AuthContext";
 import "./CreateJobPage.css";
 
 /* ── Category badge styles reused from RecruiterDashboard ─────────────── */
@@ -60,11 +63,13 @@ const SparkleIcon = () => (
 /* ── Component ─────────────────────────────────────────────────────────── */
 function CreateJobPage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [form, setForm] = useState(EMPTY_FORM);
     const [createdJob, setCreatedJob] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [fieldErrors, setFieldErrors] = useState({});
+    const isPendingRecruiter = isRecruiterPending(user);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -114,6 +119,18 @@ function CreateJobPage() {
         } finally {
             setLoading(false);
         }
+    }
+
+    if (isPendingRecruiter) {
+        return (
+            <div className="cj-page">
+                <Navbar />
+                <main className="cj-container">
+                    <RecruiterAccessNotice onReturnToDashboard={() => navigate("/recruiter/dashboard")} />
+                </main>
+                <Footer />
+            </div>
+        );
     }
 
     /* ── Success screen ─────────────────────────────────────────────────── */

@@ -13,6 +13,8 @@ import RecommendedJobCard from "../components/RecommendedJobCard";
 import CursorEffect from "../components/CursorEffect";
 import "./HomePage.css";
 
+const ENABLE_CURSOR_EFFECT = false;
+
 function HomePage() {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
@@ -84,7 +86,7 @@ function HomePage() {
 
   return (
     <div className="hp-page">
-      <CursorEffect />
+      {ENABLE_CURSOR_EFFECT && <CursorEffect />}
       <Navbar />
 
       <main className="hp-main">

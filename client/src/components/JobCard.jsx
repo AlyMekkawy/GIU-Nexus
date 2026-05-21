@@ -1,99 +1,146 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import SaveJobButton from "./SaveJobButton";
-import ApplicationStatusBadge from "./ApplicationStatusBadge";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "./JobCard.css";
 
-// Category → colour map (spec §5)
-const CATEGORY_COLORS = {
-  Frontend:         { bg: "#d1fae5", text: "#065f46", border: "#6ee7b7" },
-  Backend:          { bg: "#dbeafe", text: "#1e40af", border: "#93c5fd" },
-  "AI/ML":          { bg: "#ede9fe", text: "#5b21b6", border: "#c4b5fd" },
-  DevOps:           { bg: "#ccfbf1", text: "#0f766e", border: "#5eead4" },
-  "Data Engineering":{ bg: "#ffedd5", text: "#9a3412", border: "#fdba74" },
-  Other:            { bg: "#f3f4f6", text: "#374151", border: "#d1d5db" },
+const BADGE_CLASS = {
+  Frontend:          "frontend",
+  Backend:           "backend",
+  "AI/ML":           "ai",
+  DevOps:            "devops",
+  "Data Engineering": "data",
+  Other:             "other",
 };
 
-export default function JobCard({ job, initialSaved = false, onUnsave }) {
+function getRequirementList(requirements) {
+  if (Array.isArray(requirements)) return requirements;
+  if (typeof requirements === "string") {
+    return requirements.split(",").map((req) => req.trim()).filter(Boolean);
+  }
+  return [];
+}
+
+export default function JobCard({
+  job,
+  initialSaved = false,
+  onUnsave,
+  isSaved,
+  onSaveChange,
+}) {
   const navigate = useNavigate();
   const [saved, setSaved] = useState(initialSaved);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setSaved(initialSaved);
+  }, [initialSaved]);
 
   const {
     _id,
     title,
     company,
     location,
-    type,
-    status,
     category,
-    applicationStatus, // present if the seeker has applied
+    requirements,
+    score,
   } = job;
 
-  const catStyle = CATEGORY_COLORS[category] ?? CATEGORY_COLORS.Other;
+  const jobId = _id ?? job.id;
+  const effectiveSaved = typeof isSaved === "boolean" ? isSaved : saved;
+  const badgeClass = `rj-badge rj-badge--${BADGE_CLASS[category] || "other"}`;
+  const requirementList = getRequirementList(requirements);
 
-  const handleSaveToggle = (newSaved) => {
-    setSaved(newSaved);
-    // If we're on the SavedJobsPage, propagate the unsave upward
-    if (!newSaved && onUnsave) {
-      onUnsave(_id);
+  const handleToggleSave = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!jobId) return;
+
+    setSaving(true);
+    try {
+      const res = await api.post(`/jobs/${jobId}/save`);
+      if (res.data?.success) {
+        const nextSaved = !!res.data.saved;
+        if (typeof isSaved === "boolean") {
+          onSaveChange?.(nextSaved);
+        } else {
+          setSaved(nextSaved);
+        }
+        if (!nextSaved && onUnsave) {
+          onUnsave(jobId);
+        }
+      }
+    } catch (err) {
+      console.error("Error saving job:", err);
+    } finally {
+      setSaving(false);
     }
   };
 
+  const handleOpenJob = () => navigate(`/jobs/${jobId}`);
+
   return (
-    <div
+    <article
       className="job-card"
-      onClick={() => navigate(`/jobs/${_id}`)}
+      onClick={handleOpenJob}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && navigate(`/jobs/${_id}`)}
+      onKeyDown={(e) => e.key === "Enter" && handleOpenJob()}
     >
-      {/* Category badge */}
-      <span
-        className="job-card__category"
-        style={{
-          background: catStyle.bg,
-          color: catStyle.text,
-          border: `1px solid ${catStyle.border}`,
-        }}
-      >
-        {category ?? "Other"}
-      </span>
+      <div className="job-card__head">
+        <div className="job-card__avatar">{company?.charAt(0).toUpperCase() || "J"}</div>
 
-      <h3 className="job-card__title">{title}</h3>
-      <p className="job-card__company">{company}</p>
+        <div className="job-card__badges">
+          <span className={badgeClass}>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
+              auto_awesome
+            </span>
+            {category || "Other"}
+          </span>
 
-      <div className="job-card__meta">
-        {location && (
-          <span className="job-card__meta-item">
-            <span aria-hidden>📍</span> {location}
-          </span>
-        )}
-        {type && (
-          <span className="job-card__meta-item">
-            <span aria-hidden>💼</span> {type}
-          </span>
-        )}
+          {score !== undefined && score > 0 && (
+            <span className="rj-badge rj-badge--score">
+              ✦ {Math.round(score * 100)}% Match
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* Application status (if the seeker already applied) */}
-      {applicationStatus && (
-        <div className="job-card__app-status">
-          <ApplicationStatusBadge status={applicationStatus} />
+      <h3 className="job-card__title">{title}</h3>
+      <p className="job-card__company">
+        {company}{location ? ` · ${location}` : ""}
+      </p>
+
+      {requirementList.length > 0 && (
+        <div className="job-card__skills">
+          {requirementList.slice(0, 3).map((skill, idx) => (
+            <span key={`${skill}-${idx}`} className="job-card__skill">
+              {skill}
+            </span>
+          ))}
         </div>
       )}
 
-      {/* Save / Unsave — stop propagation so clicking the icon doesn't open the detail page */}
-      <div
-        className="job-card__save"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <SaveJobButton
-          jobId={_id}
-          jobStatus={status}
-          initialSaved={saved}
-          onToggle={handleSaveToggle}
-        />
+      <div className="job-card__foot">
+        <Link to={`/jobs/${jobId}`} className="job-card__link" onClick={(e) => e.stopPropagation()}>
+          View Details →
+        </Link>
+
+        <button
+          className={`job-card__bookmark${effectiveSaved ? " saved" : ""}`}
+          onClick={handleToggleSave}
+          title={effectiveSaved ? "Unsave job" : "Save job"}
+          type="button"
+          disabled={saving}
+        >
+          <span
+            className="material-symbols-outlined"
+            style={{ fontVariationSettings: effectiveSaved ? "'FILL' 1" : "'FILL' 0" }}
+          >
+            bookmark
+          </span>
+        </button>
       </div>
-    </div>
+    </article>
   );
 }

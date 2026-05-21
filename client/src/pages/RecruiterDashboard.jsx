@@ -5,6 +5,7 @@ import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { getRecruiterJobCtaState } from "../utils/recruiterAccess";
 import "./RecruiterDashboard.css";
 
 /* ── Inline SVG icons ─────────────────────────────────────────────────── */
@@ -80,7 +81,8 @@ function RecruiterDashboard() {
     const [error, setError] = useState("");
 
     const heroRef = useRef(null);
-    const isPending = user?.status === "pending";
+    const jobCtaState = getRecruiterJobCtaState(user);
+    const isPending = jobCtaState.isPending;
     const pageSize = 5;
 
     useEffect(() => {
@@ -188,10 +190,11 @@ function RecruiterDashboard() {
                         className="rd-primary-button"
                         type="button"
                         onClick={() => navigate("/recruiter/jobs/create")}
-                        disabled={isPending}
+                        disabled={!jobCtaState.isAvailable}
+                        title={jobCtaState.isPending ? "Account pending approval" : "Create a job post"}
                     >
-                        <span className="rd-button-icon">+</span>
-                        Create Job Post
+                        <span className="rd-button-icon">{jobCtaState.isPending ? "🔒" : "+"}</span>
+                        {jobCtaState.isPending ? "Pending Approval" : "Create Job Post"}
                     </button>
                 </section>
 

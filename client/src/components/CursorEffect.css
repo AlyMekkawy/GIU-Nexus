@@ -1,7 +1,7 @@
-/* ── CursorEffect.css ───────────────────────────────────────────
-   Three cursor layers — all fixed, pointer-events: none
+﻿/* â”€â”€ CursorEffect.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   Three cursor layers â€” all fixed, pointer-events: none
    Initial opacity: 0 (fades in on first mouse move via GSAP)
-──────────────────────────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 /* Hide default OS cursor on pages that mount CursorEffect */
 .cursor-hidden,
@@ -9,7 +9,7 @@
   cursor: none !important;
 }
 
-/* ── Spotlight glow ──────────────────────────────────────────── */
+/* â”€â”€ Spotlight glow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cur-glow {
   position: fixed;
   top: 0;
@@ -19,8 +19,8 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(221, 0, 0, 0.07) 0%,
-    rgba(255, 206, 0, 0.03) 40%,
+    rgba(123,38,49, 0.07) 0%,
+    rgba(184,137,59, 0.03) 40%,
     transparent 68%
   );
   transform: translate(-50%, -50%);
@@ -31,7 +31,7 @@
   mix-blend-mode: screen;
 }
 
-/* ── Gold ring ───────────────────────────────────────────────── */
+/* â”€â”€ Gold ring â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cur-ring {
   position: fixed;
   top: 0;
@@ -39,7 +39,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 206, 0, 0.55);
+  border: 1.5px solid rgba(184,137,59, 0.55);
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 9998;
@@ -47,7 +47,7 @@
   will-change: transform, width, height;
 }
 
-/* ── Red dot ─────────────────────────────────────────────────── */
+/* â”€â”€ Red dot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cur-dot {
   position: fixed;
   top: 0;
@@ -55,11 +55,12 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #DD0000;
+  background: #7B2631;
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 9999;
   opacity: 0;
   will-change: transform;
-  box-shadow: 0 0 6px rgba(221, 0, 0, 0.6);
+  box-shadow: 0 0 6px rgba(123,38,49, 0.6);
 }
+

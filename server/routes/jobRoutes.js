@@ -561,7 +561,7 @@ router.delete("/:id", protect, authorize("recruiter", "admin"), deleteJob);
  *                   example: "Not authorised to edit this job"
  */
 // Recruiter only: PATCH /api/v1/jobs/:id
-router.patch("/:id", protect, updateJob);
+router.patch("/:id", protect, authorize("recruiter", "admin"), updateJob);
 
 /**
  * @openapi

@@ -1,21 +1,21 @@
-/* components/Navbar.css */
+﻿/* components/Navbar.css */
 
-/* ── Shell ────────────────────────────────────────────────────────────────── */
+/* â”€â”€ Shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /*
   IMPORTANT: .nav must NOT create a CSS stacking context so that the dropdown
   (position:absolute; z-index:9999) floats correctly over all page content.
-  The blur is applied via ::before pseudo-element — NOT directly on .nav.
+  The blur is applied via ::before pseudo-element â€” NOT directly on .nav.
 */
 .nav {
   position: sticky;
   top: 0;
   z-index: 200;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  font-family: 'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
   overflow: visible;
 }
 
-/* Blur via pseudo-element — keeps .nav out of stacking context */
+/* Blur via pseudo-element â€” keeps .nav out of stacking context */
 .nav::before {
   content: "";
   position: absolute;
@@ -36,32 +36,27 @@
   align-items: center;
 }
 
-/* ── Logo ─────────────────────────────────────────────────────────────────── */
+/* â”€â”€ Logo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav__logo {
   text-decoration: none;
-  font-size: 1.3rem;
-  font-weight: 800;
-  letter-spacing: -0.4px;
-  color: #DD0000;
   flex-shrink: 0;
   margin-right: 36px;
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  gap: 0;
 }
 
-.nav__logo-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #FFCE00;
-  display: inline-block;
-  flex-shrink: 0;
+.nav__logo-image {
+  display: block;
+  width: auto;
+  height: 34px;
+  max-width: 160px;
+  object-fit: contain;
   transform-origin: center;
+  transition: transform 0.18s ease;
 }
 
-/* ── Desktop nav links ────────────────────────────────────────────────────── */
+/* â”€â”€ Desktop nav links â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav__links {
   display: flex;
   align-items: center;
@@ -81,26 +76,65 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-decoration: none;
   padding: 7px 13px;
   border-radius: 9px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #9A9690;
+  font: inherit;
+  color: #A79F95;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   white-space: nowrap;
   transition: color 0.18s;
 }
 
 .nav__link:hover {
-  color: #F0EDE6;
+  color: #F2ECE2;
 }
 
 .nav__link--active {
-  color: #FFCE00;
-  background: rgba(255, 206, 0, 0.08);
+  color: #B8893B;
+  background: rgba(184,137,59, 0.08);
 }
 
-/* Sliding underline bar — GSAP animates scaleX 0→1 on hover, 1→0 on leave */
+.nav__link--disabled {
+  cursor: not-allowed;
+  color: #8F8577;
+  background: rgba(255, 255, 255, 0.03);
+  opacity: 0.92;
+}
+
+.nav__link--disabled:hover {
+  color: #8F8577;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.nav__link-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  line-height: 1.1;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nav__link-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav__link-subtext {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #B8893B;
+}
+
+/* Sliding underline bar â€” GSAP animates scaleX 0â†’1 on hover, 1â†’0 on leave */
 .nav__link-bar {
   position: absolute;
   bottom: 5px;
@@ -108,7 +142,7 @@
   right: 13px;
   height: 2px;
   border-radius: 2px;
-  background: #FFCE00;
+  background: #B8893B;
   transform: scaleX(0);
   transform-origin: left center;
 }
@@ -117,7 +151,7 @@
   transform: scaleX(1);
 }
 
-/* ── Right-side actions ───────────────────────────────────────────────────── */
+/* â”€â”€ Right-side actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav__actions {
   display: flex;
   align-items: center;
@@ -138,13 +172,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9A9690;
+  color: #A79F95;
   transition: background 0.15s, color 0.15s;
 }
 
 .nav__icon-btn:hover {
-  background: rgba(255, 206, 0, 0.08);
-  color: #FFCE00;
+  background: rgba(184,137,59, 0.08);
+  color: #B8893B;
 }
 
 .nav__notif-dot {
@@ -154,8 +188,8 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #DD0000;
-  border: 2px solid #0d0d0d;
+  background: #7B2631;
+  border: 2px solid #111010;
 }
 
 /* Vertical divider */
@@ -169,12 +203,12 @@
 /* Greeting */
 .nav__greeting {
   font-size: 0.875rem;
-  color: #9A9690;
+  color: #A79F95;
   white-space: nowrap;
 }
 
 .nav__greeting strong {
-  color: #F0EDE6;
+  color: #F2ECE2;
   font-weight: 600;
 }
 
@@ -192,16 +226,16 @@
   flex-shrink: 0;
 }
 
-.nav__role-pill--admin     { background: #252525;                     color: #9A9690; }
-.nav__role-pill--recruiter { background: rgba(221, 0, 0, 0.15);       color: #DD0000; }
-.nav__role-pill--jobSeeker { background: rgba(255, 206, 0, 0.12);     color: #FFCE00; }
+.nav__role-pill--admin     { background: #23201E;                     color: #A79F95; }
+.nav__role-pill--recruiter { background: rgba(123,38,49, 0.15);       color: #7B2631; }
+.nav__role-pill--jobSeeker { background: rgba(184,137,59, 0.12);     color: #B8893B; }
 
 /* Avatar button (initials) */
 .nav__avatar-btn {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #DD0000;
+  background: #7B2631;
   color: #fff;
   font-size: 0.78rem;
   font-weight: 700;
@@ -217,8 +251,23 @@
 
 .nav__avatar-btn:hover,
 .nav__avatar-btn--open {
-  background: #C00000;
-  box-shadow: 0 0 0 3px rgba(221, 0, 0, 0.25);
+  background: #63212B;
+  box-shadow: 0 0 0 3px rgba(123,38,49, 0.25);
+}
+
+.nav__avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.nav__avatar-initials {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff;
 }
 
 /* Auth links (unauthenticated) */
@@ -228,14 +277,14 @@
   border-radius: 9px;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #9A9690;
+  color: #A79F95;
   transition: background 0.15s, color 0.15s;
   white-space: nowrap;
 }
 
 .nav__auth-login:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: #F0EDE6;
+  color: #F2ECE2;
 }
 
 .nav__auth-register {
@@ -245,15 +294,15 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: #fff;
-  background: #DD0000;
+  background: #7B2631;
   white-space: nowrap;
   transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
 .nav__auth-register:hover {
-  background: #C00000;
+  background: #63212B;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(221, 0, 0, 0.35);
+  box-shadow: 0 4px 12px rgba(123,38,49, 0.35);
 }
 
 /* Mobile logout button */
@@ -265,19 +314,19 @@
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #9A9690;
+  color: #A79F95;
   font-family: inherit;
   white-space: nowrap;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .nav__logout-btn:hover {
-  border-color: #DD0000;
-  color: #DD0000;
-  background: rgba(221, 0, 0, 0.08);
+  border-color: #7B2631;
+  color: #7B2631;
+  background: rgba(123,38,49, 0.08);
 }
 
-/* ── Dropdown ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Dropdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav__dropdown-wrap {
   position: relative;
 }
@@ -286,10 +335,10 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: #1a1a1a;
+  background: #1C1A18;
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 14px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 40px rgba(18,16,15, 0.6);
   min-width: 215px;
   padding: 8px;
   z-index: 9999;
@@ -305,12 +354,12 @@
 .nav__dropdown-name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #F0EDE6;
+  color: #F2ECE2;
 }
 
 .nav__dropdown-email {
   font-size: 0.75rem;
-  color: #9A9690;
+  color: #A79F95;
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -326,7 +375,7 @@
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #9A9690;
+  color: #A79F95;
   cursor: pointer;
   border: none;
   background: transparent;
@@ -337,13 +386,13 @@
 }
 
 .nav__dropdown-item:hover {
-  background: #252525;
-  color: #FFCE00;
+  background: #23201E;
+  color: #B8893B;
 }
 
 .nav__dropdown-item--danger:hover {
-  background: rgba(221, 0, 0, 0.12);
-  color: #DD0000;
+  background: rgba(123,38,49, 0.12);
+  color: #7B2631;
 }
 
 .nav__dropdown-sep {
@@ -352,7 +401,7 @@
   margin: 4px 0;
 }
 
-/* ── Hamburger ────────────────────────────────────────────────────────────── */
+/* â”€â”€ Hamburger â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav__hamburger {
   display: none;
   width: 36px;
@@ -363,7 +412,7 @@
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  color: #9A9690;
+  color: #A79F95;
   transition: background 0.15s;
 }
 
@@ -371,10 +420,10 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* ── Mobile menu ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Mobile menu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav__mobile {
   border-top: 1px solid rgba(255, 255, 255, 0.07);
-  background: #1a1a1a;
+  background: #1C1A18;
   overflow: hidden;
 }
 
@@ -390,16 +439,47 @@
   text-decoration: none;
   padding: 10px 14px;
   border-radius: 9px;
+  font: inherit;
+  color: #A79F95;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.13s, color 0.13s;
+}
+
+.nav__mobile-link--disabled {
+  cursor: not-allowed;
+  color: #8F8577;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.nav__mobile-link-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #9A9690;
-  transition: background 0.13s, color 0.13s;
+}
+
+.nav__mobile-link-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav__mobile-link-subtext {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #B8893B;
 }
 
 .nav__mobile-link:hover,
 .nav__mobile-link--active {
-  background: rgba(255, 206, 0, 0.08);
-  color: #FFCE00;
+  background: rgba(184,137,59, 0.08);
+  color: #B8893B;
 }
 
 .nav__mobile-sep {
@@ -408,9 +488,9 @@
   margin: 6px 0;
 }
 
-/* ── Light theme overrides ────────────────────────────────────────────────── */
+/* â”€â”€ Light theme overrides â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-theme="light"] .nav {
-  border-bottom-color: rgba(0, 0, 0, 0.08);
+  border-bottom-color: rgba(18,16,15, 0.08);
 }
 
 /* Explicit bg override so navbar turns cream in light mode regardless of var() */
@@ -418,18 +498,21 @@
   background: rgba(245, 240, 232, 0.96);
 }
 
-[data-theme="light"] .nav__logo { color: #CC0000; }
+[data-theme="light"] .nav__logo { color: inherit; }
 
 [data-theme="light"] .nav__link { color: #6B6459; }
-[data-theme="light"] .nav__link:hover { color: #1A1410; background: rgba(0, 0, 0, 0.04); }
+[data-theme="light"] .nav__link:hover { color: #1A1410; background: rgba(18,16,15, 0.04); }
 [data-theme="light"] .nav__link--active { color: #B8920A; background: rgba(184, 146, 10, 0.10); }
 [data-theme="light"] .nav__link-bar { background: #B8920A; }
+[data-theme="light"] .nav__link--disabled { color: #8A8276; background: rgba(18,16,15, 0.03); }
+[data-theme="light"] .nav__link--disabled:hover { color: #8A8276; background: rgba(18,16,15, 0.03); }
+[data-theme="light"] .nav__link-subtext { color: #B8920A; }
 
 [data-theme="light"] .nav__icon-btn { color: #6B6459; }
 [data-theme="light"] .nav__icon-btn:hover { background: rgba(184, 146, 10, 0.10); color: #B8920A; }
 [data-theme="light"] .nav__notif-dot { border-color: #F5F0E8; }
 
-[data-theme="light"] .nav__divider { background: rgba(0, 0, 0, 0.10); }
+[data-theme="light"] .nav__divider { background: rgba(18,16,15, 0.10); }
 [data-theme="light"] .nav__greeting { color: #6B6459; }
 [data-theme="light"] .nav__greeting strong { color: #1A1410; }
 
@@ -438,36 +521,38 @@
 [data-theme="light"] .nav__role-pill--jobSeeker  { background: rgba(184, 146, 10, 0.12); color: #B8920A; }
 
 [data-theme="light"] .nav__auth-login { color: #6B6459; }
-[data-theme="light"] .nav__auth-login:hover { background: rgba(0, 0, 0, 0.05); color: #1A1410; }
+[data-theme="light"] .nav__auth-login:hover { background: rgba(18,16,15, 0.05); color: #1A1410; }
 [data-theme="light"] .nav__auth-register { background: #CC0000; }
 [data-theme="light"] .nav__auth-register:hover { background: #AA0000; box-shadow: 0 4px 12px rgba(204, 0, 0, 0.30); }
 
-[data-theme="light"] .nav__logout-btn { border-color: rgba(0, 0, 0, 0.12); color: #6B6459; }
+[data-theme="light"] .nav__logout-btn { border-color: rgba(18,16,15, 0.12); color: #6B6459; }
 [data-theme="light"] .nav__logout-btn:hover { border-color: #CC0000; color: #CC0000; background: rgba(204, 0, 0, 0.06); }
 
 [data-theme="light"] .nav__dropdown {
   background: #FFFFFF;
-  border-color: rgba(0, 0, 0, 0.10);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+  border-color: rgba(18,16,15, 0.10);
+  box-shadow: 0 8px 40px rgba(18,16,15, 0.12);
 }
-[data-theme="light"] .nav__dropdown-header { border-bottom-color: rgba(0, 0, 0, 0.08); }
+[data-theme="light"] .nav__dropdown-header { border-bottom-color: rgba(18,16,15, 0.08); }
 [data-theme="light"] .nav__dropdown-name  { color: #1A1410; }
 [data-theme="light"] .nav__dropdown-email { color: #6B6459; }
 [data-theme="light"] .nav__dropdown-item  { color: #6B6459; }
 [data-theme="light"] .nav__dropdown-item:hover { background: #F0EBE0; color: #B8920A; }
 [data-theme="light"] .nav__dropdown-item--danger:hover { background: rgba(204, 0, 0, 0.08); color: #CC0000; }
-[data-theme="light"] .nav__dropdown-sep { background: rgba(0, 0, 0, 0.08); }
+[data-theme="light"] .nav__dropdown-sep { background: rgba(18,16,15, 0.08); }
 
 [data-theme="light"] .nav__hamburger { color: #6B6459; }
-[data-theme="light"] .nav__hamburger:hover { background: rgba(0, 0, 0, 0.05); }
+[data-theme="light"] .nav__hamburger:hover { background: rgba(18,16,15, 0.05); }
 
-[data-theme="light"] .nav__mobile { background: #FFFFFF; border-top-color: rgba(0, 0, 0, 0.08); }
+[data-theme="light"] .nav__mobile { background: #FFFFFF; border-top-color: rgba(18,16,15, 0.08); }
 [data-theme="light"] .nav__mobile-link { color: #6B6459; }
 [data-theme="light"] .nav__mobile-link:hover,
 [data-theme="light"] .nav__mobile-link--active { background: rgba(184, 146, 10, 0.10); color: #B8920A; }
-[data-theme="light"] .nav__mobile-sep { background: rgba(0, 0, 0, 0.08); }
+[data-theme="light"] .nav__mobile-link--disabled { color: #8A8276; background: rgba(18,16,15, 0.03); }
+[data-theme="light"] .nav__mobile-link-subtext { color: #B8920A; }
+[data-theme="light"] .nav__mobile-sep { background: rgba(18,16,15, 0.08); }
 
-/* ── Responsive breakpoints ───────────────────────────────────────────────── */
+/* â”€â”€ Responsive breakpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 768px) {
   .nav__links    { display: none; }
   .nav__greeting { display: none; }
@@ -480,3 +565,6 @@
   .nav__inner { padding: 0 16px; }
   .nav__logo  { margin-right: 0; }
 }
+
+
+

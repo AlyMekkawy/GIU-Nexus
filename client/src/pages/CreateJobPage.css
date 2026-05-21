@@ -1,4 +1,4 @@
-/* ── Page shell ─────────────────────────────────────────────────────────── */
+﻿/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-page {
     min-height: 100vh;
     background: var(--bg);
@@ -20,7 +20,7 @@
     flex: 1;
 }
 
-/* ── Header ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-header {
     display: flex;
     align-items: flex-start;
@@ -43,8 +43,8 @@
     margin-top: 4px;
 }
 .cj-back-btn:hover {
-    background: rgba(221, 0, 0, 0.12);
-    border-color: rgba(221, 0, 0, 0.4);
+    background: rgba(123,38,49, 0.12);
+    border-color: rgba(123,38,49, 0.4);
 }
 .cj-back-btn svg {
     width: 16px;
@@ -60,7 +60,7 @@
     margin: 0 0 6px;
     letter-spacing: -0.4px;
     color: var(--text);
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .cj-sub {
@@ -91,10 +91,10 @@
     stroke-linejoin: round;
 }
 
-/* ── Error banner ────────────────────────────────────────────────────────── */
+/* â”€â”€ Error banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-error-banner {
-    background: rgba(221, 0, 0, 0.08);
-    border: 1px solid rgba(221, 0, 0, 0.3);
+    background: rgba(123,38,49, 0.08);
+    border: 1px solid rgba(123,38,49, 0.3);
     color: var(--red);
     border-radius: 10px;
     padding: 12px 16px;
@@ -102,7 +102,7 @@
     font-weight: 500;
 }
 
-/* ── Form card ───────────────────────────────────────────────────────────── */
+/* â”€â”€ Form card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-form {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -160,8 +160,8 @@
 .cj-input:focus,
 .cj-select:focus,
 .cj-textarea:focus {
-    border-color: rgba(221, 0, 0, 0.5);
-    box-shadow: 0 0 0 3px rgba(221, 0, 0, 0.1);
+    border-color: rgba(123,38,49, 0.5);
+    box-shadow: 0 0 0 3px rgba(123,38,49, 0.1);
     background: var(--surface);
 }
 
@@ -171,8 +171,8 @@
 }
 
 .cj-input-error {
-    border-color: rgba(221, 0, 0, 0.5) !important;
-    background: rgba(221, 0, 0, 0.06) !important;
+    border-color: rgba(123,38,49, 0.5) !important;
+    background: rgba(123,38,49, 0.06) !important;
 }
 
 .cj-textarea {
@@ -196,16 +196,16 @@
     font-weight: 500;
 }
 
-/* ── AI notice ───────────────────────────────────────────────────────────── */
+/* â”€â”€ AI notice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-ai-notice {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    background: rgba(255, 206, 0, 0.08);
-    border: 1px solid rgba(255, 206, 0, 0.3);
+    background: rgba(184,137,59, 0.08);
+    border: 1px solid rgba(184,137,59, 0.3);
     border-radius: 10px;
     padding: 12px 16px;
-    color: #FFCE00;
+    color: #B8893B;
     font-size: 0.875rem;
 }
 
@@ -216,7 +216,7 @@
 .cj-ai-icon svg {
     width: 16px;
     height: 16px;
-    stroke: #FFCE00;
+    stroke: #B8893B;
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -225,7 +225,7 @@
 
 .cj-ai-notice p { margin: 0; line-height: 1.5; }
 
-/* ── Form footer buttons ─────────────────────────────────────────────────── */
+/* â”€â”€ Form footer buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-form-footer {
     display: flex;
     justify-content: flex-end;
@@ -249,8 +249,8 @@
     transition: background 0.15s, box-shadow 0.15s;
 }
 .cj-btn-primary:hover:not(:disabled) {
-    background: #C00000;
-    box-shadow: 0 4px 12px rgba(221, 0, 0, 0.35);
+    background: #63212B;
+    box-shadow: 0 4px 12px rgba(123,38,49, 0.35);
 }
 .cj-btn-primary:disabled {
     opacity: 0.5;
@@ -289,7 +289,7 @@
 
 @keyframes cj-spin { to { transform: rotate(360deg); } }
 
-/* ── Success screen ─────────────────────────────────────────────────────── */
+/* â”€â”€ Success screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-success-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -328,7 +328,7 @@
     letter-spacing: -0.3px;
     margin: 0;
     color: var(--text);
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .cj-success-sub {
@@ -376,13 +376,13 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    color: #FFCE00;
+    color: #B8893B;
     font-weight: 600;
 }
 .cj-ai-label svg {
     width: 13px;
     height: 13px;
-    stroke: #FFCE00;
+    stroke: #B8893B;
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -397,7 +397,7 @@
     justify-content: center;
 }
 
-/* ── Category badges ────────────────────────────────────────────────────── */
+/* â”€â”€ Category badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cj-badge {
     display: inline-flex;
     align-items: center;
@@ -417,18 +417,18 @@
 }
 .cj-badge-frontend  { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
 .cj-badge-frontend::before  { background: #22c55e; }
-.cj-badge-backend   { background: rgba(221, 0, 0, 0.12); color: var(--red); }
+.cj-badge-backend   { background: rgba(123,38,49, 0.12); color: var(--red); }
 .cj-badge-backend::before   { background: var(--red); }
-.cj-badge-ai        { background: rgba(255, 206, 0, 0.12); color: #FFCE00; }
-.cj-badge-ai::before        { background: #FFCE00; }
+.cj-badge-ai        { background: rgba(184,137,59, 0.12); color: #B8893B; }
+.cj-badge-ai::before        { background: #B8893B; }
 .cj-badge-devops    { background: rgba(0, 188, 212, 0.12); color: #00bcd4; }
 .cj-badge-devops::before    { background: #00bcd4; }
-.cj-badge-data      { background: rgba(255, 206, 0, 0.12); color: #D4A800; }
+.cj-badge-data      { background: rgba(184,137,59, 0.12); color: #D4A800; }
 .cj-badge-data::before      { background: #D4A800; }
 .cj-badge-other     { background: var(--surface-2); color: var(--text-muted); }
 .cj-badge-other::before     { background: var(--text-muted); }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 640px) {
     .cj-container { padding-top: 6rem; }
     .cj-row { grid-template-columns: 1fr; }
@@ -438,3 +438,6 @@
     .cj-form-footer { flex-direction: column-reverse; }
     .cj-btn-primary, .cj-btn-secondary { width: 100%; justify-content: center; }
 }
+
+
+

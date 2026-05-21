@@ -1,12 +1,12 @@
-/* MetricCard.css — Summary metric card used in Admin & Recruiter dashboards */
+﻿/* MetricCard.css â€” Summary metric card used in Admin & Recruiter dashboards */
 
 .metric-card {
-  background: #1a1a1a;
+  background: #1C1A18;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 4px rgba(18,16,15, 0.4);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: rgba(221, 0, 0, 0.12);
+  background: rgba(123,38,49, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,25 +28,25 @@
 .metric-card-icon svg {
   width: 20px;
   height: 20px;
-  fill: #DD0000;
+  fill: #7B2631;
 }
 
 .metric-card-label {
   font-size: 13px;
-  color: #9A9690;
+  color: #A79F95;
   font-weight: 500;
   letter-spacing: 0.01em;
-  font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
 .metric-card-value {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #F0EDE6;
+  color: #F2ECE2;
   line-height: 1;
   margin: 8px 0 6px;
-  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .metric-card-trend {
@@ -55,10 +55,13 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
 .metric-card-trend.up    { color: #22c55e; }
-.metric-card-trend.warn  { color: #FFCE00; }
-.metric-card-trend.down  { color: #DD0000; }
-.metric-card-trend.muted { color: #9A9690; }
+.metric-card-trend.warn  { color: #B8893B; }
+.metric-card-trend.down  { color: #7B2631; }
+.metric-card-trend.muted { color: #A79F95; }
+
+
+

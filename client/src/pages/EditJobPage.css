@@ -1,4 +1,4 @@
-/* ── Page shell ─────────────────────────────────────────────────────────── */
+﻿/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-page {
     min-height: 100vh;
     background: var(--bg);
@@ -20,7 +20,7 @@
     flex: 1;
 }
 
-/* ── Loading / Fetch-error states ────────────────────────────────────────── */
+/* â”€â”€ Loading / Fetch-error states â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-loading,
 .ej-fetch-error {
     display: flex;
@@ -46,7 +46,7 @@
 
 @keyframes ej-spin { to { transform: rotate(360deg); } }
 
-/* ── Header ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-header {
     display: flex;
     align-items: flex-start;
@@ -69,8 +69,8 @@
     margin-top: 4px;
 }
 .ej-back-btn:hover {
-    background: rgba(221, 0, 0, 0.12);
-    border-color: rgba(221, 0, 0, 0.4);
+    background: rgba(123,38,49, 0.12);
+    border-color: rgba(123,38,49, 0.4);
 }
 .ej-back-btn svg {
     width: 16px;
@@ -86,7 +86,7 @@
     margin: 0 0 6px;
     letter-spacing: -0.4px;
     color: var(--text);
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .ej-sub {
@@ -120,7 +120,7 @@
     stroke-linejoin: round;
 }
 
-/* ── Banners ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Banners â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-success-banner {
     display: flex;
     align-items: center;
@@ -152,8 +152,8 @@
 }
 
 .ej-error-banner {
-    background: rgba(221, 0, 0, 0.08);
-    border: 1px solid rgba(221, 0, 0, 0.3);
+    background: rgba(123,38,49, 0.08);
+    border: 1px solid rgba(123,38,49, 0.3);
     color: var(--red);
     border-radius: 10px;
     padding: 12px 16px;
@@ -161,7 +161,7 @@
     font-weight: 500;
 }
 
-/* ── Form card ───────────────────────────────────────────────────────────── */
+/* â”€â”€ Form card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-form {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -219,14 +219,14 @@
 .ej-input:focus,
 .ej-select:focus,
 .ej-textarea:focus {
-    border-color: rgba(221, 0, 0, 0.5);
-    box-shadow: 0 0 0 3px rgba(221, 0, 0, 0.1);
+    border-color: rgba(123,38,49, 0.5);
+    box-shadow: 0 0 0 3px rgba(123,38,49, 0.1);
     background: var(--surface);
 }
 
 .ej-input-error {
-    border-color: rgba(221, 0, 0, 0.5) !important;
-    background: rgba(221, 0, 0, 0.06) !important;
+    border-color: rgba(123,38,49, 0.5) !important;
+    background: rgba(123,38,49, 0.06) !important;
 }
 
 .ej-textarea {
@@ -250,19 +250,19 @@
     font-weight: 500;
 }
 
-/* ── Description changed notice ─────────────────────────────────────────── */
+/* â”€â”€ Description changed notice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-desc-notice {
     display: inline-flex;
     align-items: center;
     gap: 5px;
     font-size: 0.8rem;
-    color: #FFCE00;
+    color: #B8893B;
     font-weight: 500;
 }
 .ej-desc-notice svg {
     width: 13px;
     height: 13px;
-    stroke: #FFCE00;
+    stroke: #B8893B;
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -270,7 +270,7 @@
     flex-shrink: 0;
 }
 
-/* ── Status toggle ───────────────────────────────────────────────────────── */
+/* â”€â”€ Status toggle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-status-group {
     display: flex;
     gap: 10px;
@@ -298,7 +298,7 @@
 
 .ej-status-selected {
     border-color: var(--red);
-    background: rgba(221, 0, 0, 0.12);
+    background: rgba(123,38,49, 0.12);
     color: var(--red);
     font-weight: 600;
 }
@@ -312,16 +312,16 @@
 .ej-status-dot-open   { background: #22c55e; }
 .ej-status-dot-closed { background: var(--red); }
 
-/* ── AI notice ───────────────────────────────────────────────────────────── */
+/* â”€â”€ AI notice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-ai-notice {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    background: rgba(255, 206, 0, 0.08);
-    border: 1px solid rgba(255, 206, 0, 0.3);
+    background: rgba(184,137,59, 0.08);
+    border: 1px solid rgba(184,137,59, 0.3);
     border-radius: 10px;
     padding: 12px 16px;
-    color: #FFCE00;
+    color: #B8893B;
     font-size: 0.875rem;
 }
 
@@ -329,7 +329,7 @@
 .ej-ai-icon svg {
     width: 16px;
     height: 16px;
-    stroke: #FFCE00;
+    stroke: #B8893B;
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -337,7 +337,7 @@
 }
 .ej-ai-notice p { margin: 0; line-height: 1.55; }
 
-/* ── Form footer ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Form footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-form-footer {
     display: flex;
     justify-content: flex-end;
@@ -361,8 +361,8 @@
     transition: background 0.15s, box-shadow 0.15s;
 }
 .ej-btn-primary:hover:not(:disabled) {
-    background: #C00000;
-    box-shadow: 0 4px 12px rgba(221, 0, 0, 0.35);
+    background: #63212B;
+    box-shadow: 0 4px 12px rgba(123,38,49, 0.35);
 }
 .ej-btn-primary:disabled {
     opacity: 0.5;
@@ -399,7 +399,7 @@
     animation: ej-spin 0.65s linear infinite;
 }
 
-/* ── Category badges ─────────────────────────────────────────────────────── */
+/* â”€â”€ Category badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-badge {
     display: inline-flex;
     align-items: center;
@@ -419,18 +419,18 @@
 }
 .ej-badge-frontend  { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
 .ej-badge-frontend::before  { background: #22c55e; }
-.ej-badge-backend   { background: rgba(221, 0, 0, 0.12); color: var(--red); }
+.ej-badge-backend   { background: rgba(123,38,49, 0.12); color: var(--red); }
 .ej-badge-backend::before   { background: var(--red); }
-.ej-badge-ai        { background: rgba(255, 206, 0, 0.12); color: #FFCE00; }
-.ej-badge-ai::before        { background: #FFCE00; }
+.ej-badge-ai        { background: rgba(184,137,59, 0.12); color: #B8893B; }
+.ej-badge-ai::before        { background: #B8893B; }
 .ej-badge-devops    { background: rgba(0, 188, 212, 0.12); color: #00bcd4; }
 .ej-badge-devops::before    { background: #00bcd4; }
-.ej-badge-data      { background: rgba(255, 206, 0, 0.12); color: #D4A800; }
+.ej-badge-data      { background: rgba(184,137,59, 0.12); color: #D4A800; }
 .ej-badge-data::before      { background: #D4A800; }
 .ej-badge-other     { background: var(--surface-2); color: var(--text-muted); }
 .ej-badge-other::before     { background: var(--text-muted); }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 640px) {
     .ej-container { padding-top: 6rem; }
     .ej-row            { grid-template-columns: 1fr; }
@@ -441,3 +441,6 @@
     .ej-btn-primary,
     .ej-btn-secondary  { width: 100%; justify-content: center; }
 }
+
+
+

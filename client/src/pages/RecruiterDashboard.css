@@ -1,4 +1,4 @@
-/* ── Page shell ─────────────────────────────────────────────────────────── */
+﻿/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-page {
     min-height: 100vh;
     background: var(--bg);
@@ -20,14 +20,14 @@
     flex: 1;
 }
 
-/* ── Pending banner ──────────────────────────────────────────────────────── */
+/* â”€â”€ Pending banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-banner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    background: rgba(255, 206, 0, 0.08);
-    border: 1px solid rgba(255, 206, 0, 0.3);
+    background: rgba(184,137,59, 0.08);
+    border: 1px solid rgba(184,137,59, 0.3);
     border-radius: 12px;
     padding: 14px 20px;
 }
@@ -36,7 +36,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #FFCE00;
+    color: #B8893B;
     font-size: 0.9rem;
     font-weight: 500;
 }
@@ -45,7 +45,7 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 1.5px solid #FFCE00;
+    border: 1.5px solid #B8893B;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -57,7 +57,7 @@
 .rd-banner-action {
     background: transparent;
     border: none;
-    color: #FFCE00;
+    color: #B8893B;
     font-weight: 600;
     font-size: 0.875rem;
     cursor: not-allowed;
@@ -66,7 +66,7 @@
     text-underline-offset: 2px;
 }
 
-/* ── Hero ────────────────────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-hero {
     display: flex;
     align-items: flex-end;
@@ -84,8 +84,8 @@
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--red);
-    background: rgba(221, 0, 0, 0.09);
-    border: 1px solid rgba(221, 0, 0, 0.18);
+    background: rgba(123,38,49, 0.09);
+    border: 1px solid rgba(123,38,49, 0.18);
     border-radius: 999px;
     padding: 0.28rem 0.85rem;
     margin-bottom: 0.6rem;
@@ -97,7 +97,7 @@
     margin: 0 0 8px;
     letter-spacing: -0.5px;
     color: var(--text);
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .rd-hero-meta {
@@ -123,7 +123,7 @@
     flex-shrink: 0;
 }
 
-.rd-dot-pending { background: #FFCE00; }
+.rd-dot-pending { background: #B8893B; }
 
 .rd-divider { color: var(--border); }
 
@@ -145,8 +145,8 @@
 }
 
 .rd-primary-button:hover {
-    background: #C00000;
-    box-shadow: 0 4px 12px rgba(221, 0, 0, 0.35);
+    background: #63212B;
+    box-shadow: 0 4px 12px rgba(123,38,49, 0.35);
 }
 
 .rd-primary-button:disabled {
@@ -161,7 +161,7 @@
     font-weight: 400;
 }
 
-/* ── Stat cards ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Stat cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -234,7 +234,7 @@
     color: var(--text);
 }
 
-/* ── Jobs table ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Jobs table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-table {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -257,7 +257,7 @@
     font-size: 1.3rem;
     font-weight: 700;
     letter-spacing: -0.2px;
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .rd-table-actions {
@@ -296,7 +296,7 @@
 }
 
 .rd-search input:focus {
-    border-color: rgba(221, 0, 0, 0.5);
+    border-color: rgba(123,38,49, 0.5);
 }
 
 .rd-search input::placeholder { color: var(--placeholder); }
@@ -364,7 +364,7 @@
     font-size: 0.82rem;
 }
 
-/* ── Category badges ─────────────────────────────────────────────────────── */
+/* â”€â”€ Category badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-badge {
     display: inline-flex;
     align-items: center;
@@ -387,16 +387,16 @@
 .rd-badge-frontend  { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
 .rd-badge-frontend::before  { background: #22c55e; }
 
-.rd-badge-backend   { background: rgba(221, 0, 0, 0.12); color: var(--red); }
+.rd-badge-backend   { background: rgba(123,38,49, 0.12); color: var(--red); }
 .rd-badge-backend::before   { background: var(--red); }
 
-.rd-badge-ai        { background: rgba(255, 206, 0, 0.12); color: #FFCE00; }
-.rd-badge-ai::before        { background: #FFCE00; }
+.rd-badge-ai        { background: rgba(184,137,59, 0.12); color: #B8893B; }
+.rd-badge-ai::before        { background: #B8893B; }
 
 .rd-badge-devops    { background: rgba(0, 188, 212, 0.12); color: #00bcd4; }
 .rd-badge-devops::before    { background: #00bcd4; }
 
-.rd-badge-data      { background: rgba(255, 206, 0, 0.12); color: #D4A800; }
+.rd-badge-data      { background: rgba(184,137,59, 0.12); color: #D4A800; }
 .rd-badge-data::before      { background: #D4A800; }
 
 .rd-badge-other     { background: var(--surface-2); color: var(--text-muted); }
@@ -417,12 +417,12 @@
 .rd-app-count { font-size: 0.9rem; color: var(--text); }
 .rd-app-count strong { font-weight: 700; margin-right: 2px; }
 
-/* ── Match rate pill ─────────────────────────────────────────────────────── */
+/* â”€â”€ Match rate pill â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-match {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(221, 0, 0, 0.12);
+    background: rgba(123,38,49, 0.12);
     color: var(--red);
     font-weight: 600;
     font-size: 0.82rem;
@@ -431,7 +431,7 @@
     width: fit-content;
 }
 
-/* ── Status ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-status {
     display: inline-flex;
     align-items: center;
@@ -444,10 +444,10 @@
 .rd-status-open   { color: #22c55e; }
 .rd-status-closed { color: var(--red); }
 .rd-status-closed .rd-dot { background: var(--red); }
-.rd-status-reviewing { color: #FFCE00; }
-.rd-status-reviewing .rd-dot { background: #FFCE00; }
+.rd-status-reviewing { color: #B8893B; }
+.rd-status-reviewing .rd-dot { background: #B8893B; }
 
-/* ── Row actions ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Row actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-actions {
     display: flex;
     gap: 4px;
@@ -465,9 +465,9 @@
     border-radius: 6px;
     transition: background 0.15s;
 }
-.rd-link:hover { background: rgba(221, 0, 0, 0.12); }
+.rd-link:hover { background: rgba(123,38,49, 0.12); }
 
-/* ── States ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ States â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-state {
     padding: 3rem 1.5rem;
     display: flex;
@@ -491,7 +491,7 @@
 
 @keyframes rd-spin { to { transform: rotate(360deg); } }
 
-/* ── Table footer / pagination ───────────────────────────────────────────── */
+/* â”€â”€ Table footer / pagination â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rd-table-footer {
     padding: 14px 24px;
     display: flex;
@@ -518,8 +518,8 @@
 }
 
 .rd-pagination button:hover:not(:disabled) {
-    border-color: rgba(221, 0, 0, 0.5);
-    background: rgba(221, 0, 0, 0.08);
+    border-color: rgba(123,38,49, 0.5);
+    background: rgba(123,38,49, 0.08);
 }
 
 .rd-pagination button:disabled {
@@ -527,13 +527,13 @@
     cursor: not-allowed;
 }
 
-/* ── Light mode overrides ────────────────────────────────────────────────── */
+/* â”€â”€ Light mode overrides â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-theme="light"] .rd-card,
 [data-theme="light"] .rd-table {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 4px rgba(18,16,15, 0.06);
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 900px) {
     .rd-stats { grid-template-columns: repeat(2, 1fr); }
 
@@ -558,3 +558,5 @@
 
     .rd-search input { min-width: 160px; }
 }
+
+
