@@ -1,0 +1,33 @@
+/* ── PageTransition.css ────────────────────────────────────────────
+   Full-screen wipe overlay.
+   Starts off-screen left (x: -200%), GSAP controls everything else.
+──────────────────────────────────────────────────────────────────── */
+
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  transform: translateX(-200%); /* GSAP takes over after first render */
+  pointer-events: none;
+  will-change: transform;
+  background: #141414;
+}
+
+/* ── Branded leading-edge stripe ────────────────────────────────── */
+/* Sits on the RIGHT side of the panel — that's the leading edge    */
+/* as it sweeps left→right across the screen.                       */
+.page-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #DD0000 0%, #FFCE00 60%, #DD0000 100%);
+  opacity: 0.9;
+}
+
+/* ── Light mode ─────────────────────────────────────────────────── */
+[data-theme="light"] .page-overlay {
+  background: #F5F0E8;
+}

@@ -265,6 +265,10 @@ function AdminUsersPage() {
         {/* Page header */}
         <div className="au-header">
           <div>
+            <span className="au-header__label">
+              <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>manage_accounts</span>
+              Admin Console
+            </span>
             <h1>User Management</h1>
             <p>Manage system access, roles, and account status for all platform members.</p>
           </div>

@@ -1,0 +1,65 @@
+/* ── CursorEffect.css ───────────────────────────────────────────
+   Three cursor layers — all fixed, pointer-events: none
+   Initial opacity: 0 (fades in on first mouse move via GSAP)
+──────────────────────────────────────────────────────────────── */
+
+/* Hide default OS cursor on pages that mount CursorEffect */
+.cursor-hidden,
+.cursor-hidden * {
+  cursor: none !important;
+}
+
+/* ── Spotlight glow ──────────────────────────────────────────── */
+.cur-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(221, 0, 0, 0.07) 0%,
+    rgba(255, 206, 0, 0.03) 40%,
+    transparent 68%
+  );
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9996;
+  opacity: 0;
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+
+/* ── Gold ring ───────────────────────────────────────────────── */
+.cur-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 206, 0, 0.55);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  will-change: transform, width, height;
+}
+
+/* ── Red dot ─────────────────────────────────────────────────── */
+.cur-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #DD0000;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  will-change: transform;
+  box-shadow: 0 0 6px rgba(221, 0, 0, 0.6);
+}

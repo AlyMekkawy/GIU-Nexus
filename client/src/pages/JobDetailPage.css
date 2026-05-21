@@ -1,45 +1,48 @@
-/* ── Base ────────────────────────────────────────────── */
+/* ── JobDetailPage.css ───────────────────────────────────────────── */
+
+/* ── Base ────────────────────────────────────────────────────────── */
 .jd-page {
     min-height: 100vh;
-    background: #f5f5f7;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    color: #1b1b1d;
+    background: var(--bg);
+    font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
 }
 
-/* ── Main Container ──────────────────────────────────── */
+/* ── Main Container ──────────────────────────────────────────────── */
 .jd-main-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 6rem 1.5rem 3rem;
 }
 
-/* ── Breadcrumb ──────────────────────────────────────── */
+/* ── Breadcrumb ──────────────────────────────────────────────────── */
 .jd-breadcrumb {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 2rem;
     font-size: 0.78rem;
-    color: #6e6e73;
+    color: var(--text-muted);
 }
 
 .jd-breadcrumb-link {
     background: none;
     border: none;
-    color: #6e6e73;
+    color: var(--text-muted);
     font-size: 0.78rem;
     cursor: pointer;
     padding: 0;
     transition: color 0.15s;
+    font-family: inherit;
 }
 
-.jd-breadcrumb-link:hover { color: #004e9f; }
+.jd-breadcrumb-link:hover { color: var(--red); }
 
-.jd-breadcrumb-sep { color: #c1c6d5; }
+.jd-breadcrumb-sep { color: var(--border-s); }
 
-.jd-breadcrumb-current { color: #414753; }
+.jd-breadcrumb-current { color: var(--text-muted); }
 
-/* ── Grid ────────────────────────────────────────────── */
+/* ── Grid ────────────────────────────────────────────────────────── */
 .jd-grid {
     display: grid;
     grid-template-columns: 1fr 360px;
@@ -47,20 +50,20 @@
     align-items: start;
 }
 
-/* ── Left Column ─────────────────────────────────────── */
+/* ── Left Column ─────────────────────────────────────────────────── */
 .jd-left-col {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-/* ── Header Section ──────────────────────────────────── */
+/* ── Header Section ──────────────────────────────────────────────── */
 .jd-header-section {
-    background: #fff;
+    background: var(--surface);
     border-radius: 24px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border);
     padding: 2rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 .jd-header-top {
@@ -81,30 +84,32 @@
     width: 64px;
     height: 64px;
     border-radius: 16px;
-    background: #f0edef;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     font-weight: 800;
-    color: #004e9f;
+    color: var(--red);
     flex-shrink: 0;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
 }
 
 .jd-title {
     font-size: 2rem;
-    font-weight: 700;
-    color: #1b1b1d;
+    font-weight: 800;
+    color: var(--text);
     margin: 0 0 0.25rem;
     letter-spacing: -0.015em;
     line-height: 1.1;
+    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
 }
 
 .jd-subtitle {
     font-size: 1rem;
-    color: #414753;
+    color: var(--text-muted);
     margin: 0;
 }
 
@@ -134,11 +139,11 @@
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 700;
-    background: #e8f7ee;
-    color: #16833a;
+    background: rgba(34,197,94,0.12);
+    color: #22c55e;
 }
 
-/* ── Meta Pills ──────────────────────────────────────── */
+/* ── Meta Pills ──────────────────────────────────────────────────── */
 .jd-meta-pills {
     display: flex;
     flex-wrap: wrap;
@@ -150,39 +155,40 @@
     align-items: center;
     gap: 0.4rem;
     padding: 0.5rem 1rem;
-    background: #f6f3f5;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
     border-radius: 999px;
     font-size: 0.78rem;
-    color: #414753;
+    color: var(--text-muted);
 }
 
-/* ── Content Section ─────────────────────────────────── */
+/* ── Content Section ─────────────────────────────────────────────── */
 .jd-section {
-    background: #fff;
+    background: var(--surface);
     border-radius: 24px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border);
     padding: 2rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 .jd-section-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #1b1b1d;
+    color: var(--text);
     margin: 0 0 1.25rem;
     letter-spacing: -0.01em;
+    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
 }
 
 .jd-section-subtitle {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #1b1b1d;
+    color: var(--text);
     margin: 2rem 0 1rem;
 }
 
 .jd-description {
-    color: #414753;
+    color: var(--text-muted);
     line-height: 1.8;
     font-size: 0.95rem;
     margin: 0;
@@ -202,36 +208,36 @@
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    color: #414753;
+    color: var(--text-muted);
     font-size: 0.93rem;
     line-height: 1.6;
 }
 
 .jd-req-icon {
-    color: #004e9f;
+    color: var(--red);
     font-size: 0.75rem;
     margin-top: 0.35rem;
     flex-shrink: 0;
 }
 
-/* ── Right Column ────────────────────────────────────── */
+/* ── Right Column ────────────────────────────────────────────────── */
 .jd-right-col {
     position: sticky;
     top: 5.5rem;
 }
 
 .jd-action-card {
-    background: #fff;
-    border: 1px solid #e0e0e0;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 24px;
     padding: 2rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-/* ── Status Section ──────────────────────────────────── */
+/* ── Status Section ──────────────────────────────────────────────── */
 .jd-status-section {
     display: flex;
     flex-direction: column;
@@ -247,25 +253,25 @@
 .jd-status-label {
     font-size: 0.78rem;
     font-weight: 500;
-    color: #6e6e73;
+    color: var(--text-muted);
 }
 
 .jd-progress-bar {
     width: 100%;
     height: 6px;
-    background: #f0edef;
+    background: var(--surface-2);
     border-radius: 999px;
     overflow: hidden;
 }
 
 .jd-progress-fill {
     height: 100%;
-    background: #16833a;
+    background: #22c55e;
     border-radius: 999px;
     transition: width 0.4s ease;
 }
 
-/* ── Action Buttons ──────────────────────────────────── */
+/* ── Action Buttons ──────────────────────────────────────────────── */
 .jd-action-buttons {
     display: flex;
     flex-direction: column;
@@ -275,15 +281,16 @@
 .jd-btn-apply-full {
     width: 100%;
     padding: 1rem;
-    background: #004e9f;
+    background: var(--red);
     color: #fff;
     border: none;
     border-radius: 999px;
     font-size: 0.95rem;
     font-weight: 700;
+    font-family: inherit;
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 16px rgba(0, 78, 159, 0.25);
+    box-shadow: 0 4px 16px rgba(221, 0, 0, 0.28);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -292,7 +299,7 @@
 
 .jd-btn-apply-full:hover:not(:disabled) {
     transform: scale(1.02);
-    box-shadow: 0 6px 20px rgba(0, 78, 159, 0.35);
+    box-shadow: 0 6px 20px rgba(221, 0, 0, 0.38);
 }
 
 .jd-btn-apply-full:active:not(:disabled) { transform: scale(0.98); }
@@ -306,12 +313,13 @@
 .jd-btn-save-full {
     width: 100%;
     padding: 1rem;
-    background: #fafafc;
-    color: #1b1b1d;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border-s);
     border-radius: 999px;
     font-size: 0.95rem;
     font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
     display: flex;
@@ -320,12 +328,12 @@
     gap: 0.5rem;
 }
 
-.jd-btn-save-full:hover:not(:disabled) { background: #f0edef; }
+.jd-btn-save-full:hover:not(:disabled) { background: var(--surface-3); }
 
 .jd-btn-save-full.saved {
-    background: #e8f2ff;
-    border-color: #004e9f;
-    color: #004e9f;
+    background: rgba(255,206,0,0.11);
+    border-color: var(--gold);
+    color: var(--gold);
 }
 
 .jd-btn-save-full:disabled {
@@ -333,17 +341,19 @@
     cursor: not-allowed;
 }
 
-/* ── Overview ────────────────────────────────────────── */
+/* ── Overview ────────────────────────────────────────────────────── */
 .jd-overview {
     padding-top: 1.25rem;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--border);
 }
 
 .jd-overview-title {
     font-size: 0.85rem;
     font-weight: 700;
-    color: #1b1b1d;
+    color: var(--text);
     margin: 0 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .jd-overview-rows {
@@ -365,21 +375,21 @@
     gap: 0.5rem;
 }
 
-.jd-overview-icon { font-size: 0.85rem; color: #004e9f; }
+.jd-overview-icon { font-size: 0.85rem; color: var(--red); }
 
-.jd-overview-label { font-size: 0.78rem; color: #6e6e73; }
+.jd-overview-label { font-size: 0.78rem; color: var(--text-muted); }
 
 .jd-overview-value {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #1b1b1d;
+    color: var(--text);
     text-align: right;
 }
 
 .jd-overview-value.small {
     font-size: 0.75rem;
     font-weight: 400;
-    color: #414753;
+    color: var(--text-muted);
 }
 
 .jd-mini-badge {
@@ -398,10 +408,10 @@
     text-transform: capitalize;
 }
 
-.jd-status-pill.open  { background: #e8f7ee; color: #16833a; }
-.jd-status-pill.closed { background: #fff0ee; color: #b42318; }
+.jd-status-pill.open   { background: rgba(34,197,94,0.12); color: #22c55e; }
+.jd-status-pill.closed { background: rgba(221,0,0,0.12);   color: var(--red); }
 
-/* ── Card Footer ─────────────────────────────────────── */
+/* ── Card Footer ─────────────────────────────────────────────────── */
 .jd-card-footer {
     display: flex;
     justify-content: center;
@@ -412,19 +422,20 @@
     background: none;
     border: none;
     font-size: 0.78rem;
-    color: #6e6e73;
+    color: var(--text-muted);
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.3rem;
     transition: color 0.15s;
+    font-family: inherit;
 }
 
-.jd-footer-btn:hover { color: #004e9f; }
+.jd-footer-btn:hover { color: var(--red); }
 
-/* ── Modal ───────────────────────────────────────────── */
+/* ── Modal ───────────────────────────────────────────────────────── */
 .jd-apply-subtitle {
-    color: #6e6e73;
+    color: var(--text-muted);
     font-size: 0.88rem;
     margin: 0 0 1.25rem;
 }
@@ -439,40 +450,40 @@
 .jd-label {
     font-size: 0.88rem;
     font-weight: 600;
-    color: #414753;
+    color: var(--text-muted);
 }
 
 .jd-optional {
     font-weight: 400;
-    color: #9ca3af;
+    color: var(--text-dim);
     font-size: 0.82rem;
 }
 
 .jd-textarea {
     width: 100%;
     padding: 0.85rem 1rem;
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--border-s);
     border-radius: 16px;
     font-size: 0.9rem;
     font-family: inherit;
     resize: vertical;
     transition: border-color 0.15s, box-shadow 0.15s;
     box-sizing: border-box;
-    color: #1b1b1d;
-    background: #fafafc;
+    color: var(--text);
+    background: var(--surface-2);
 }
 
 .jd-textarea:focus {
     outline: none;
-    border-color: #004e9f;
-    box-shadow: 0 0 0 4px rgba(0, 78, 159, 0.1);
+    border-color: var(--red);
+    box-shadow: 0 0 0 4px rgba(221, 0, 0, 0.11);
 }
 
 .jd-apply-error {
-    color: #b42318;
+    color: var(--red);
     font-size: 0.85rem;
     margin: 0.5rem 0;
-    background: #fff0ee;
+    background: rgba(221,0,0,0.10);
     padding: 0.5rem 0.85rem;
     border-radius: 10px;
 }
@@ -485,32 +496,34 @@
 }
 
 .jd-btn-secondary {
-    background: #f0edef;
-    color: #414753;
+    background: var(--surface-2);
+    color: var(--text-muted);
     border: none;
     padding: 0.65rem 1.3rem;
     border-radius: 999px;
     font-size: 0.9rem;
     font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
     transition: background 0.15s;
 }
 
-.jd-btn-secondary:hover { background: #e4e2e4; }
+.jd-btn-secondary:hover { background: var(--surface-3); }
 
 .jd-btn-apply-modal {
-    background: #004e9f;
+    background: var(--red);
     color: #fff;
     border: none;
     padding: 0.65rem 1.5rem;
     border-radius: 999px;
     font-size: 0.9rem;
     font-weight: 700;
+    font-family: inherit;
     cursor: pointer;
     transition: background 0.15s;
 }
 
-.jd-btn-apply-modal:hover:not(:disabled) { background: #003a7a; }
+.jd-btn-apply-modal:hover:not(:disabled) { background: #C00000; }
 
 .jd-btn-apply-modal:disabled {
     opacity: 0.65;
@@ -523,14 +536,14 @@
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 0;
-    color: #16833a;
+    color: #22c55e;
     font-weight: 600;
     font-size: 1rem;
 }
 
 .jd-success-icon { font-size: 2.5rem; }
 
-/* ── Error State ─────────────────────────────────────── */
+/* ── Error State ─────────────────────────────────────────────────── */
 .jd-error-container {
     display: flex;
     justify-content: center;
@@ -544,26 +557,27 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    color: #414753;
+    color: var(--text-muted);
 }
 
 .jd-error-icon { font-size: 2.5rem; }
 
 .jd-btn-primary {
-    background: #004e9f;
+    background: var(--red);
     color: #fff;
     border: none;
     padding: 0.65rem 1.4rem;
     border-radius: 999px;
     font-size: 0.95rem;
     font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
     transition: background 0.15s;
 }
 
-.jd-btn-primary:hover { background: #003a7a; }
+.jd-btn-primary:hover { background: #C00000; }
 
-/* ── Responsive ──────────────────────────────────────── */
+/* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 900px) {
     .jd-grid {
         grid-template-columns: 1fr;
@@ -573,4 +587,32 @@
         order: -1;
     }
     .jd-title { font-size: 1.5rem; }
+}
+
+@media (max-width: 600px) {
+    .jd-main-container { padding: 5.5rem 1rem 3rem; }
+    .jd-header-section,
+    .jd-section,
+    .jd-action-card { padding: 1.25rem; border-radius: 16px; }
+    .jd-header-top { flex-direction: column; }
+    .jd-badges { align-items: flex-start; }
+}
+
+/* ── Light mode overrides ────────────────────────────────────────── */
+[data-theme="light"] .jd-header-section,
+[data-theme="light"] .jd-section,
+[data-theme="light"] .jd-action-card {
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+[data-theme="light"] .jd-progress-fill { background: #16a34a; }
+
+[data-theme="light"] .jd-applied-badge {
+    background: rgba(22,163,74,0.12);
+    color: #16a34a;
+}
+
+[data-theme="light"] .jd-status-pill.open {
+    background: rgba(22,163,74,0.12);
+    color: #16a34a;
 }

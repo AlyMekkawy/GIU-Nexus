@@ -1,59 +1,160 @@
+import { useRef, useEffect, useState } from "react";
+import { gsap } from "gsap";
+import Scene3D from "./Scene3D";
+
+const ROLES = ["Engineering", "Design", "Data Science", "DevOps", "AI & ML"];
+
 function Hero({ keyword, setKeyword, location, setLocation, type, setType, onSearch }) {
+  const heroRef     = useRef(null);
+  const badgeRef    = useRef(null);
+  const titleRef    = useRef(null);
+  const subtitleRef = useRef(null);
+  const searchRef   = useRef(null);
+  const statsRef    = useRef(null);
+
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [exiting,   setExiting]   = useState(false);
+
+  /* ── Entrance animation ─────────────────────────────────────── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+      tl.fromTo(badgeRef.current,
+        { x: -24, opacity: 0 },
+        { x: 0,   opacity: 1, duration: 0.7 }
+      )
+      .fromTo(titleRef.current,
+        { x: -40, opacity: 0 },
+        { x: 0,   opacity: 1, duration: 1 },
+        "-=0.4"
+      )
+      .fromTo(subtitleRef.current,
+        { x: -24, opacity: 0 },
+        { x: 0,   opacity: 1, duration: 0.8 },
+        "-=0.6"
+      )
+      .fromTo(searchRef.current,
+        { y: 20, opacity: 0, scale: 0.97 },
+        { y: 0,  opacity: 1, scale: 1, duration: 0.8 },
+        "-=0.5"
+      )
+      .fromTo(Array.from(statsRef.current?.children ?? []),
+        { y: 16, opacity: 0 },
+        { y: 0,  opacity: 1, duration: 0.6, stagger: 0.1 },
+        "-=0.4"
+      );
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  /* ── Role cycling ──────────────────────────────────────────── */
+  useEffect(() => {
+    const id = setInterval(() => {
+      setExiting(true);
+      setTimeout(() => {
+        setRoleIndex(i => (i + 1) % ROLES.length);
+        setExiting(false);
+      }, 350);
+    }, 2800);
+    return () => clearInterval(id);
+  }, []);
+
   return (
-    <section style={{ textAlign: 'center', padding: '60px 24px 48px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h1 style={{ fontSize: '56px', fontWeight: '600', lineHeight: '1.07', letterSpacing: '-0.02em', color: '#1b1b1d', maxWidth: '800px', margin: '0 0 16px' }}>
-        Find the work that <span style={{ color: '#004e9f' }}>fits your skills.</span>
-      </h1>
-      <p style={{ fontSize: '21px', lineHeight: '1.3', color: '#6e6e73', maxWidth: '600px', margin: '0 0 32px' }}>
-        Intelligence-led career matching for the next generation of academic talent. GIU Nexus extracts your core strengths to find perfect opportunities.
-      </p>
-      <form onSubmit={onSearch} style={{ width: '100%', maxWidth: '980px' }}>
-        <div style={{
-          background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(0,0,0,0.08)', borderRadius: '9999px',
-          padding: '8px', display: 'flex', alignItems: 'center',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        }}>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 16px', borderRight: '1px solid rgba(0,0,0,0.08)' }}>
-            <span className="material-symbols-outlined" style={{ color: '#727784', fontSize: '20px' }}>search</span>
-            <input
-              style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '17px', width: '100%', color: '#1b1b1d' }}
-              placeholder="Job title or keyword"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
-            />
+    <section ref={heroRef} className="hp-hero">
+      {/* Background layers */}
+      <div className="hp-hero__grid"   aria-hidden />
+      <div className="hp-hero__glow"   aria-hidden />
+      <div className="hp-hero__stripe" aria-hidden />
+
+      {/* ── Split: text left · sphere right ───────────────────── */}
+      <div className="hp-hero__split">
+
+        {/* LEFT — text content */}
+        <div className="hp-hero__content">
+
+          <div ref={badgeRef} className="hp-hero__badge" style={{ opacity: 0 }}>
+            <span className="hp-hero__badge-dot" />
+            AI-Powered Career Matching
           </div>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 16px', borderRight: '1px solid rgba(0,0,0,0.08)' }}>
-            <span className="material-symbols-outlined" style={{ color: '#727784', fontSize: '20px' }}>location_on</span>
-            <input
-              style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '17px', width: '100%', color: '#1b1b1d' }}
-              placeholder="Location"
-              value={location}
-              onChange={e => setLocation(e.target.value)}
-            />
+
+          <h1 ref={titleRef} className="hp-hero__title" style={{ opacity: 0 }}>
+            Find Your Career in<br />
+            <span className={`hp-hero__role ${exiting ? "hp-hero__role--out" : "hp-hero__role--in"}`}>
+              {ROLES[roleIndex]}
+            </span>
+          </h1>
+
+          <p ref={subtitleRef} className="hp-hero__subtitle" style={{ opacity: 0 }}>
+            Intelligence-led career matching for GIU students and graduates.
+            We extract your core strengths and surface opportunities that fit.
+          </p>
+
+          <form ref={searchRef} onSubmit={onSearch} className="hp-hero__form" style={{ opacity: 0 }}>
+            <div className="hp-hero__bar">
+              <div className="hp-hero__field hp-hero__field--sep">
+                <span className="material-symbols-outlined hp-hero__field-icon">search</span>
+                <input
+                  className="hp-hero__input"
+                  placeholder="Job title or keyword"
+                  value={keyword}
+                  onChange={e => setKeyword(e.target.value)}
+                />
+              </div>
+
+              <div className="hp-hero__field hp-hero__field--sep">
+                <span className="material-symbols-outlined hp-hero__field-icon">location_on</span>
+                <input
+                  className="hp-hero__input"
+                  placeholder="Location"
+                  value={location}
+                  onChange={e => setLocation(e.target.value)}
+                />
+              </div>
+
+              <div className="hp-hero__field">
+                <span className="material-symbols-outlined hp-hero__field-icon">work</span>
+                <select
+                  className="hp-hero__input hp-hero__select"
+                  value={type}
+                  onChange={e => setType(e.target.value)}
+                >
+                  <option value="">All Types</option>
+                  <option value="full-time">Full-time</option>
+                  <option value="part-time">Part-time</option>
+                  <option value="internship">Internship</option>
+                </select>
+              </div>
+
+              <button type="submit" className="hp-hero__btn">
+                <span className="material-symbols-outlined">search</span>
+                Search Jobs
+              </button>
+            </div>
+          </form>
+
+          <div ref={statsRef} className="hp-hero__stats">
+            {[
+              { value: "500+", label: "Open Positions"   },
+              { value: "80+",  label: "Partner Companies" },
+              { value: "AI",   label: "Skill Matching"   },
+            ].map(({ value, label }) => (
+              <div key={label} className="hp-hero__stat">
+                <span className="hp-hero__stat-value">{value}</span>
+                <span className="hp-hero__stat-label">{label}</span>
+              </div>
+            ))}
           </div>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 16px' }}>
-            <span className="material-symbols-outlined" style={{ color: '#727784', fontSize: '20px' }}>work</span>
-            <select
-              style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '17px', width: '100%', color: '#1b1b1d', appearance: 'none' }}
-              value={type}
-              onChange={e => setType(e.target.value)}
-            >
-              <option value="">All Types</option>
-              <option value="full-time">Full-time</option>
-              <option value="part-time">Part-time</option>
-              <option value="internship">Internship</option>
-            </select>
-          </div>
-          <button type="submit" style={{
-            background: '#004e9f', color: '#fff', padding: '12px 32px',
-            borderRadius: '9999px', border: 'none', fontWeight: '600',
-            fontSize: '15px', cursor: 'pointer', whiteSpace: 'nowrap',
-          }}>
-            Search
-          </button>
+
         </div>
-      </form>
+
+        {/* RIGHT — 3D sphere */}
+        <div className="hp-hero__3d" aria-hidden="true">
+          <Scene3D />
+        </div>
+
+      </div>
     </section>
   );
 }

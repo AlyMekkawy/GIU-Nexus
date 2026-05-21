@@ -146,7 +146,11 @@ function AdminDashboard() {
 
           {/* Page heading */}
           <div className="adm-header" ref={headerRef}>
-            <h1>Admin Overview</h1>
+            <span className="adm-header__label">
+              <span className="material-symbols-outlined">admin_panel_settings</span>
+              Admin Console
+            </span>
+            <h1>Platform Overview</h1>
             <p>Managing the ecosystem of academic and professional excellence.</p>
           </div>
 
