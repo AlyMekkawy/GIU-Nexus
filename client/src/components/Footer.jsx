@@ -30,11 +30,11 @@ const Footer = () => {
         .giu-footer__inner {
           max-width: 1320px;
           margin: 0 auto;
-          padding: 42px 32px 32px;
+          padding: 12px 12px 32px;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 34px;
+          gap: 1px;
         }
 
         .giu-footer__brand {
@@ -45,7 +45,7 @@ const Footer = () => {
 
         .giu-footer__brand-logo {
           display: block;
-          width: min(760px, 92vw);
+          width: min(560px, 92vw);
           height: auto;
           object-fit: contain;
         }
@@ -55,7 +55,7 @@ const Footer = () => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 14px;
+          gap: 5px;
         }
 
         .giu-footer__team-label {
@@ -90,8 +90,8 @@ const Footer = () => {
 
         @media (max-width: 768px) {
           .giu-footer__inner {
-            padding: 34px 20px 28px;
-            gap: 26px;
+            padding: 14px 10px 10px;
+            gap: 16px;
           }
 
           .giu-footer__brand-logo {
