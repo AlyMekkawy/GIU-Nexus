@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const JobPost = require('../models/JobPost');
-const Application = require('../models/Application');
+const Application = require('../models/application');
 
 exports.getPlatformStats = async (req, res, next) => {
   try {

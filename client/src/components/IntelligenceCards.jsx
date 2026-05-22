@@ -5,8 +5,8 @@ import { gsap } from "gsap";
 const FEATURES = [
   {
     icon: "auto_awesome",
-    accent: "#FFCE00",
-    accentSoft: "rgba(255,206,0,0.1)",
+    accent: "#C89B3C", // warm amber
+    accentSoft: "rgba(200,155,60,0.12)",
     label: "AI Extraction",
     title: "Deep Skill Analysis",
     desc: "Our engine parses your projects and academic history to extract high-density skill vectors, mapping them precisely to industrial requirements.",
@@ -15,8 +15,8 @@ const FEATURES = [
   },
   {
     icon: "bolt",
-    accent: "#DD0000",
-    accentSoft: "rgba(221,0,0,0.1)",
+    accent: "#7A1F2B", // muted burgundy
+    accentSoft: "rgba(122,31,43,0.12)",
     label: "Nexus Match™",
     title: "Beyond Keywords",
     desc: "We match on cultural fit, growth trajectory, and technical compatibility — not just buzzword overlap. Real intelligence, real results.",
@@ -27,8 +27,8 @@ const FEATURES = [
   },
   {
     icon: "trending_up",
-    accent: "#22c55e",
-    accentSoft: "rgba(34,197,94,0.1)",
+    accent: "#4F6B58",
+    accentSoft: "rgba(79,107,88,0.12)",
     label: "Career Growth",
     title: "Track Your Journey",
     desc: "Monitor every application in real time. From applied to shortlisted, see exactly where you stand with every opportunity you pursue.",

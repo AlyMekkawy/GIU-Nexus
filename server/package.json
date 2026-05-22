@@ -22,7 +22,7 @@
   "scripts": {
     "test": "jest --runInBand",
     "dev": "nodemon --exec \"node --env-file=.env\" server.js",
-    "start": "node --env-file=.env server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

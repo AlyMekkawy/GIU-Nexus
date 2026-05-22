@@ -9,7 +9,6 @@ import Spinner from "../components/Spinner";
 import Hero from "../components/Hero";
 import IntelligenceCards from "../components/IntelligenceCards";
 import JobCard from "../components/JobCard";
-import RecommendedJobCard from "../components/RecommendedJobCard";
 import CursorEffect from "../components/CursorEffect";
 import "./HomePage.css";
 
@@ -18,9 +17,11 @@ const ENABLE_CURSOR_EFFECT = false;
 function HomePage() {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+  const isJobSeeker = isAuthenticated && user?.role === "jobSeeker";
 
   const [jobs,        setJobs]        = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [savedJobs,   setSavedJobs]    = useState(new Set());
   const [loadingJobs, setLoadingJobs] = useState(true);
   const [loadingRec,  setLoadingRec]  = useState(false);
 
@@ -40,6 +41,30 @@ function HomePage() {
       .finally(() => setLoadingJobs(false));
   }, []);
 
+  /* ── Fetch saved jobs (jobSeeker only) ───────────────────────── */
+  useEffect(() => {
+    if (!isJobSeeker) {
+      setSavedJobs(new Set());
+      return;
+    }
+
+    let cancelled = false;
+
+    api.get("/jobs/saved")
+      .then((res) => {
+        if (cancelled) return;
+        const saved = res.data.jobs || [];
+        setSavedJobs(new Set(saved.map((job) => job._id)));
+      })
+      .catch(() => {
+        if (!cancelled) setSavedJobs(new Set());
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isJobSeeker]);
+
   /* ── Fetch recommendations (jobSeeker only) ────────────────── */
   const userId   = user?._id;
   const userRole = user?.role;
@@ -54,6 +79,27 @@ function HomePage() {
       .finally(() => { if (!cancelled) setLoadingRec(false); });
     return () => { cancelled = true; };
   }, [isAuthenticated, userRole, userId]);
+
+  const toggleSaveJob = async (jobId) => {
+    if (!isJobSeeker) return;
+
+    try {
+      const res = await api.post(`/jobs/${jobId}/save`);
+      if (res.data.success) {
+        setSavedJobs((prev) => {
+          const next = new Set(prev);
+          if (res.data.saved) {
+            next.add(jobId);
+          } else {
+            next.delete(jobId);
+          }
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error('Error toggling saved job:', err);
+    }
+  };
 
   /* ── Scroll-reveal for sections ────────────────────────────── */
   useEffect(() => {
@@ -81,8 +127,6 @@ function HomePage() {
     if (type)     p.set("type",     type);
     navigate(`/jobs?${p.toString()}`);
   }
-
-  const isJobSeeker = isAuthenticated && userRole === "jobSeeker";
 
   return (
     <div className="hp-page">
@@ -127,7 +171,12 @@ function HomePage() {
             ) : (
               <div className="hp-grid hp-grid--3">
                 {recommended.slice(0, 3).map(job => (
-                  <RecommendedJobCard key={job._id} job={job} />
+                  <JobCard
+                    key={job._id}
+                    job={job}
+                    isSaved={savedJobs.has(job._id)}
+                    onToggleSave={isJobSeeker ? toggleSaveJob : undefined}
+                  />
                 ))}
               </div>
             )}
@@ -155,7 +204,12 @@ function HomePage() {
           ) : (
             <div className="hp-grid hp-grid--3">
               {jobs.slice(0, 6).map(job => (
-                <JobCard key={job._id} job={job} />
+                <JobCard
+                  key={job._id}
+                  job={job}
+                  isSaved={savedJobs.has(job._id)}
+                  onToggleSave={isJobSeeker ? toggleSaveJob : undefined}
+                />
               ))}
             </div>
           )}

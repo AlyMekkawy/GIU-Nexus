@@ -1,3 +1,5 @@
+import { useTheme } from "../context/ThemeContext";
+
 const TEAM_MEMBERS = [
     "Aly Moataz Elmekawy",
     "Adham Walaa Elewa 👶",
@@ -12,12 +14,16 @@ const TEAM_MEMBERS = [
 ];
 
 const Footer = () => {
+    const { theme } = useTheme();
+    const isLight = theme === "light";
+    const brandLogo = "/fullLogoB.png";
+
     return (
         <>
             <style>{`
         .giu-footer {
-          background: #181818;
-          border-top: 1px solid rgba(255,255,255,0.08);
+          background: ${isLight ? "#EDE6D8" : "#181818"};
+          border-top: 1px solid ${isLight ? "rgba(18,16,15,0.08)" : "rgba(255,255,255,0.08)"};
           font-family: var(--font-family-body), system-ui, sans-serif;
         }
 
@@ -58,7 +64,7 @@ const Footer = () => {
           font-weight: 800;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #C89A3D;
+          color: ${isLight ? "#8A6400" : "#C89A3D"};
         }
 
         .giu-footer__team-list {
@@ -74,9 +80,9 @@ const Footer = () => {
           align-items: center;
           padding: 7px 12px;
           border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.1);
-          background: rgba(255,255,255,0.045);
-          color: #F4EEE6;
+          border: 1px solid ${isLight ? "rgba(26,20,16,0.12)" : "rgba(255,255,255,0.1)"};
+          background: ${isLight ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.045)"};
+          color: ${isLight ? "#1A1410" : "#F4EEE6"};
           font-size: 0.86rem;
           font-weight: 600;
           white-space: nowrap;
@@ -110,7 +116,7 @@ const Footer = () => {
                     <div className="giu-footer__brand">
                         <img
                             className="giu-footer__brand-logo"
-                            src="/fullLogoB.png"
+                            src={brandLogo}
                             alt="GIU Nexus"
                         />
                     </div>
