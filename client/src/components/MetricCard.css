@@ -1,52 +1,57 @@
-/* MetricCard.css — Summary metric card used in Admin & Recruiter dashboards */
+﻿/* MetricCard.css â€” Summary metric card used in Admin & Recruiter dashboards */
 
-.metric-card {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 18px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 148px;
+ .metric-card {
+   background: var(--surface);
+   backdrop-filter: blur(20px);
+   -webkit-backdrop-filter: blur(20px);
+   border: 1px solid var(--border);
+   border-radius: 18px;
+   box-shadow: 0 1px 4px rgba(18,16,15, 0.4);
+   padding: 24px;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   min-height: 148px;
+ }
+
+[data-theme="light"] .metric-card {
+  box-shadow: 0 1px 6px rgba(18,16,15, 0.07);
 }
 
 .metric-card-icon {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: #e8f2ff;
+  background: var(--cat-backend-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
+  color: var(--red);
 }
 
 .metric-card-icon svg {
   width: 20px;
   height: 20px;
-  fill: #0066cc;
+  fill: currentColor;
 }
 
 .metric-card-label {
   font-size: 13px;
-  color: #6e6e73;
+  color: var(--text-muted);
   font-weight: 500;
   letter-spacing: 0.01em;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
 .metric-card-value {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
-  color: #1d1d1f;
+  color: var(--text);
   line-height: 1;
   margin: 8px 0 6px;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .metric-card-trend {
@@ -55,10 +60,13 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
-.metric-card-trend.up    { color: #16833a; }
-.metric-card-trend.warn  { color: #b26a00; }
-.metric-card-trend.down  { color: #b42318; }
-.metric-card-trend.muted { color: #6e6e73; }
+.metric-card-trend.up    { color: var(--cat-frontend-text); }
+.metric-card-trend.warn  { color: var(--gold); }
+.metric-card-trend.down  { color: var(--red); }
+.metric-card-trend.muted { color: var(--text-muted); }
+
+
+

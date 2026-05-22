@@ -1,78 +1,78 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
-/* ─── Google Fonts ─────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+/* â”€â”€â”€ Google Fonts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
-/* ─── Tailwind v4 Theme Tokens ──────────────────────────────────────── */
+/* â”€â”€â”€ Tailwind v4 Theme Tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @theme {
   /* Colors */
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-dim: #dcd9dc;
-  --color-error: #ba1a1a;
-  --color-on-tertiary: #ffffff;
-  --color-cat-backend-text: #0066cc;
-  --color-secondary: #5d5e60;
-  --color-cat-ai-text: #6b3fd1;
-  --color-surface-container-low: #f6f3f5;
-  --color-primary-container: #0066cc;
-  --color-secondary-fixed-dim: #c6c6c8;
-  --color-primary: #004e9f;
-  --color-surface: #fcf8fb;
-  --color-surface-container: #f0edef;
-  --color-inverse-on-surface: #f3f0f2;
-  --color-tertiary: #47515b;
-  --color-status-rejected-text: #b42318;
-  --color-cat-frontend-text: #16833a;
-  --color-outline-variant: #c1c6d5;
-  --color-on-surface-variant: #414753;
-  --color-on-tertiary-fixed: #131d26;
-  --color-inverse-primary: #aac7ff;
+  --color-surface-container-lowest: #1C1A18;
+  --color-surface-dim: #111010;
+  --color-error: #7B2631;
+  --color-on-tertiary: #F2ECE2;
+  --color-cat-backend-text: #7B2631;
+  --color-secondary: #A79F95;
+  --color-cat-ai-text: #B8893B;
+  --color-surface-container-low: #23201E;
+  --color-primary-container: #7B2631;
+  --color-secondary-fixed-dim: #2D2A27;
+  --color-primary: #7B2631;
+  --color-surface: #1C1A18;
+  --color-surface-container: #23201E;
+  --color-inverse-on-surface: #111010;
+  --color-tertiary: #A79F95;
+  --color-status-rejected-text: #7B2631;
+  --color-cat-frontend-text: #22c55e;
+  --color-outline-variant: #2D2A27;
+  --color-on-surface-variant: #A79F95;
+  --color-on-tertiary-fixed: #F2ECE2;
+  --color-inverse-primary: #B8893B;
   --color-on-primary: #ffffff;
-  --color-outline: #727784;
-  --color-surface-pearl: #fafafc;
-  --color-on-secondary: #ffffff;
-  --color-inverse-surface: #303032;
-  --color-on-surface: #1b1b1d;
-  --color-on-primary-fixed: #001b3e;
-  --color-on-secondary-fixed-variant: #454749;
-  --color-status-pending-bg: #fff7e6;
-  --color-cat-backend-bg: #e8f2ff;
-  --color-ink-muted: #6e6e73;
-  --color-surface-container-high: #eae7ea;
-  --color-cat-ai-bg: #f1eaff;
-  --color-primary-fixed: #d7e3ff;
-  --color-cat-frontend-bg: #e8f7ee;
-  --color-surface-bright: #fcf8fb;
-  --color-surface-tint: #005cba;
-  --color-on-tertiary-container: #dfe9f6;
-  --color-on-background: #1b1b1d;
-  --color-on-error-container: #93000a;
-  --color-hairline: #e0e0e0;
-  --color-canvas-parchment: #f5f5f7;
-  --color-tertiary-fixed: #d9e3f0;
-  --color-status-pending-text: #b26a00;
-  --color-surface-container-highest: #e4e2e4;
-  --color-on-primary-container: #dfe8ff;
-  --color-secondary-fixed: #e2e2e4;
-  --color-tertiary-fixed-dim: #bdc7d4;
-  --color-on-secondary-container: #616365;
-  --color-primary-fixed-dim: #aac7ff;
-  --color-background: #fcf8fb;
-  --color-on-secondary-fixed: #1a1c1d;
-  --color-on-primary-fixed-variant: #00458e;
-  --color-secondary-container: #dfdfe1;
-  --color-surface-variant: #e4e2e4;
-  --color-tertiary-container: #5f6974;
-  --color-on-tertiary-fixed-variant: #3e4852;
-  --color-error-container: #ffdad6;
+  --color-outline: #A79F95;
+  --color-surface-pearl: #1C1A18;
+  --color-on-secondary: #F2ECE2;
+  --color-inverse-surface: #F2ECE2;
+  --color-on-surface: #F2ECE2;
+  --color-on-primary-fixed: #111010;
+  --color-on-secondary-fixed-variant: #A79F95;
+  --color-status-pending-bg: rgba(184,137,59,0.12);
+  --color-cat-backend-bg: rgba(123,38,49,0.12);
+  --color-ink-muted: #A79F95;
+  --color-surface-container-high: #2D2A27;
+  --color-cat-ai-bg: rgba(184,137,59,0.12);
+  --color-primary-fixed: rgba(123,38,49,0.15);
+  --color-cat-frontend-bg: rgba(34,197,94,0.12);
+  --color-surface-bright: #23201E;
+  --color-surface-tint: #7B2631;
+  --color-on-tertiary-container: #F2ECE2;
+  --color-on-background: #F2ECE2;
+  --color-on-error-container: #7B2631;
+  --color-hairline: rgba(255,255,255,0.08);
+  --color-canvas-parchment: #111010;
+  --color-tertiary-fixed: #23201E;
+  --color-status-pending-text: #B8893B;
+  --color-surface-container-highest: #2D2A27;
+  --color-on-primary-container: #F2ECE2;
+  --color-secondary-fixed: #23201E;
+  --color-tertiary-fixed-dim: #2D2A27;
+  --color-on-secondary-container: #A79F95;
+  --color-primary-fixed-dim: #B8893B;
+  --color-background: #111010;
+  --color-on-secondary-fixed: #F2ECE2;
+  --color-on-primary-fixed-variant: #63212B;
+  --color-secondary-container: #23201E;
+  --color-surface-variant: #23201E;
+  --color-tertiary-container: #2D2A27;
+  --color-on-tertiary-fixed-variant: #A79F95;
+  --color-error-container: rgba(123,38,49,0.12);
   --color-on-error: #ffffff;
-  --color-status-rejected-bg: #fff0ee;
+  --color-status-rejected-bg: rgba(123,38,49,0.12);
 
   /* Font family */
-  --font-family-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-family-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-family-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-family-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-family-display: 'IBM Plex Serif', ui-serif, Georgia, serif;
+  --font-family-body: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
 
   /* Border radius */
   --radius-DEFAULT: 0.25rem;
@@ -81,23 +81,75 @@
   --radius-full: 9999px;
 }
 
-/* ─── Base Styles ───────────────────────────────────────────────────── */
+/* â”€â”€â”€ CSS Theme Tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Dark theme (default) â€” softened: #171514 bg instead of pitch black        */
+:root {
+  --bg:          #171514;
+  --surface:     #1e1e1e;
+  --surface-2:   #282828;
+  --surface-3:   #323232;
+  --text:        #F2ECE2;
+  --text-muted:  #A79F95;
+  --text-dim:    #7B736A;
+  --border:      rgba(255, 255, 255, 0.08);
+  --border-s:    rgba(255, 255, 255, 0.13);
+  --red:         #7B2631;
+  --gold:        #B8893B;
+  --nav-bg:      rgba(20, 20, 20, 0.92);
+  --input-bg:    #1C1A18;
+  --placeholder: #5E564D;
+  /* SkillChip category tokens */
+  --cat-ai-bg:         rgba(184,137,59,0.12);
+  --cat-ai-text:       #B8893B;
+  --cat-frontend-bg:   rgba(34,197,94,0.12);
+  --cat-frontend-text: #4ade80;
+  --cat-backend-bg:    rgba(123,38,49,0.12);
+  --cat-backend-text:  #7B2631;
+}
+
+/* Light theme overrides */
+[data-theme="light"] {
+  --bg:          #F5F0E8;
+  --surface:     #FFFFFF;
+  --surface-2:   #EDE6D8;
+  --surface-3:   #E0D8C8;
+  --text:        #1A1410;
+  --text-muted:  #6B6459;
+  --text-dim:    #9A9089;
+  --border:      rgba(18,16,15, 0.09);
+  --border-s:    rgba(18,16,15, 0.14);
+  --red:         #CC0000;
+  --gold:        #B8920A;
+  --nav-bg:      rgba(245, 240, 232, 0.95);
+  --input-bg:    #FFFFFF;
+  --placeholder: #BFB8AE;
+  /* SkillChip category tokens â€” light */
+  --cat-ai-bg:         #fff8e0;
+  --cat-ai-text:       #8a6400;
+  --cat-frontend-bg:   #e8f7ee;
+  --cat-frontend-text: #16833a;
+  --cat-backend-bg:    rgba(204,0,0,0.09);
+  --cat-backend-text:  #CC0000;
+}
+
+/* â”€â”€â”€ Base Styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  background-color: var(--color-canvas-parchment);
-  color: var(--color-on-background);
+  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* ─── Material Symbols ──────────────────────────────────────────────── */
+/* â”€â”€â”€ Material Symbols â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: 'Material Symbols Outlined', sans-serif;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   font-style: normal;
   font-size: 24px;
@@ -114,22 +166,22 @@ body {
   font-feature-settings: 'liga';
 }
 
-/* ─── Shared Utility Classes ────────────────────────────────────────── */
+/* â”€â”€â”€ Shared Utility Classes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .glass-nav {
-  background: rgba(245, 245, 247, 0.82);
+  background: rgba(13, 13, 13, 0.92);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 .hairline-border {
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .card-shadow {
-  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 24px -1px rgba(18,16,15, 0.4);
 }
 
-/* ─── Animations ────────────────────────────────────────────────────── */
+/* â”€â”€â”€ Animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -149,8 +201,10 @@ body {
 .spinner {
   width: 36px;
   height: 36px;
-  border: 3px solid var(--color-surface-container-high);
-  border-top-color: var(--color-primary);
+  border: 3px solid #23201E;
+  border-top-color: #7B2631;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
+
+

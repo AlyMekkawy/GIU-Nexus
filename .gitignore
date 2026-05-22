@@ -4,6 +4,7 @@
 /client/node_modules
 /dist/
 /build/
+/client/dist/
 # environment variables file ignored (requirement for project)
 .env
 .env.*
@@ -14,4 +15,4 @@
 *.iws
 *.ipr
 .DS_Store
-dist/
+

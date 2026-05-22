@@ -1,153 +1,182 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { gsap } from "gsap";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
-import "./LoginPage.css";
+import AuthBrandPanel from "../components/AuthBrandPanel";
+import CursorEffect from "../components/CursorEffect";
+import "../styles/AuthPage.css";
+
+const ENABLE_CURSOR_EFFECT = false;
 
 function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const [email,    setEmail]    = useState("");
+  const [password, setPassword] = useState("");
+  const [showPw,   setShowPw]   = useState(false);
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState(null);
 
-    const { login } = useAuth();
-    const navigate = useNavigate();
+  const { login } = useAuth();
+  const navigate  = useNavigate();
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setError(null);
-        setLoading(true);
-        try {
-            const res = await api.post("/auth/login", { email, password });
-            const token = res?.data?.token;
-            const user = res?.data?.user;
-            if (!token || !user) {
-                const fallbackMsg = res?.data?.message || "Unexpected response from server";
-                throw new Error(fallbackMsg);
-            }
-            login(token, user);
-            const redirectTo = {
-                admin:     "/admin/dashboard",
-                recruiter: "/recruiter/dashboard",
-                jobSeeker: "/",
-            }[user.role] ?? "/";
-            navigate(redirectTo, { replace: true });
-        } catch (err) {
-            const backendMessage = err?.response?.data?.message;
-            const details = backendMessage || err.message || "Login failed";
-            console.error("Login error:", err);
-            setError(details);
-        } finally {
-            setLoading(false);
-        }
+  const formRef  = useRef(null);
+  const rightRef = useRef(null);
+
+  /* ── Entrance ──────────────────────────────────────────────── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        formRef.current,
+        { x: 32, opacity: 0 },
+        { x: 0,  opacity: 1, duration: 0.55, ease: "power3.out" }
+      );
+      gsap.fromTo(
+        rightRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: "power2.out" }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
+  /* ── Navigate away with exit animation ─────────────────────── */
+  const goTo = (path) => {
+    gsap.to(formRef.current, {
+      x: -32, opacity: 0, duration: 0.3, ease: "power3.in",
+      onComplete: () => navigate(path),
+    });
+  };
+
+  /* ── Submit ─────────────────────────────────────────────────── */
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const res   = await api.post("/auth/login", { email, password });
+      const token = res?.data?.token;
+      const user  = res?.data?.user;
+      if (!token || !user) {
+        setError(res?.data?.message ?? "Unexpected server response");
+        return;
+      }
+      login(token, user);
+      const dest = { admin: "/admin/dashboard", recruiter: "/recruiter/dashboard", jobSeeker: "/" }[user.role] ?? "/";
+      navigate(dest, { replace: true });
+    } catch (err) {
+      setError(err?.response?.data?.message ?? err.message ?? "Sign in failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
+  }
 
-    return (
-        <div className="auth-container">
-            <div className="auth-left">
-                <div className="auth-left-inner">
-                    <h2 className="brand-title">GIU Nexus</h2>
-                    <p className="brand-sub">Sign in to your professional AI-powered ecosystem.</p>
+  return (
+    <div className="auth-page">
+      {ENABLE_CURSOR_EFFECT && <CursorEffect />}
 
-                    {error && <div className="auth-error">{error}</div>}
+      {/* ── Left — form ─────────────────────────────────────────── */}
+      <div className="auth-page__left" ref={formRef}>
+        <div className="auth-page__form-wrap">
 
-                    <form onSubmit={handleSubmit} aria-label="Login form" className="auth-form">
-                        <div className="field">
-                            <label className="field-label">Work Email</label>
-                            <input
-                                className="field-input"
-                                type="email"
-                                placeholder="name@university.edu"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                aria-label="Work Email"
-                            />
-                        </div>
+          {/* Logo */}
+          <Link to="/" className="auth-page__logo">
+            GIU<span className="auth-page__logo-dot">.</span>Nexus
+          </Link>
 
-                        <div className="field">
-                            <div className="field-row">
-                                <label className="field-label">Password</label>
-                                <Link to="/forgot-password" className="forgot-link">Forgot password?</Link>
-                            </div>
-                            <input
-                                className="field-input"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                aria-label="Password"
-                            />
-                        </div>
+          {/* Heading */}
+          <div className="auth-page__heading">
+            <h1 className="auth-page__title">Welcome back</h1>
+            <p className="auth-page__subtitle">Sign in to continue your career journey.</p>
+          </div>
 
-                        <button type="submit" disabled={loading} className="submit-btn" aria-disabled={loading}>
-                            {loading ? "Signing in..." : "Sign in →"}
-                        </button>
-                    </form>
-                    <div className="join-line">Don't have an account? <Link to="/register">Join the Nexus</Link></div>
-                </div>
+          {/* Error */}
+          {error && (
+            <div className="auth-page__error" role="alert">
+              <span className="material-symbols-outlined" style={{ fontSize: "18px", flexShrink: 0 }}>error</span>
+              {error}
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="auth-page__form" noValidate>
+
+            <div className="auth-page__field">
+              <label className="auth-page__label" htmlFor="login-email">Email Address</label>
+              <input
+                id="login-email"
+                className="auth-page__input"
+                type="email"
+                placeholder="you@university.edu"
+                value={email}
+                onChange={e => { setEmail(e.target.value); setError(null); }}
+                required
+                autoComplete="email"
+              />
             </div>
 
-            <div className="auth-right">
-                <div className="auth-right-top">
-                    <div className="brand-row">
-                        <div className="brand-logo" aria-hidden="true">
-                            <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                <rect width="48" height="48" rx="10" fill="#0b57b7" />
-                                <g transform="translate(11 11)" fill="#ffffff">
-                                    <circle cx="4" cy="4" r="2.2" />
-                                    <circle cx="14" cy="4" r="2.2" />
-                                    <circle cx="4" cy="14" r="2.2" />
-                                    <circle cx="14" cy="14" r="2.2" />
-                                </g>
-                            </svg>
-                        </div>
-
-                        <div className="brand-meta">
-                            <div className="brand-name">GIU Nexus</div>
-                            <div className="brand-badge">AI-POWERED CAREER EXCELLENCE</div>
-                        </div>
-                    </div>
-
-                    <h1 className="hero-title">LinkedIn <em>Meets</em> AI.</h1>
-                    <p className="hero-sub">The intelligent bridge between university talent and global opportunities, engineered for high-precision matching.</p>
-
-                    <div className="features">
-                        <div className="feature">
-                            <div className="feature-head">
-                                <div className="feature-icon" aria-hidden="true">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                        <path fill="#0b57b7" d="M12 2a2 2 0 00-2 2v1.1A7 7 0 005 12v2a7 7 0 007 7 7 7 0 007-7v-2a7 7 0 00-5-6.9V4a2 2 0 00-2-2z" />
-                                    </svg>
-                                </div>
-                                <strong>Semantic Fit</strong>
-                            </div>
-                            <div className="feature-desc">Beyond keywords. We understand your potential.</div>
-                        </div>
-
-                        <div className="feature">
-                            <div className="feature-head">
-                                <div className="feature-icon" aria-hidden="true">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                        <path fill="#0b57b7" d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
-                                    </svg>
-                                </div>
-                                <strong>Fast Track</strong>
-                            </div>
-                            <div className="feature-desc">Direct pathways to top-tier global internships.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="auth-right-bottom">
-                    <div>© {new Date().getFullYear()} GIU Nexus</div>
-                    <div className="links">
-                        <a href="#">Privacy</a>
-                        <a href="#">Terms</a>
-                    </div>
-                </div>
+            <div className="auth-page__field">
+              <div className="auth-page__field-row">
+                <label className="auth-page__label" htmlFor="login-password">Password</label>
+                <Link to="/forgot-password" className="auth-page__forgot">Forgot password?</Link>
+              </div>
+              <div className="auth-page__pw-wrap">
+                <input
+                  id="login-password"
+                  className="auth-page__input"
+                  type={showPw ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={e => { setPassword(e.target.value); setError(null); }}
+                  required
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="auth-page__pw-toggle"
+                  onClick={() => setShowPw(v => !v)}
+                  tabIndex={-1}
+                  aria-label={showPw ? "Hide password" : "Show password"}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                    {showPw ? "visibility_off" : "visibility"}
+                  </span>
+                </button>
+              </div>
             </div>
+
+            <button type="submit" className="auth-page__submit" disabled={loading}>
+              {loading ? "Signing in…" : "Sign In"}
+            </button>
+
+          </form>
+
+          {/* Switch to register */}
+          <p className="auth-page__switch">
+            Don&apos;t have an account?{" "}
+            <button className="auth-page__switch-link" onClick={() => goTo("/register")}>
+              Create one free
+            </button>
+          </p>
+
         </div>
-    );
+
+        {/* Footer */}
+        <div className="auth-page__footer">
+          <span>© {new Date().getFullYear()} GIU Nexus</span>
+          <div>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Right — brand ───────────────────────────────────────── */}
+      <div className="auth-page__right" ref={rightRef}>
+        <AuthBrandPanel />
+      </div>
+
+    </div>
+  );
 }
+
 export default LoginPage;

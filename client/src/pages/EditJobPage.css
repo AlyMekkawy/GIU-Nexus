@@ -1,8 +1,8 @@
-/* ── Page shell ─────────────────────────────────────────────────────────── */
+﻿/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-page {
     min-height: 100vh;
-    background: var(--rd-bg, #f5f5f7);
-    color: var(--rd-text, #1b1b1d);
+    background: var(--bg);
+    color: var(--text);
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -13,14 +13,14 @@
     max-width: 820px;
     width: 100%;
     margin: 0 auto;
-    padding: 2rem 28px 3rem;
+    padding: 7rem 28px 3rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     flex: 1;
 }
 
-/* ── Loading / Fetch-error states ────────────────────────────────────────── */
+/* â”€â”€ Loading / Fetch-error states â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-loading,
 .ej-fetch-error {
     display: flex;
@@ -29,24 +29,24 @@
     justify-content: center;
     gap: 14px;
     padding: 4rem 1rem;
-    color: var(--rd-muted, #6e6e73);
+    color: var(--text-muted);
     font-size: 0.9rem;
 }
 
-.ej-fetch-error { color: var(--rd-error, #b42318); }
+.ej-fetch-error { color: var(--red); }
 
 .ej-spinner {
     width: 30px;
     height: 30px;
-    border: 2.5px solid #e0e0e0;
-    border-top-color: var(--rd-primary, #004e9f);
+    border: 2.5px solid var(--border);
+    border-top-color: var(--red);
     border-radius: 50%;
     animation: ej-spin 0.75s linear infinite;
 }
 
 @keyframes ej-spin { to { transform: rotate(360deg); } }
 
-/* ── Header ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-header {
     display: flex;
     align-items: flex-start;
@@ -60,17 +60,17 @@
     width: 38px;
     height: 38px;
     flex-shrink: 0;
-    background: var(--rd-surface, #fff);
-    border: 1px solid var(--rd-border, #e8eaed);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 50%;
     cursor: pointer;
-    color: var(--rd-text, #1b1b1d);
+    color: var(--text);
     transition: background 0.15s, border-color 0.15s;
     margin-top: 4px;
 }
 .ej-back-btn:hover {
-    background: var(--rd-primary-soft, #dde8f8);
-    border-color: #93b4d8;
+    background: rgba(123,38,49, 0.12);
+    border-color: rgba(123,38,49, 0.4);
 }
 .ej-back-btn svg {
     width: 16px;
@@ -82,14 +82,15 @@
 
 .ej-heading {
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: 800;
     margin: 0 0 6px;
     letter-spacing: -0.4px;
-    color: var(--rd-text, #1b1b1d);
+    color: var(--text);
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
 }
 
 .ej-sub {
-    color: var(--rd-muted, #6e6e73);
+    color: var(--text-muted);
     font-size: 0.9rem;
     margin: 0;
     display: flex;
@@ -105,28 +106,28 @@
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    border: 1.5px solid var(--rd-border, #e8eaed);
-    background: var(--rd-surface, #fff);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
     flex-shrink: 0;
 }
 .ej-icon-box svg {
     width: 20px;
     height: 20px;
-    stroke: var(--rd-primary, #004e9f);
+    stroke: var(--red);
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
-/* ── Banners ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Banners â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-success-banner {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: var(--rd-success-soft, #e6f4ec);
-    border: 1px solid #86efac;
-    color: var(--rd-success, #16833a);
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #22c55e;
     border-radius: 10px;
     padding: 12px 16px;
     font-size: 0.9rem;
@@ -140,7 +141,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: var(--rd-success, #16833a);
+    background: #22c55e;
     flex-shrink: 0;
 }
 .ej-success-icon svg {
@@ -151,19 +152,19 @@
 }
 
 .ej-error-banner {
-    background: #fef2f2;
-    border: 1px solid #fca5a5;
-    color: var(--rd-error, #b42318);
+    background: rgba(123,38,49, 0.08);
+    border: 1px solid rgba(123,38,49, 0.3);
+    color: var(--red);
     border-radius: 10px;
     padding: 12px 16px;
     font-size: 0.9rem;
     font-weight: 500;
 }
 
-/* ── Form card ───────────────────────────────────────────────────────────── */
+/* â”€â”€ Form card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-form {
-    background: var(--rd-surface, #fff);
-    border: 1px solid var(--rd-border, #e8eaed);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
     padding: 28px 32px;
     display: flex;
@@ -186,28 +187,28 @@
 .ej-label {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--rd-text, #1b1b1d);
+    color: var(--text);
 }
 
 .ej-hint {
     font-weight: 400;
-    color: var(--rd-muted, #6e6e73);
+    color: var(--text-muted);
 }
 
 .ej-required {
-    color: var(--rd-error, #b42318);
+    color: var(--red);
     margin-left: 1px;
 }
 
 .ej-input,
 .ej-select,
 .ej-textarea {
-    border: 1px solid var(--rd-border, #e8eaed);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 10px 14px;
-    background: var(--rd-surface-soft, #fafafc);
+    background: var(--input-bg);
     font-size: 0.9rem;
-    color: var(--rd-text, #1b1b1d);
+    color: var(--text);
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
     font-family: inherit;
@@ -218,14 +219,14 @@
 .ej-input:focus,
 .ej-select:focus,
 .ej-textarea:focus {
-    border-color: #93b4d8;
-    box-shadow: 0 0 0 3px rgba(0, 78, 159, 0.08);
-    background: var(--rd-surface, #fff);
+    border-color: rgba(123,38,49, 0.5);
+    box-shadow: 0 0 0 3px rgba(123,38,49, 0.1);
+    background: var(--surface);
 }
 
 .ej-input-error {
-    border-color: #fca5a5 !important;
-    background: #fef2f2 !important;
+    border-color: rgba(123,38,49, 0.5) !important;
+    background: rgba(123,38,49, 0.06) !important;
 }
 
 .ej-textarea {
@@ -236,7 +237,7 @@
 
 .ej-select {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239A9690' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
     padding-right: 36px;
@@ -245,23 +246,23 @@
 
 .ej-field-error {
     font-size: 0.8rem;
-    color: var(--rd-error, #b42318);
+    color: var(--red);
     font-weight: 500;
 }
 
-/* Description changed notice */
+/* â”€â”€ Description changed notice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-desc-notice {
     display: inline-flex;
     align-items: center;
     gap: 5px;
     font-size: 0.8rem;
-    color: var(--rd-warning, #b26a00);
+    color: #B8893B;
     font-weight: 500;
 }
 .ej-desc-notice svg {
     width: 13px;
     height: 13px;
-    stroke: var(--rd-warning, #b26a00);
+    stroke: #B8893B;
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -269,7 +270,7 @@
     flex-shrink: 0;
 }
 
-/* ── Status toggle ───────────────────────────────────────────────────────── */
+/* â”€â”€ Status toggle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-status-group {
     display: flex;
     gap: 10px;
@@ -280,13 +281,13 @@
     align-items: center;
     gap: 8px;
     padding: 9px 18px;
-    border: 1.5px solid var(--rd-border, #e8eaed);
+    border: 1.5px solid var(--border);
     border-radius: 999px;
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--rd-muted, #6e6e73);
-    background: var(--rd-surface-soft, #fafafc);
+    color: var(--text-muted);
+    background: var(--input-bg);
     transition: border-color 0.15s, background 0.15s, color 0.15s;
     user-select: none;
 }
@@ -296,9 +297,9 @@
 }
 
 .ej-status-selected {
-    border-color: var(--rd-primary, #004e9f);
-    background: var(--rd-primary-soft, #dde8f8);
-    color: var(--rd-primary, #004e9f);
+    border-color: var(--red);
+    background: rgba(123,38,49, 0.12);
+    color: var(--red);
     font-weight: 600;
 }
 
@@ -308,19 +309,19 @@
     border-radius: 50%;
     flex-shrink: 0;
 }
-.ej-status-dot-open   { background: var(--rd-success, #16833a); }
-.ej-status-dot-closed { background: var(--rd-error, #b42318); }
+.ej-status-dot-open   { background: #22c55e; }
+.ej-status-dot-closed { background: var(--red); }
 
-/* ── AI notice ───────────────────────────────────────────────────────────── */
+/* â”€â”€ AI notice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-ai-notice {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    background: var(--rd-primary-soft, #dde8f8);
-    border: 1px solid #93b4d8;
+    background: rgba(184,137,59, 0.08);
+    border: 1px solid rgba(184,137,59, 0.3);
     border-radius: 10px;
     padding: 12px 16px;
-    color: var(--rd-primary, #004e9f);
+    color: #B8893B;
     font-size: 0.875rem;
 }
 
@@ -328,7 +329,7 @@
 .ej-ai-icon svg {
     width: 16px;
     height: 16px;
-    stroke: var(--rd-primary, #004e9f);
+    stroke: #B8893B;
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -336,17 +337,17 @@
 }
 .ej-ai-notice p { margin: 0; line-height: 1.55; }
 
-/* ── Form footer ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Form footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-form-footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     padding-top: 4px;
-    border-top: 1px solid var(--rd-border, #e8eaed);
+    border-top: 1px solid var(--border);
 }
 
 .ej-btn-primary {
-    background: var(--rd-primary, #004e9f);
+    background: var(--red);
     color: #fff;
     border: none;
     border-radius: 999px;
@@ -360,8 +361,8 @@
     transition: background 0.15s, box-shadow 0.15s;
 }
 .ej-btn-primary:hover:not(:disabled) {
-    background: #003d7a;
-    box-shadow: 0 4px 12px rgba(0, 78, 159, 0.3);
+    background: #63212B;
+    box-shadow: 0 4px 12px rgba(123,38,49, 0.35);
 }
 .ej-btn-primary:disabled {
     opacity: 0.5;
@@ -369,9 +370,9 @@
 }
 
 .ej-btn-secondary {
-    background: var(--rd-surface, #fff);
-    color: var(--rd-text, #1b1b1d);
-    border: 1px solid var(--rd-border, #e8eaed);
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
     border-radius: 999px;
     padding: 10px 24px;
     font-size: 0.9375rem;
@@ -380,8 +381,8 @@
     transition: background 0.15s, border-color 0.15s;
 }
 .ej-btn-secondary:hover:not(:disabled) {
-    background: var(--rd-surface-soft, #fafafc);
-    border-color: #93b4d8;
+    background: var(--surface-2);
+    border-color: var(--border-s);
 }
 .ej-btn-secondary:disabled {
     opacity: 0.5;
@@ -392,13 +393,13 @@
     display: inline-block;
     width: 14px;
     height: 14px;
-    border: 2px solid rgba(255,255,255,0.4);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     border-top-color: #fff;
     border-radius: 50%;
     animation: ej-spin 0.65s linear infinite;
 }
 
-/* ── Category badges ─────────────────────────────────────────────────────── */
+/* â”€â”€ Category badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ej-badge {
     display: inline-flex;
     align-items: center;
@@ -416,21 +417,22 @@
     border-radius: 50%;
     flex-shrink: 0;
 }
-.ej-badge-frontend  { background: #eafaf1; color: #1a8c4e; }
-.ej-badge-frontend::before  { background: #1a8c4e; }
-.ej-badge-backend   { background: #deeeff; color: #0057b3; }
-.ej-badge-backend::before   { background: #0057b3; }
-.ej-badge-ai        { background: #f2eeff; color: #6b3fd1; }
-.ej-badge-ai::before        { background: #6b3fd1; }
-.ej-badge-devops    { background: #e4f8f7; color: #1a8c85; }
-.ej-badge-devops::before    { background: #1a8c85; }
-.ej-badge-data      { background: #fff4e0; color: #c47000; }
-.ej-badge-data::before      { background: #c47000; }
-.ej-badge-other     { background: #f0f0f2; color: #6b7280; }
-.ej-badge-other::before     { background: #6b7280; }
+.ej-badge-frontend  { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
+.ej-badge-frontend::before  { background: #22c55e; }
+.ej-badge-backend   { background: rgba(123,38,49, 0.12); color: var(--red); }
+.ej-badge-backend::before   { background: var(--red); }
+.ej-badge-ai        { background: rgba(184,137,59, 0.12); color: #B8893B; }
+.ej-badge-ai::before        { background: #B8893B; }
+.ej-badge-devops    { background: rgba(0, 188, 212, 0.12); color: #00bcd4; }
+.ej-badge-devops::before    { background: #00bcd4; }
+.ej-badge-data      { background: rgba(184,137,59, 0.12); color: #D4A800; }
+.ej-badge-data::before      { background: #D4A800; }
+.ej-badge-other     { background: var(--surface-2); color: var(--text-muted); }
+.ej-badge-other::before     { background: var(--text-muted); }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 640px) {
+    .ej-container { padding-top: 6rem; }
     .ej-row            { grid-template-columns: 1fr; }
     .ej-form           { padding: 20px 18px; }
     .ej-heading        { font-size: 1.6rem; }
@@ -439,3 +441,6 @@
     .ej-btn-primary,
     .ej-btn-secondary  { width: 100%; justify-content: center; }
 }
+
+
+

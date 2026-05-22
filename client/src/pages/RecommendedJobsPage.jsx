@@ -1,164 +1,174 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { gsap } from 'gsap';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Spinner from '../components/Spinner';
+import JobCard from '../components/JobCard';
 import '../styles/RecommendedJobsPage.css';
 
 function RecommendedJobsPage() {
-  const [jobs, setJobs] = useState([]);
+  const [jobs,      setJobs]      = useState([]);
   const [savedJobs, setSavedJobs] = useState(new Set());
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
 
+  const pageRef = useRef(null);
+
+  // ── Entrance animation ─────────────────────────────────────────
   useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+          ['.rj-hero__label', '.rj-hero__title', '.rj-hero__subtitle'],
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out', delay: 0.1 }
+      );
+      gsap.fromTo(
+          '.rj-content',
+          { y: 18, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out', delay: 0.42 }
+      );
+    }, pageRef);
+    return () => ctx.revert();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Fetch recommended jobs ─────────────────────────────────────
+  useEffect(() => {
+    let isMounted = true;
+
     async function fetchRecommended() {
-      try {
-        const res = await api.get("/jobs/recommended");
-        setJobs(res.data.jobs || []);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      const [recommendedResult, savedResult] = await Promise.allSettled([
+        api.get('/jobs/recommended'),
+        api.get('/jobs/saved'),
+      ]);
+
+      if (!isMounted) return;
+
+      if (recommendedResult.status === 'fulfilled') {
+        setJobs(recommendedResult.value.data.jobs || []);
+      } else {
+        setError(recommendedResult.reason.message);
       }
+
+      if (savedResult.status === 'fulfilled') {
+        const savedIds = (savedResult.value.data.jobs || []).map((job) => job._id);
+        setSavedJobs(new Set(savedIds));
+      }
+
+      setLoading(false);
     }
+
     fetchRecommended();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
+  // ── Save / unsave toggle ───────────────────────────────────────
   const toggleSaveJob = async (jobId) => {
     try {
       const res = await api.post(`/jobs/${jobId}/save`);
       if (res.data.success) {
-        const newSaved = new Set(savedJobs);
-        if (res.data.saved) {
-          newSaved.add(jobId);
-        } else {
-          newSaved.delete(jobId);
-        }
-        setSavedJobs(newSaved);
+        setSavedJobs((prev) => {
+          const next = new Set(prev);
+          res.data.saved ? next.add(jobId) : next.delete(jobId);
+          return next;
+        });
       }
     } catch (err) {
       console.error('Error saving job:', err);
     }
   };
 
-  const getCategoryBadgeClass = (category) => {
-    const map = {
-      'Frontend': 'frontend',
-      'Backend': 'backend',
-      'AI/ML': 'ai',
-      'DevOps': 'devops',
-      'Data Engineering': 'data',
-      'Other': 'other',
-    };
-    return map[category] || 'other';
-  };
-
+  // ── Render ─────────────────────────────────────────────────────
   return (
-    <>
-      <Navbar />
-      <main className="recommended-main">
-        <div className="main-container">
+      <div className="rj-page" ref={pageRef}>
+        <Navbar />
 
-          {/* Hero Section */}
-          <header className="recommended-header">
-            <h1>Recommended for you</h1>
-            <p>
-              Our AI ranking engine has analyzed your profile bio and preferences to curate these
-              opportunities specifically for your career trajectory.
+        {/* ── Hero ────────────────────────────────────────────────── */}
+        <section className="rj-hero">
+          <div className="rj-hero__inner">
+          <span className="rj-hero__label">
+            <span
+                className="material-symbols-outlined"
+                style={{ fontSize: '14px', fontVariationSettings: "'FILL' 1", lineHeight: 1 }}
+            >
+              auto_awesome
+            </span>
+            AI Powered
+          </span>
+            <h1 className="rj-hero__title">Recommended for You</h1>
+            <p className="rj-hero__subtitle">
+              Our AI ranking engine has analyzed your profile bio and preferences to curate
+              these opportunities specifically for your career trajectory.
             </p>
-          </header>
+          </div>
+        </section>
 
-          {loading ? (
-            <Spinner />
-          ) : error ? (
-            <section className="empty-state">
-              <div className="empty-state-icon">
-                <span className="material-symbols-outlined">wifi_off</span>
+        {/* ── Content ─────────────────────────────────────────────── */}
+        <main className="rj-content">
+
+          {/* Loading */}
+          {loading && (
+              <div className="rj-spinner-wrap">
+                <Spinner />
               </div>
-              <h2>AI service unavailable</h2>
-              <p>The recommendation engine is temporarily unavailable. Browse all jobs instead.</p>
-              <Link to="/jobs" className="empty-state-link">Browse All Jobs</Link>
-            </section>
-          ) : jobs.length === 0 ? (
-            <section className="empty-state">
-              <div className="empty-state-icon">
-                <span className="material-symbols-outlined">person_search</span>
-              </div>
-              <h2>No recommendations yet.</h2>
-              <p>
-                Our AI needs a bit more context to find your perfect fit. Add a detailed bio to your
-                profile to unlock personalized matches.
-              </p>
-              <Link to="/profile" className="empty-state-link">Update Profile Bio</Link>
-            </section>
-          ) : (
-            <>
-              <p style={{ color: '#6e6e73', fontSize: '14px', marginBottom: '24px' }}>
-                {jobs.length} opportunities matched to your profile
-              </p>
-              <div className="job-grid">
-                {jobs.map((job) => (
-                  <div key={job._id} className="glass-card">
-                    <div className="card-header">
-                      <div className="card-avatar">
-                        {job.company?.charAt(0).toUpperCase() || 'J'}
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-                        <span className={`card-badge ${getCategoryBadgeClass(job.category)}`}>
-                          <span className="material-symbols-outlined">auto_awesome</span>
-                          {job.category || 'Other'}
-                        </span>
-                        {job.score !== undefined && job.score > 0 && (
-                          <span style={{ background: '#004e9f', color: '#fff', padding: '3px 10px', borderRadius: '9999px', fontSize: '11px', fontWeight: '700' }}>
-                            {Math.round(job.score * 100)}% Match
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <h3 className="card-title">{job.title}</h3>
-                    <p className="card-company">{job.company} · {job.location}</p>
-
-                    <div className="card-skills">
-                      {(job.requirements || []).slice(0, 3).map((skill, idx) => (
-                        <span key={idx} className="skill-tag">{skill}</span>
-                      ))}
-                    </div>
-
-                    <div className="card-footer">
-                      <Link
-                        to={`/jobs/${job._id}`}
-                        style={{ color: '#004e9f', fontWeight: '600', fontSize: '14px', textDecoration: 'none' }}
-                      >
-                        View Details →
-                      </Link>
-                      <button
-                        className="bookmark-btn"
-                        onClick={() => toggleSaveJob(job._id)}
-                        title={savedJobs.has(job._id) ? 'Unsave job' : 'Save job'}
-                      >
-                        <span
-                          className="material-symbols-outlined"
-                          style={{
-                            fontVariationSettings: savedJobs.has(job._id) ? "'FILL' 1" : "'FILL' 0",
-                            color: savedJobs.has(job._id) ? '#004e9f' : undefined
-                          }}
-                        >
-                          bookmark
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
           )}
-        </div>
-      </main>
-      <Footer />
-    </>
+
+          {/* Error */}
+          {!loading && error && (
+              <div className="rj-error">
+                <div className="rj-error__icon">
+                  <span className="material-symbols-outlined">wifi_off</span>
+                </div>
+                <h2 className="rj-error__title">AI service unavailable</h2>
+                <p className="rj-error__body">
+                  The recommendation engine is temporarily unavailable. Browse all jobs instead.
+                </p>
+                <Link to="/jobs" className="rj-error__btn">Browse All Jobs</Link>
+              </div>
+          )}
+
+          {/* Empty */}
+          {!loading && !error && jobs.length === 0 && (
+              <div className="rj-empty">
+                <div className="rj-empty__icon">
+                  <span className="material-symbols-outlined">person_search</span>
+                </div>
+                <h2 className="rj-empty__title">No recommendations yet</h2>
+                <p className="rj-empty__body">
+                  Our AI needs a bit more context to find your perfect fit. Add a detailed bio to
+                  your profile to unlock personalized matches.
+                </p>
+                <Link to="/profile" className="rj-empty__btn">Update Profile Bio</Link>
+              </div>
+          )}
+
+          {/* Results */}
+          {!loading && !error && jobs.length > 0 && (
+              <>
+                <p className="rj-count">
+                  {jobs.length} opportunit{jobs.length === 1 ? 'y' : 'ies'} matched to your profile
+                </p>
+
+                <div className="rj-grid">
+                  {jobs.map((job) => (
+                      <JobCard
+                          key={job._id}
+                          job={job}
+                          isSaved={savedJobs.has(job._id)}
+                          onToggleSave={toggleSaveJob}
+                      />
+                  ))}
+                </div>
+              </>
+          )}
+        </main>
+
+        <Footer />
+      </div>
   );
 }
 

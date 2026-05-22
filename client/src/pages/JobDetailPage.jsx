@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
 import ApplicationStatusBadge from '../components/ApplicationStatusBadge';
@@ -9,18 +10,30 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import './JobDetailPage.css';
 
+// Dual-theme category colour maps
 const CATEGORY_COLORS = {
-    'Frontend':         { bg: '#e8f7ee', color: '#16833a' },
-    'Backend':          { bg: '#e8f2ff', color: '#0066cc' },
-    'AI/ML':            { bg: '#f1eaff', color: '#6b3fd1' },
-    'DevOps':           { bg: '#ccfbf1', color: '#0f766e' },
-    'Data Engineering': { bg: '#fff7e6', color: '#b26a00' },
-    'Other':            { bg: '#f0edef', color: '#414753' },
+    dark: {
+        'Frontend':         { bg: 'rgba(34,197,94,0.12)',  color: '#4ade80' },
+        'Backend':          { bg: 'rgba(59,130,246,0.12)', color: '#60a5fa' },
+        'AI/ML':            { bg: 'rgba(255,206,0,0.12)',  color: '#FFCE00' },
+        'DevOps':           { bg: 'rgba(20,184,166,0.12)', color: '#2dd4bf' },
+        'Data Engineering': { bg: 'rgba(249,115,22,0.12)', color: '#fb923c' },
+        'Other':            { bg: 'rgba(156,163,175,0.12)',color: '#9A9690' },
+    },
+    light: {
+        'Frontend':         { bg: '#e8f7ee', color: '#16833a' },
+        'Backend':          { bg: '#e8f2ff', color: '#0066cc' },
+        'AI/ML':            { bg: '#fff8e0', color: '#8a6400' },
+        'DevOps':           { bg: '#ccfbf1', color: '#0f766e' },
+        'Data Engineering': { bg: '#fff7e6', color: '#b26a00' },
+        'Other':            { bg: '#f0edef', color: '#5a5660' },
+    },
 };
 
 function JobDetailPage() {
     const { id } = useParams();
     const { user, isAuthenticated } = useAuth();
+    const { theme } = useTheme();
     const navigate = useNavigate();
 
     const [job, setJob]                     = useState(null);
@@ -163,7 +176,8 @@ function JobDetailPage() {
 
     if (!job) return null;
 
-    const categoryStyle = CATEGORY_COLORS[job.category] || CATEGORY_COLORS['Other'];
+    const categoryPalette = CATEGORY_COLORS[theme] || CATEGORY_COLORS.dark;
+    const categoryStyle = categoryPalette[job.category] || categoryPalette['Other'];
 
     return (
         <div className="jd-page">

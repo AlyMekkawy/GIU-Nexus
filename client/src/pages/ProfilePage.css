@@ -1,0 +1,184 @@
+﻿/* â”€â”€ ProfilePage.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+.pf-page { min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-family-body), system-ui, sans-serif; }
+
+/* â”€â”€ Hero / identity section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-hero {
+  position: relative; padding: 6rem 1.5rem 0; overflow: hidden;
+}
+.pf-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px; pointer-events: none;
+}
+.pf-hero::after {
+  content: ""; position: absolute; top: -80px; right: -60px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(123,38,49,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pf-hero__inner { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; padding: 2rem 0 0; }
+
+.pf-identity { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 2rem; margin-bottom: 2rem; }
+
+/* Avatar */
+.pf-avatar-wrap { position: relative; flex-shrink: 0; }
+.pf-avatar {
+  width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
+  border: 3px solid var(--border-s); box-shadow: 0 4px 20px rgba(18,16,15,0.35);
+}
+.pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pf-avatar-initials {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
+  font-weight: 800; font-size: 2.5rem; color: #fff; user-select: none;
+  background: linear-gradient(135deg, var(--red) 0%, #6A2331 100%);
+}
+.pf-avatar-edit {
+  position: absolute; bottom: 4px; right: 4px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface-2); border: 2px solid var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.pf-avatar-edit:hover { background: var(--red); color: #fff; }
+.pf-avatar-edit .material-symbols-outlined { font-size: 14px; }
+
+/* Identity text */
+.pf-identity-text { flex: 1; min-width: 220px; padding-bottom: 4px; }
+.pf-name {
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800;
+  color: var(--text); margin: 0 0 0.3rem; letter-spacing: -0.02em; line-height: 1.1;
+}
+.pf-headline { font-size: 1.05rem; color: var(--text-muted); margin: 0 0 0.9rem; line-height: 1.4; }
+.pf-meta { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.82rem; color: var(--text-dim); }
+.pf-meta-item { display: flex; align-items: center; gap: 4px; }
+.pf-meta-item .material-symbols-outlined { font-size: 15px; }
+
+/* â”€â”€ Sub-navigation tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-tabs {
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--border);
+  max-width: 980px; margin: 0 auto;
+  overflow-x: auto; white-space: nowrap;
+}
+.pf-tab {
+  padding: 0.85rem 1.25rem 0.75rem;
+  font-size: 0.88rem; font-weight: 500; color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  text-decoration: none; cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.pf-tab:hover { color: var(--text); }
+.pf-tab.active { font-weight: 700; color: var(--red); border-bottom-color: var(--red); }
+
+/* â”€â”€ Content area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-content { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem 5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 2rem;
+  box-shadow: 0 1px 4px rgba(18,16,15,0.25);
+}
+.pf-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.pf-card__title {
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
+  font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0;
+}
+.pf-card__subtitle { font-size: 0.82rem; color: var(--text-dim); margin: 2px 0 0; }
+.pf-card__action {
+  background: none; border: none; cursor: pointer; color: var(--red);
+  font-size: 0.83rem; font-weight: 600; padding: 0; font-family: inherit;
+  transition: color 0.15s;
+}
+.pf-card__action:hover { color: var(--text); }
+
+/* â”€â”€ Bio card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-bio-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; margin: 0; white-space: pre-wrap; }
+.pf-bio-empty { color: var(--text-dim); font-size: 0.9rem; font-style: italic; margin: 0; }
+
+/* Bio editing */
+.pf-bio-textarea {
+  width: 100%; padding: 0.85rem 1rem;
+  border: 1.5px solid var(--border-s); border-radius: 12px;
+  background: var(--surface-2); color: var(--text); font-size: 0.95rem;
+  line-height: 1.7; font-family: inherit; resize: vertical;
+  transition: border-color 0.15s, box-shadow 0.15s; box-sizing: border-box;
+}
+.pf-bio-textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(123,38,49,0.1); }
+.pf-bio-hint { font-size: 0.8rem; color: var(--text-dim); font-style: italic; margin: 0.5rem 0 1rem; }
+.pf-bio-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+/* â”€â”€ Skills card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-skills-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+
+.pf-add-skill-inline { display: flex; align-items: center; gap: 0.5rem; }
+.pf-add-skill-input {
+  padding: 0.35rem 0.85rem; border-radius: 999px;
+  border: 1.5px solid var(--red); background: var(--surface-2);
+  color: var(--text); font-size: 0.82rem; font-family: inherit;
+  outline: none; width: 130px;
+}
+
+/* â”€â”€ Error banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-error-banner {
+  background: rgba(123,38,49,0.1); color: var(--red);
+  padding: 0.75rem 1rem; border-radius: 10px;
+  font-size: 0.85rem; border: 1px solid rgba(123,38,49,0.18); margin-bottom: 1rem;
+}
+
+/* â”€â”€ Shared button styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.pf-btn-primary {
+  background: var(--red); color: #fff; border: none; border-radius: 999px;
+  padding: 0.6rem 1.4rem; font-size: 0.88rem; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: background 0.15s, transform 0.1s;
+}
+.pf-btn-primary:hover:not(:disabled) { background: #63212B; transform: translateY(-1px); }
+.pf-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.pf-btn-ghost {
+  background: transparent; color: var(--text-muted);
+  border: 1px solid var(--border-s); border-radius: 999px;
+  padding: 0.6rem 1.4rem; font-size: 0.88rem; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: background 0.15s;
+}
+.pf-btn-ghost:hover { background: var(--surface-2); }
+
+.pf-btn-add-skill {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--surface-2); color: var(--text-muted);
+  border: 1px solid var(--border-s); border-radius: 999px;
+  padding: 0.38rem 1rem; font-size: 0.82rem; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s;
+}
+.pf-btn-add-skill:hover { border-color: var(--red); color: var(--red); }
+.pf-btn-add-skill .material-symbols-outlined { font-size: 15px; }
+
+.pf-btn-icon {
+  background: none; border: none; cursor: pointer; padding: 0.25rem;
+  color: var(--text-dim); transition: color 0.15s; font-family: inherit;
+  display: flex; align-items: center; font-size: 0.82rem;
+}
+.pf-btn-icon:hover { color: var(--red); }
+
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 640px) {
+  .pf-hero { padding: 5.5rem 1rem 0; }
+  .pf-content { padding: 1.5rem 1rem 4rem; }
+  .pf-card { padding: 1.25rem; border-radius: 14px; }
+  .pf-avatar { width: 88px; height: 88px; }
+  .pf-avatar-initials { font-size: 1.8rem; }
+}
+
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+[data-theme="light"] .pf-hero::before { background-image: radial-gradient(rgba(18,16,15,0.055) 1px, transparent 1px); }
+[data-theme="light"] .pf-card { box-shadow: 0 1px 6px rgba(18,16,15,0.07); }
+[data-theme="light"] .pf-avatar { border-color: var(--border-s); }
+
+
+

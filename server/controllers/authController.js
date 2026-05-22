@@ -183,7 +183,7 @@ const forgotPassword = async (req, res, next) => {
 
         user.resetPasswordOtp = crypto.createHash('sha256').update(otp).digest('hex');
         user.resetPasswordOtpExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
-        await user.save({ validateBeforeSave: false });
+        await user.save({ validateBeforeSave: true });
 
         // Build the reset link with the RAW (unhashed) token
         const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${rawToken}`;
@@ -233,7 +233,7 @@ const forgotPassword = async (req, res, next) => {
             user.resetPasswordOtp = undefined;
             user.resetPasswordOtpExpire = undefined;
 
-            await user.save({ validateBeforeSave: false });
+            await user.save({ validateBeforeSave: true });
 
             return res.status(500).json({
                 success: false,
@@ -278,7 +278,7 @@ const verifyOtp = async (req, res, next) => {
         // Clear OTP fields
         user.resetPasswordOtp = undefined;
         user.resetPasswordOtpExpire = undefined;
-        await user.save({ validateBeforeSave: false });
+        await user.save({ validateBeforeSave: true });
 
         res.status(200).json({ 
             success: true, 
@@ -337,7 +337,7 @@ const resetPassword = async (req, res, next) => {
         // Clear reset fields
         user.resetPasswordToken  = undefined;
         user.resetPasswordExpire = undefined;
-        await user.save({ validateBeforeSave: false });
+        await user.save({ validateBeforeSave: true });
 
         const token = signToken(user);
 

@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { gsap } from "gsap";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
@@ -8,109 +9,233 @@ import Spinner from "../components/Spinner";
 import Hero from "../components/Hero";
 import IntelligenceCards from "../components/IntelligenceCards";
 import JobCard from "../components/JobCard";
-import RecommendedJobCard from "../components/RecommendedJobCard";
-import TrendingJobRow from "../components/TrendingJobRow";
+import CursorEffect from "../components/CursorEffect";
+import "./HomePage.css";
+
+const ENABLE_CURSOR_EFFECT = false;
 
 function HomePage() {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
-  const [jobs, setJobs] = useState([]);
-  const [recommended, setRecommended] = useState([]);
-  const [loadingJobs, setLoadingJobs] = useState(true);
-  const [loadingRec, setLoadingRec] = useState(false);
-  const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("");
-  const [type, setType] = useState("");
+  const isJobSeeker = isAuthenticated && user?.role === "jobSeeker";
 
+  const [jobs,        setJobs]        = useState([]);
+  const [recommended, setRecommended] = useState([]);
+  const [savedJobs,   setSavedJobs]    = useState(new Set());
+  const [loadingJobs, setLoadingJobs] = useState(true);
+  const [loadingRec,  setLoadingRec]  = useState(false);
+
+  const [keyword,  setKeyword]  = useState("");
+  const [location, setLocation] = useState("");
+  const [type,     setType]     = useState("");
+
+  const recRef     = useRef(null);
+  const trendRef   = useRef(null);
+  const ctaRef     = useRef(null);
+
+  /* ── Fetch latest jobs ─────────────────────────────────────── */
   useEffect(() => {
-    async function fetchJobs() {
-      try {
-        const res = await api.get("/jobs?status=open&limit=6");
-        setJobs(res.data.jobs || []);
-      } catch (err) {
-        console.error(err.message);
-      } finally {
-        setLoadingJobs(false);
-      }
-    }
-    fetchJobs();
+    api.get("/jobs?status=open&limit=6")
+      .then(res => setJobs(res.data.jobs || []))
+      .catch(() => {})
+      .finally(() => setLoadingJobs(false));
   }, []);
 
+  /* ── Fetch saved jobs (jobSeeker only) ───────────────────────── */
   useEffect(() => {
-    if (!isAuthenticated || user?.role !== "jobSeeker") return;
-    async function fetchRecommended() {
-      setLoadingRec(true);
-      try {
-        const res = await api.get("/jobs/recommended");
-        setRecommended(res.data.jobs || []);
-      } catch (err) {
-        console.error(err.message);
-      } finally {
-        setLoadingRec(false);
-      }
+    if (!isJobSeeker) {
+      setSavedJobs(new Set());
+      return;
     }
-    fetchRecommended();
-  }, [isAuthenticated, user]);
 
+    let cancelled = false;
+
+    api.get("/jobs/saved")
+      .then((res) => {
+        if (cancelled) return;
+        const saved = res.data.jobs || [];
+        setSavedJobs(new Set(saved.map((job) => job._id)));
+      })
+      .catch(() => {
+        if (!cancelled) setSavedJobs(new Set());
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isJobSeeker]);
+
+  /* ── Fetch recommendations (jobSeeker only) ────────────────── */
+  const userId   = user?._id;
+  const userRole = user?.role;
+
+  useEffect(() => {
+    if (!isAuthenticated || userRole !== "jobSeeker") return;
+    let cancelled = false;
+    setLoadingRec(true);
+    api.get("/jobs/recommended")
+      .then(res  => { if (!cancelled) setRecommended(res.data.jobs || []); })
+      .catch(()  => { if (!cancelled) setRecommended([]); })
+      .finally(() => { if (!cancelled) setLoadingRec(false); });
+    return () => { cancelled = true; };
+  }, [isAuthenticated, userRole, userId]);
+
+  const toggleSaveJob = async (jobId) => {
+    if (!isJobSeeker) return;
+
+    try {
+      const res = await api.post(`/jobs/${jobId}/save`);
+      if (res.data.success) {
+        setSavedJobs((prev) => {
+          const next = new Set(prev);
+          if (res.data.saved) {
+            next.add(jobId);
+          } else {
+            next.delete(jobId);
+          }
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error('Error toggling saved job:', err);
+    }
+  };
+
+  /* ── Scroll-reveal for sections ────────────────────────────── */
+  useEffect(() => {
+    const targets = [recRef.current, trendRef.current, ctaRef.current].filter(Boolean);
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        gsap.fromTo(entry.target,
+          { y: 40, opacity: 0 },
+          { y: 0,  opacity: 1, duration: 0.8, ease: "power3.out" }
+        );
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.1 });
+    targets.forEach(t => obs.observe(t));
+    return () => obs.disconnect();
+  }, [loadingJobs, isAuthenticated]);
+
+  /* ── Search ────────────────────────────────────────────────── */
   function handleSearch(e) {
     e.preventDefault();
-    const params = new URLSearchParams();
-    if (keyword) params.set("keyword", keyword);
-    if (location) params.set("location", location);
-    if (type) params.set("type", type);
-    navigate(`/jobs?${params.toString()}`);
+    const p = new URLSearchParams();
+    if (keyword)  p.set("keyword",  keyword);
+    if (location) p.set("location", location);
+    if (type)     p.set("type",     type);
+    navigate(`/jobs?${p.toString()}`);
   }
 
   return (
-    <div style={{ background: '#f5f5f7', minHeight: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className="hp-page">
+      {ENABLE_CURSOR_EFFECT && <CursorEffect />}
       <Navbar />
 
-      <main style={{ paddingTop: '64px' }}>
+      <main className="hp-main">
+        {/* ── Hero ─────────────────────────────────────────────── */}
         <Hero
-          keyword={keyword} setKeyword={setKeyword}
+          keyword={keyword}   setKeyword={setKeyword}
           location={location} setLocation={setLocation}
-          type={type} setType={setType}
+          type={type}         setType={setType}
           onSearch={handleSearch}
         />
 
+        {/* ── Platform features ────────────────────────────────── */}
         <IntelligenceCards />
 
-        {/* Recommended for You */}
-        {isAuthenticated && user?.role === "jobSeeker" && (
-          <section style={{ maxWidth: '1200px', margin: '0 auto 80px', padding: '0 24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px' }}>
+        {/* ── Recommended (job seekers only) ───────────────────── */}
+        {isJobSeeker && (
+          <section ref={recRef} className="hp-section">
+            <div className="hp-section__head">
               <div>
-                <h2 style={{ fontSize: '34px', fontWeight: '600', margin: '0 0 4px', color: '#1b1b1d' }}>Recommended for You</h2>
-                <p style={{ fontSize: '17px', color: '#414753', margin: 0 }}>AI-curated opportunities based on your profile.</p>
+                <span className="hp-section__eyebrow hp-section__eyebrow--gold">
+                  <span className="material-symbols-outlined" style={{ fontSize: "14px", fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+                  AI Curated
+                </span>
+                <h2 className="hp-section__title">Recommended for You</h2>
+                <p className="hp-section__sub">Opportunities matched to your skills and profile.</p>
               </div>
-              <Link to="/jobs/recommended" style={{ color: '#004e9f', fontWeight: '600', textDecoration: 'none' }}>View All</Link>
+              <Link to="/jobs/recommended" className="hp-section__link">View all →</Link>
             </div>
 
-            {loadingRec ? <Spinner /> : recommended.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '64px 24px', background: '#fff', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '48px', color: '#727784', display: 'block', marginBottom: '16px' }}>auto_awesome</span>
-                <p style={{ color: '#414753', margin: '0 0 16px' }}>No recommendations yet.</p>
-                <Link to="/profile" style={{ color: '#004e9f', fontWeight: '600', textDecoration: 'none' }}>Extract skills from your bio →</Link>
+            {loadingRec ? (
+              <div className="hp-center"><Spinner /></div>
+            ) : recommended.length === 0 ? (
+              <div className="hp-empty">
+                <span className="material-symbols-outlined hp-empty__icon">auto_awesome</span>
+                <p className="hp-empty__text">No recommendations yet.</p>
+                <Link to="/profile/edit" className="hp-empty__link">Complete your profile →</Link>
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-                {recommended.slice(0, 3).map(job => <RecommendedJobCard key={job._id} job={job} />)}
+              <div className="hp-grid hp-grid--3">
+                {recommended.slice(0, 3).map(job => (
+                  <JobCard
+                    key={job._id}
+                    job={job}
+                    isSaved={savedJobs.has(job._id)}
+                    onToggleSave={isJobSeeker ? toggleSaveJob : undefined}
+                  />
+                ))}
               </div>
             )}
           </section>
         )}
 
-        {/* Trending Jobs */}
-        <section style={{ maxWidth: '1200px', margin: '0 auto 80px', padding: '0 24px' }}>
-          <h2 style={{ fontSize: '34px', fontWeight: '600', margin: '0 0 24px', color: '#1b1b1d' }}>Trending Jobs</h2>
-          {loadingJobs ? <Spinner /> : jobs.length === 0 ? (
-            <p style={{ color: '#414753', textAlign: 'center', padding: '32px 0' }}>No jobs available.</p>
+        {/* ── Trending Jobs ─────────────────────────────────────── */}
+        <section ref={trendRef} className="hp-section">
+          <div className="hp-section__head">
+            <div>
+              <span className="hp-section__eyebrow">Latest</span>
+              <h2 className="hp-section__title">Trending Jobs</h2>
+              <p className="hp-section__sub">Fresh opportunities posted this week.</p>
+            </div>
+            <Link to="/jobs" className="hp-section__link">Browse all →</Link>
+          </div>
+
+          {loadingJobs ? (
+            <div className="hp-center"><Spinner /></div>
+          ) : jobs.length === 0 ? (
+            <div className="hp-empty">
+              <span className="material-symbols-outlined hp-empty__icon">work_off</span>
+              <p className="hp-empty__text">No jobs available right now.</p>
+            </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-              {jobs.slice(0, 3).map(job => <TrendingJobRow key={job._id} job={job} />)}
+            <div className="hp-grid hp-grid--3">
+              {jobs.slice(0, 6).map(job => (
+                <JobCard
+                  key={job._id}
+                  job={job}
+                  isSaved={savedJobs.has(job._id)}
+                  onToggleSave={isJobSeeker ? toggleSaveJob : undefined}
+                />
+              ))}
             </div>
           )}
         </section>
+
+        {/* ── CTA (guests only) ─────────────────────────────────── */}
+        {!isAuthenticated && (
+          <section ref={ctaRef} className="hp-cta-wrap">
+            <div className="hp-cta">
+              <div className="hp-cta__glow" aria-hidden />
+              <div className="hp-cta__stripe" aria-hidden />
+
+              <div className="hp-cta__content">
+                <span className="hp-cta__eyebrow">Join 1,200+ Students</span>
+                <h2 className="hp-cta__title">Start Your Career Journey Today</h2>
+                <p className="hp-cta__sub">
+                  Create a free account and let AI match you with the best opportunities at top companies.
+                </p>
+                <div className="hp-cta__actions">
+                  <Link to="/register" className="hp-cta__btn-primary">Create Free Account</Link>
+                  <Link to="/jobs"     className="hp-cta__btn-ghost">Browse Jobs</Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
 
       <Footer />

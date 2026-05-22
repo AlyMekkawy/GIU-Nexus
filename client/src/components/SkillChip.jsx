@@ -19,18 +19,9 @@ function getCategory(label = '') {
 }
 
 const CHIP_STYLES = {
-  ai: {
-    background: 'var(--color-cat-ai-bg)',
-    color: 'var(--color-cat-ai-text)',
-  },
-  frontend: {
-    background: 'var(--color-cat-frontend-bg)',
-    color: 'var(--color-cat-frontend-text)',
-  },
-  backend: {
-    background: 'var(--color-cat-backend-bg)',
-    color: 'var(--color-cat-backend-text)',
-  },
+  ai:       { background: 'var(--cat-ai-bg)',       color: 'var(--cat-ai-text)'       },
+  frontend: { background: 'var(--cat-frontend-bg)', color: 'var(--cat-frontend-text)' },
+  backend:  { background: 'var(--cat-backend-bg)',  color: 'var(--cat-backend-text)'  },
 };
 
 function SkillChip({ label, onRemove }) {

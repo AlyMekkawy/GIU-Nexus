@@ -1,16 +1,17 @@
-.save-job-btn {
+﻿.save-job-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     padding: 0.55rem 1.1rem;
-    border: 2px solid #d1d5db;
+    border: 2px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
-    background: #fff;
-    color: #6b7280;
+    background: #1C1A18;
+    color: #A79F95;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.18s ease;
+    font-family: inherit;
 }
 
 .save-job-btn svg {
@@ -20,8 +21,9 @@
 }
 
 .save-job-btn:hover:not(:disabled) {
-    border-color: #2563eb;
-    color: #2563eb;
+    border-color: #B8893B;
+    color: #B8893B;
+    background: rgba(184,137,59, 0.08);
 }
 
 .save-job-btn:hover:not(:disabled) svg {
@@ -29,12 +31,13 @@
 }
 
 .save-job-btn.saved {
-    border-color: #2563eb;
-    background: #eff6ff;
-    color: #2563eb;
+    border-color: #B8893B;
+    background: rgba(184,137,59, 0.10);
+    color: #B8893B;
 }
 
 .save-job-btn:disabled {
     opacity: 0.45;
     cursor: not-allowed;
 }
+

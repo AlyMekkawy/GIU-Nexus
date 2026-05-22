@@ -1,137 +1,227 @@
-/* ── SavedJobsPage.css ───────────────────────────────────────────── */
+﻿/* â”€â”€ SavedJobsPage.css â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-.saved-jobs-page {
+/* â”€â”€ Page shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-family-body), system-ui, sans-serif;
+}
+
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-hero {
+  position: relative;
+  padding: 7rem 1.5rem 3rem;
+  overflow: hidden;
+}
+
+/* dot-grid texture */
+.sj-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+/* red glow top-left */
+.sj-hero::after {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: -60px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(123,38,49,0.09) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.sj-hero__inner {
+  position: relative;
+  z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
-  min-height: 70vh;
 }
 
-/* Header */
-.saved-jobs-header {
-  margin-bottom: 2rem;
-}
-
-.saved-jobs-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  display: flex;
+.sj-hero__label {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.25rem;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: rgba(123,38,49,0.09);
+  border: 1px solid rgba(123,38,49,0.18);
+  border-radius: 999px;
+  padding: 0.28rem 0.85rem;
+  margin-bottom: 1.1rem;
 }
 
-.bookmark-icon {
-  font-size: 1.75rem;
+.sj-hero__title {
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
 }
 
-.saved-jobs-subtitle {
-  color: #6b7280;
+.sj-hero__subtitle {
+  font-size: 1.0625rem;
+  color: var(--text-muted);
   margin: 0;
-  font-size: 0.95rem;
 }
 
-/* Count */
-.saved-jobs-count {
-  color: #4b5563;
-  font-size: 0.9rem;
-  margin: 0 0 1.25rem;
+/* â”€â”€ Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
 }
 
-/* Grid */
-.saved-jobs-grid {
+/* â”€â”€ Count bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-count {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  margin: 0 0 1.5rem;
+}
+
+/* â”€â”€ Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
-/* Loading */
-.saved-jobs-loading {
+/* â”€â”€ Spinner wrap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-spinner-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  padding: 4rem 0;
-  color: #6b7280;
+  padding: 5rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
-/* Error */
-.saved-jobs-error {
+/* â”€â”€ Error state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-error {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  padding: 4rem 0;
-  color: #b91c1c;
+  padding: 4rem 1rem;
   text-align: center;
 }
 
-.retry-btn {
-  padding: 0.5rem 1.25rem;
-  border: 1.5px solid #b91c1c;
-  border-radius: 6px;
+.sj-error__text {
+  color: var(--red);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.sj-retry-btn {
+  padding: 0.55rem 1.4rem;
+  border: 1.5px solid var(--red);
+  border-radius: 999px;
   background: transparent;
-  color: #b91c1c;
+  color: var(--red);
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
 }
 
-.retry-btn:hover {
-  background: #b91c1c;
+.sj-retry-btn:hover {
+  background: var(--red);
   color: #fff;
 }
 
-/* Empty state */
-.saved-jobs-empty {
+/* â”€â”€ Empty state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sj-empty {
+  background: var(--surface);
+  border: 1px dashed var(--border-s);
+  border-radius: 24px;
+  padding: 5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  padding: 5rem 1rem;
   text-align: center;
+  gap: 0;
 }
 
-.empty-icon {
-  font-size: 3.5rem;
+.sj-empty__icon-wrap {
+  width: 72px;
+  height: 72px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
 }
 
-.saved-jobs-empty h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin: 0;
+.sj-empty__icon-wrap .material-symbols-outlined {
+  font-size: 34px;
+  color: var(--text-dim);
+  font-variation-settings: 'FILL' 1;
 }
 
-.saved-jobs-empty p {
-  color: #6b7280;
-  max-width: 360px;
-  margin: 0;
+.sj-empty__title {
+  font-family: var(--font-family-display), ui-serif, Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.5rem;
 }
 
-.browse-btn {
-  margin-top: 0.5rem;
-  padding: 0.6rem 1.5rem;
-  background: #4f46e5;
+.sj-empty__body {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 380px;
+  margin: 0 0 1.75rem;
+  line-height: 1.6;
+}
+
+.sj-empty__btn {
+  display: inline-block;
+  padding: 0.7rem 1.75rem;
+  background: var(--red);
   color: #fff;
-  border-radius: 8px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s;
+  transition: background 0.15s, transform 0.15s;
+  box-shadow: 0 4px 14px rgba(123,38,49,0.26);
 }
 
-.browse-btn:hover {
-  background: #4338ca;
+.sj-empty__btn:hover {
+  background: #63212B;
+  transform: translateY(-1px);
 }
 
-/* Responsive */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 1024px) { .sj-grid { grid-template-columns: repeat(2, 1fr); } }
+
 @media (max-width: 640px) {
-  .saved-jobs-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .saved-jobs-title {
-    font-size: 1.5rem;
-  }
+  .sj-hero    { padding: 6rem 1rem 2rem; }
+  .sj-content { padding: 0 1rem 4rem; }
+  .sj-grid    { grid-template-columns: 1fr; }
 }
+
+/* â”€â”€ Light mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+[data-theme="light"] .sj-hero::before {
+  background-image: radial-gradient(rgba(18,16,15,0.055) 1px, transparent 1px);
+}
+
+[data-theme="light"] .sj-hero::after {
+  background: radial-gradient(circle, rgba(204,0,0,0.07) 0%, transparent 68%);
+}
+
+

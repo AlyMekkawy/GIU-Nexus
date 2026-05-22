@@ -1,197 +1,153 @@
-import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
-const ShareIcon = () => (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="18" cy="5" r="3"/>
-        <circle cx="6" cy="12" r="3"/>
-        <circle cx="18" cy="19" r="3"/>
-        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-    </svg>
-);
-
-const GlobeIcon = () => (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="2" y1="12" x2="22" y2="12"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-    </svg>
-);
+const TEAM_MEMBERS = [
+    { name: "Aly Moataz Elmekawy 🧠", href: "https://www.linkedin.com/in/aly-moataz-elmekawy/" },
+    { name: "Khaled Waleed Abbas 🐱‍💻", href: "https://www.linkedin.com/in/khaled-waleed-204294279/" },
+    { name: "Adham Walaa Elewa 👶", href: "https://www.linkedin.com/in/adham-elewa" },
+    { name: "Youssef Amr Soliman 🐧", href: "https://www.linkedin.com/in/youssef-soliman-463803368/" },
+    { name: "Mahmoud Wael 👻", href: "https://www.linkedin.com/in/mahmoud-wael-46a51a407" },
+    { name: "Sam Shady Bostawros 🕴", href: "https://github.com/SamBostawros" },
+    { name: "Tarek Wael Aboelsaeoud 🚪", href: "https://www.linkedin.com/in/tarek-aboelseoud/" },
+    { name: "Samir Waleed 👳‍♂️", href: "https://www.linkedin.com/in/samir-waleed-922a4435a/" },
+    { name: "Khaled Ahmed Elmasry ⚡", href: "https://www.linkedin.com/in/khaled-elmasry-b2414524b/" },
+    { name: "David Ramy 🙂", href: "https://www.linkedin.com/in/david-ramy-86a559339/" },
+];
 
 const Footer = () => {
+    const { theme } = useTheme();
+    const isLight = theme === "light";
+    const brandLogo = "/fullLogoB.png";
+
     return (
         <>
             <style>{`
         .giu-footer {
-          background: #ffffff;
-          border-top: 1px solid #e8eaed;
-          font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+          background: ${isLight ? "#EDE6D8" : "#181818"};
+          border-top: 1px solid ${isLight ? "rgba(18,16,15,0.08)" : "rgba(255,255,255,0.08)"};
+          font-family: var(--font-family-body), system-ui, sans-serif;
         }
 
         .giu-footer__inner {
-          max-width: 1200px;
+          max-width: 1320px;
           margin: 0 auto;
-          padding: 48px 24px 32px;
-          display: grid;
-          grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
-          gap: 40px;
-        }
-
-        /* Brand column */
-        .giu-footer__brand-name {
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: #1a1f2e;
-          letter-spacing: -0.3px;
-          margin: 0 0 10px;
-        }
-
-        .giu-footer__brand-desc {
-          font-size: 0.875rem;
-          color: #6b7280;
-          line-height: 1.6;
-          margin: 0;
-          max-width: 220px;
-        }
-
-        /* Link columns */
-        .giu-footer__col-title {
-          font-size: 0.875rem;
-          font-weight: 600;
-          color: #1a1f2e;
-          margin: 0 0 14px;
-        }
-
-        .giu-footer__col-links {
-          list-style: none;
-          margin: 0;
-          padding: 0;
+          padding: 12px 12px 32px;
           display: flex;
           flex-direction: column;
-          gap: 10px;
-        }
-
-        .giu-footer__col-link {
-          text-decoration: none;
-          font-size: 0.875rem;
-          color: #6b7280;
-          transition: color 0.15s ease;
-        }
-
-        .giu-footer__col-link:hover {
-          color: #1a7a6e;
-        }
-
-        /* Copyright column */
-        .giu-footer__copyright-col {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 16px;
-        }
-
-        .giu-footer__copyright {
-          font-size: 0.8125rem;
-          color: #6b7280;
-          line-height: 1.5;
-          text-align: right;
-          margin: 0;
-        }
-
-        .giu-footer__social {
-          display: flex;
-          gap: 8px;
-        }
-
-        .giu-footer__social-btn {
-          width: 34px;
-          height: 34px;
-          border-radius: 8px;
-          border: 1px solid #e8eaed;
-          background: transparent;
-          cursor: pointer;
-          display: flex;
           align-items: center;
+          gap: 1px;
+        }
+
+        .giu-footer__brand {
+          width: 100%;
+          display: flex;
           justify-content: center;
-          color: #6b7280;
-          transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
-        .giu-footer__social-btn:hover {
-          background: #eaf4f2;
-          border-color: #1a7a6e;
-          color: #1a7a6e;
+        .giu-footer__brand-logo {
+          display: block;
+          width: min(560px, 92vw);
+          height: auto;
+          object-fit: contain;
         }
 
-        /* Responsive */
+        .giu-footer__team {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 5px;
+        }
+
+        .giu-footer__team-label {
+          margin: 0;
+          font-size: 0.78rem;
+          font-weight: 800;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: ${isLight ? "#8A6400" : "#C89A3D"};
+        }
+
+        .giu-footer__team-list {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+          max-width: 980px;
+        }
+
+        .giu-footer__team-chip {
+          display: inline-flex;
+          align-items: center;
+          padding: 7px 12px;
+          border-radius: 999px;
+          text-decoration: none;
+          border: 1px solid ${isLight ? "rgba(26,20,16,0.12)" : "rgba(255,255,255,0.1)"};
+          background: ${isLight ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.045)"};
+          color: ${isLight ? "#1A1410" : "#F4EEE6"};
+          font-size: 0.86rem;
+          font-weight: 600;
+          white-space: nowrap;
+          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .giu-footer__team-chip:hover,
+        .giu-footer__team-chip:focus-visible {
+          transform: translateY(-1px);
+          border-color: ${isLight ? "rgba(26,20,16,0.22)" : "rgba(255,255,255,0.2)"};
+          background: ${isLight ? "rgba(255,255,255,0.78)" : "rgba(255,255,255,0.08)"};
+          outline: none;
+        }
+
         @media (max-width: 768px) {
           .giu-footer__inner {
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
+            padding: 14px 10px 10px;
+            gap: 16px;
           }
 
-          .giu-footer__copyright-col {
-            align-items: flex-start;
-          }
-
-          .giu-footer__copyright {
-            text-align: left;
+          .giu-footer__brand-logo {
+            width: min(560px, 94vw);
           }
         }
 
         @media (max-width: 480px) {
-          .giu-footer__inner {
-            grid-template-columns: 1fr;
-            gap: 28px;
-            padding: 36px 20px 28px;
+          .giu-footer__brand-logo {
+            width: 94vw;
+          }
+
+          .giu-footer__team-chip {
+            font-size: 0.78rem;
+            padding: 6px 10px;
           }
         }
       `}</style>
 
             <footer className="giu-footer">
                 <div className="giu-footer__inner">
-
-                    {/* Brand */}
-                    <div>
-                        <p className="giu-footer__brand-name">GIU Nexus</p>
-                        <p className="giu-footer__brand-desc">
-                            Connecting top-tier university talent with global career opportunities through AI-driven intelligence.
-                        </p>
+                    <div className="giu-footer__brand">
+                        <img
+                            className="giu-footer__brand-logo"
+                            src={brandLogo}
+                            alt="GIU Nexus"
+                        />
                     </div>
 
-                    {/* Platform */}
-                    <div>
-                        <p className="giu-footer__col-title">Platform</p>
-                        <ul className="giu-footer__col-links">
-                            <li><Link to="/about" className="giu-footer__col-link">About Us</Link></li>
-                            <li><Link to="/privacy" className="giu-footer__col-link">Privacy Policy</Link></li>
-                        </ul>
-                    </div>
+                    <div className="giu-footer__team">
+                        <p className="giu-footer__team-label">Team</p>
 
-                    {/* Support */}
-                    <div>
-                        <p className="giu-footer__col-title">Support</p>
-                        <ul className="giu-footer__col-links">
-                            <li><Link to="/terms" className="giu-footer__col-link">Terms of Service</Link></li>
-                            <li><Link to="/help" className="giu-footer__col-link">Help Center</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Copyright + Social */}
-                    <div className="giu-footer__copyright-col">
-                        <p className="giu-footer__copyright">
-                            © 2024 GIU Nexus. AI-Powered Career Excellence.
-                        </p>
-                        <div className="giu-footer__social">
-                            <button className="giu-footer__social-btn" aria-label="Share">
-                                <ShareIcon />
-                            </button>
-                            <button className="giu-footer__social-btn" aria-label="Website">
-                                <GlobeIcon />
-                            </button>
+                        <div className="giu-footer__team-list" aria-label="Team members">
+                            {TEAM_MEMBERS.map(({ name, href }) => (
+                                <a
+                                    key={name}
+                                    className="giu-footer__team-chip"
+                                    href={href}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >
+                                    {name}
+                                </a>
+                            ))}
                         </div>
                     </div>
-
                 </div>
             </footer>
         </>

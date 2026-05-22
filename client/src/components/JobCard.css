@@ -1,79 +1,166 @@
-/* ── JobCard.css ─────────────────────────────────────────────────── */
+﻿/* ─────────────────────────────────────────────
+   JobCard.css
+   Styles scoped to the .rj-card component and
+   its children, extracted from RecommendedJobsPage.css
+   ───────────────────────────────────────────── */
 
-.job-card {
-  position: relative;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.25rem 1.25rem 1rem;
-  cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.15s;
+/* ── Card ────────────────────────────────────── */
+.rj-card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 16px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 10px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.job-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+.rj-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
 }
 
-.job-card:focus-visible {
-  outline: 2px solid #4f46e5;
-  outline-offset: 2px;
-}
-
-/* Category badge */
-.job-card__category {
-  align-self: flex-start;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-/* Title */
-.job-card__title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0;
-  line-height: 1.3;
-}
-
-/* Company */
-.job-card__company {
-  font-size: 0.88rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-/* Meta row */
-.job-card__meta {
+/* ── Card header ─────────────────────────────── */
+.rj-card__head {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 0.25rem;
 }
 
-.job-card__meta-item {
-  font-size: 0.82rem;
-  color: #4b5563;
+.rj-card__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--avatar-bg, #f3f4f6);
+  color: var(--avatar-fg, #374151);
+  font-size: 18px;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-/* Application status */
-.job-card__app-status {
-  margin-top: 0.25rem;
+.rj-card__badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-left: auto;
 }
 
-/* Save button — pinned to top-right */
-.job-card__save {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+/* ── Badges ──────────────────────────────────── */
+.rj-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.rj-badge .material-symbols-outlined {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Category colour variants */
+.rj-badge--frontend      { background: #eff6ff; color: #2563eb; }
+.rj-badge--backend       { background: #f0fdf4; color: #16a34a; }
+.rj-badge--ai            { background: #faf5ff; color: #9333ea; }
+.rj-badge--devops        { background: #fff7ed; color: #ea580c; }
+.rj-badge--data          { background: #ecfeff; color: #0891b2; }
+.rj-badge--other         { background: #f9fafb; color: #6b7280; }
+
+/* Match-score badge */
+.rj-badge--score {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  font-weight: 700;
+}
+
+/* ── Card body ───────────────────────────────── */
+.rj-card__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary, #111827);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.rj-card__company {
+  font-size: 14px;
+  color: var(--text-secondary, #6b7280);
+  margin: 0;
+}
+
+/* ── Skill tags ──────────────────────────────── */
+.rj-card__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.rj-skill {
+  background: var(--skill-bg, #f3f4f6);
+  color: var(--skill-fg, #374151);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* ── Card footer ─────────────────────────────── */
+.rj-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.rj-card__link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent, #2563eb);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.rj-card__link:hover {
+  opacity: 0.75;
+}
+
+.rj-card__bookmark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--text-secondary, #9ca3af);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.rj-card__bookmark:hover {
+  color: var(--accent, #2563eb);
+  background: var(--hover-bg, #eff6ff);
+}
+
+.rj-card__bookmark.saved {
+  color: var(--accent, #2563eb);
+}
+
+.rj-card__bookmark .material-symbols-outlined {
+  font-size: 22px;
 }
