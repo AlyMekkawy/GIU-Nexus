@@ -18,7 +18,7 @@ const CATEGORY_STYLES = {
     Other:              "cj-badge cj-badge-other",
 };
 
-const JOB_TYPES = ["full-time", "part-time", "internship", "contract", "freelance"];
+const JOB_TYPES = ["full-time", "part-time", "internship"];
 
 const EMPTY_FORM = {
     title: "",
