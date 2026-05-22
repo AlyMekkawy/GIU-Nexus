@@ -1,39 +1,44 @@
 ﻿/* MetricCard.css â€” Summary metric card used in Admin & Recruiter dashboards */
 
-.metric-card {
-  background: #1C1A18;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  box-shadow: 0 1px 4px rgba(18,16,15, 0.4);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 148px;
+ .metric-card {
+   background: var(--surface);
+   backdrop-filter: blur(20px);
+   -webkit-backdrop-filter: blur(20px);
+   border: 1px solid var(--border);
+   border-radius: 18px;
+   box-shadow: 0 1px 4px rgba(18,16,15, 0.4);
+   padding: 24px;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   min-height: 148px;
+ }
+
+[data-theme="light"] .metric-card {
+  box-shadow: 0 1px 6px rgba(18,16,15, 0.07);
 }
 
 .metric-card-icon {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: rgba(123,38,49, 0.12);
+  background: var(--cat-backend-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
+  color: var(--red);
 }
 
 .metric-card-icon svg {
   width: 20px;
   height: 20px;
-  fill: #7B2631;
+  fill: currentColor;
 }
 
 .metric-card-label {
   font-size: 13px;
-  color: #A79F95;
+  color: var(--text-muted);
   font-weight: 500;
   letter-spacing: 0.01em;
   font-family: var(--font-family-body), system-ui, sans-serif;
@@ -43,7 +48,7 @@
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #F2ECE2;
+  color: var(--text);
   line-height: 1;
   margin: 8px 0 6px;
   font-family: var(--font-family-display), ui-serif, Georgia, serif;
@@ -58,10 +63,10 @@
   font-family: var(--font-family-body), system-ui, sans-serif;
 }
 
-.metric-card-trend.up    { color: #22c55e; }
-.metric-card-trend.warn  { color: #B8893B; }
-.metric-card-trend.down  { color: #7B2631; }
-.metric-card-trend.muted { color: #A79F95; }
+.metric-card-trend.up    { color: var(--cat-frontend-text); }
+.metric-card-trend.warn  { color: var(--gold); }
+.metric-card-trend.down  { color: var(--red); }
+.metric-card-trend.muted { color: var(--text-muted); }
 
 
 

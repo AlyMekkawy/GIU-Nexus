@@ -52,9 +52,16 @@ export default function SavedJobsPage() {
 
   useEffect(() => { fetchSavedJobs(); }, [fetchSavedJobs]);
 
-  // Optimistic unsave — remove card from list when user clicks Unsave
-  const handleUnsave = (jobId) => {
-    setSavedJobs((prev) => prev.filter((j) => (j._id ?? j.id) !== jobId));
+  // Toggle bookmark state using the same backend endpoint as other job cards.
+  const handleToggleSave = async (jobId) => {
+    try {
+      const res = await api.post(`/jobs/${jobId}/save`);
+      if (res.data.success && res.data.saved === false) {
+        setSavedJobs((prev) => prev.filter((j) => (j._id ?? j.id) !== jobId));
+      }
+    } catch (err) {
+      console.error('Error toggling saved job:', err);
+    }
   };
 
   // ── Render ─────────────────────────────────────────────────────
@@ -127,8 +134,8 @@ export default function SavedJobsPage() {
                 <JobCard
                   key={job._id ?? job.id}
                   job={job}
-                  initialSaved={true}
-                  onUnsave={handleUnsave}
+                  isSaved={true}
+                  onToggleSave={handleToggleSave}
                 />
               ))}
             </div>

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { gsap } from "gsap";
 import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import JobCard from "../components/JobCard";
@@ -32,28 +33,10 @@ const STATUS_OPTIONS = [
 
 const PAGE_LIMIT = 6;
 
-// Helper to format date
-function formatDate(isoDate) {
-  if (!isoDate) return "";
-  const date = new Date(isoDate);
-  if (isNaN(date)) return "";
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins  = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays  = Math.floor(diffMs / 86400000);
-
-  if (diffMins  < 1)  return "Just now";
-  if (diffMins  < 60) return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
-  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-  if (diffDays  === 1) return "1 day ago";
-  if (diffDays  < 7)  return `${diffDays} days ago`;
-  if (diffDays  < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? "s" : ""} ago`;
-  return date.toLocaleDateString();
-}
-
 function JobListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isAuthenticated, user } = useAuth();
+  const canSaveJobs = isAuthenticated && user?.role === "jobSeeker";
 
   // Filters
   const [keyword,  setKeyword]  = useState(searchParams.get("keyword")   || "");
@@ -64,6 +47,7 @@ function JobListPage() {
 
   // Jobs + pagination
   const [jobs,       setJobs]       = useState([]);
+  const [savedJobs,  setSavedJobs]   = useState(new Set());
   const [loading,    setLoading]    = useState(true);
   const [error,      setError]      = useState(null);
   const [page,       setPage]       = useState(parseInt(searchParams.get("page")) || 1);
@@ -104,17 +88,43 @@ function JobListPage() {
       params.set("page",  page);
       params.set("limit", PAGE_LIMIT);
 
-      const res = await api.get(`/jobs?${params.toString()}`);
-      setJobs(res.data.jobs || []);
-      setTotal(res.data.total || 0);
-      setTotalPages(Math.ceil((res.data.total || 0) / PAGE_LIMIT));
+      const requests = [api.get(`/jobs?${params.toString()}`)];
+      if (canSaveJobs) {
+        requests.push(api.get('/jobs/saved'));
+      }
+
+      const [jobsResult, savedResult] = await Promise.allSettled(requests);
+
+      if (jobsResult.status !== "fulfilled") {
+        const reason = jobsResult.reason;
+        setError(reason?.message || "Failed to load jobs");
+        setJobs([]);
+        setSavedJobs(new Set());
+        setTotal(0);
+        setTotalPages(0);
+        return;
+      }
+
+      setJobs(jobsResult.value.data.jobs || []);
+      setTotal(jobsResult.value.data.total || 0);
+      setTotalPages(Math.ceil((jobsResult.value.data.total || 0) / PAGE_LIMIT));
+
+      if (canSaveJobs && savedResult?.status === "fulfilled") {
+        const savedIds = (savedResult.value.data.jobs || []).map((job) => job._id);
+        setSavedJobs(new Set(savedIds));
+      } else if (!canSaveJobs) {
+        setSavedJobs(new Set());
+      }
     } catch (err) {
       setError(err.message || "Failed to load jobs");
       setJobs([]);
+      setSavedJobs(new Set());
+      setTotal(0);
+      setTotalPages(0);
     } finally {
       setLoading(false);
     }
-  }, [keyword, location, type, status, category, page]);
+  }, [keyword, location, type, status, category, page, canSaveJobs]);
 
   useEffect(() => { fetchJobs(); }, [fetchJobs]);
 
@@ -151,6 +161,27 @@ function JobListPage() {
   };
 
   const hasActiveFilters = keyword || location || type || category;
+
+  const toggleSaveJob = async (jobId) => {
+    if (!canSaveJobs) return;
+
+    try {
+      const res = await api.post(`/jobs/${jobId}/save`);
+      if (res.data.success) {
+        setSavedJobs((prev) => {
+          const next = new Set(prev);
+          if (res.data.saved) {
+            next.add(jobId);
+          } else {
+            next.delete(jobId);
+          }
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error('Error toggling saved job:', err);
+    }
+  };
 
   // ── Pagination helpers ─────────────────────────────────────────
   const renderPageNumbers = () => {
@@ -335,7 +366,12 @@ function JobListPage() {
         {!loading && !error && jobs.length > 0 && (
           <div className="jl-grid">
             {jobs.map((job) => (
-              <JobCard key={job._id} job={job} initialSaved={job.saved || false} />
+              <JobCard
+                key={job._id}
+                job={job}
+                isSaved={savedJobs.has(job._id)}
+                onToggleSave={canSaveJobs ? toggleSaveJob : undefined}
+              />
             ))}
           </div>
         )}

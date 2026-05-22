@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const JobPost = require('../models/JobPost');
-const Application = require('../models/Application');
+const Application = require('../models/application');
 
 const getUserByID = async (req,res,next)=>{
     try {
