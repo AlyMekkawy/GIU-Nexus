@@ -1,16 +1,16 @@
 import { useTheme } from "../context/ThemeContext";
 
 const TEAM_MEMBERS = [
-    "Aly Moataz Elmekawy",
-    "Adham Walaa Elewa 👶",
-    "Tarek Wael Aboelsaeoud 🚪",
-    "Youssef Amr Soliman 🐧",
-    "Mahmoud Wael 🍑",
-    "David Ramy 🙂",
-    "Khaled Ahmed Elmasry ⚡",
-    "Khaled Waleed Abbas 🦇",
-    "Samir Waleed 👳‍♂️",
-    "Sam Shady Bostawros 🕴",
+    { name: "Aly Moataz Elmekawy 🧠", href: "https://www.linkedin.com/in/aly-moataz-elmekawy/" },
+    { name: "Khaled Waleed Abbas 🐱‍💻", href: "https://www.linkedin.com/in/khaled-waleed-204294279/" },
+    { name: "Adham Walaa Elewa 👶", href: "https://www.linkedin.com/in/adham-elewa" },
+    { name: "Youssef Amr Soliman 🐧", href: "https://www.linkedin.com/in/youssef-soliman-463803368/" },
+    { name: "Mahmoud Wael 👻", href: "https://www.linkedin.com/in/mahmoud-wael-46a51a407" },
+    { name: "Sam Shady Bostawros 🕴", href: "https://github.com/SamBostawros" },
+    { name: "Tarek Wael Aboelsaeoud 🚪", href: "https://www.linkedin.com/in/tarek-aboelseoud/" },
+    { name: "Samir Waleed 👳‍♂️", href: "https://www.linkedin.com/in/samir-waleed-922a4435a/" },
+    { name: "Khaled Ahmed Elmasry ⚡", href: "https://www.linkedin.com/in/khaled-elmasry-b2414524b/" },
+    { name: "David Ramy 🙂", href: "https://www.linkedin.com/in/david-ramy-86a559339/" },
 ];
 
 const Footer = () => {
@@ -80,12 +80,22 @@ const Footer = () => {
           align-items: center;
           padding: 7px 12px;
           border-radius: 999px;
+          text-decoration: none;
           border: 1px solid ${isLight ? "rgba(26,20,16,0.12)" : "rgba(255,255,255,0.1)"};
           background: ${isLight ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.045)"};
           color: ${isLight ? "#1A1410" : "#F4EEE6"};
           font-size: 0.86rem;
           font-weight: 600;
           white-space: nowrap;
+          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .giu-footer__team-chip:hover,
+        .giu-footer__team-chip:focus-visible {
+          transform: translateY(-1px);
+          border-color: ${isLight ? "rgba(26,20,16,0.22)" : "rgba(255,255,255,0.2)"};
+          background: ${isLight ? "rgba(255,255,255,0.78)" : "rgba(255,255,255,0.08)"};
+          outline: none;
         }
 
         @media (max-width: 768px) {
@@ -125,10 +135,16 @@ const Footer = () => {
                         <p className="giu-footer__team-label">Team</p>
 
                         <div className="giu-footer__team-list" aria-label="Team members">
-                            {TEAM_MEMBERS.map((name) => (
-                                <span key={name} className="giu-footer__team-chip">
-                  {name}
-                </span>
+                            {TEAM_MEMBERS.map(({ name, href }) => (
+                                <a
+                                    key={name}
+                                    className="giu-footer__team-chip"
+                                    href={href}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >
+                                    {name}
+                                </a>
                             ))}
                         </div>
                     </div>
