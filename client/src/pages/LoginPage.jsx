@@ -111,6 +111,7 @@ function LoginPage() {
                 onChange={e => { setEmail(e.target.value); setError(null); }}
                 required
                 autoComplete="email"
+                data-cy="login-email"
               />
             </div>
 
@@ -119,32 +120,33 @@ function LoginPage() {
                 <label className="auth-page__label" htmlFor="login-password">Password</label>
                 <Link to="/forgot-password" className="auth-page__forgot">Forgot password?</Link>
               </div>
-              <div className="auth-page__pw-wrap">
-                <input
-                  id="login-password"
-                  className="auth-page__input"
-                  type={showPw ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={e => { setPassword(e.target.value); setError(null); }}
-                  required
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  className="auth-page__pw-toggle"
-                  onClick={() => setShowPw(v => !v)}
-                  tabIndex={-1}
-                  aria-label={showPw ? "Hide password" : "Show password"}
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
-                    {showPw ? "visibility_off" : "visibility"}
-                  </span>
-                </button>
-              </div>
+               <div className="auth-page__pw-wrap">
+                 <input
+                   id="login-password"
+                   className="auth-page__input"
+                   type={showPw ? "text" : "password"}
+                   placeholder="••••••••"
+                   value={password}
+                   onChange={e => { setPassword(e.target.value); setError(null); }}
+                   required
+                   autoComplete="current-password"
+                   data-cy="login-password"
+                 />
+                 <button
+                   type="button"
+                   className="auth-page__pw-toggle"
+                   onClick={() => setShowPw(v => !v)}
+                   tabIndex={-1}
+                   aria-label={showPw ? "Hide password" : "Show password"}
+                 >
+                   <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                     {showPw ? "visibility_off" : "visibility"}
+                   </span>
+                 </button>
+               </div>
             </div>
 
-            <button type="submit" className="auth-page__submit" disabled={loading}>
+            <button type="submit" className="auth-page__submit" disabled={loading} data-cy="login-submit">
               {loading ? "Signing in…" : "Sign In"}
             </button>
 

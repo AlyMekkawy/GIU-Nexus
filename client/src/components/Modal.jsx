@@ -49,8 +49,8 @@ function Modal({
   const content = body ?? children;
 
   return (
-    <div className="modal-backdrop" onClick={() => { if (!confirmLoading) onClose(); }}>
-      <div className="modal-box" onClick={e => e.stopPropagation()}>
+    <div className="modal-backdrop" onClick={() => { if (!confirmLoading) onClose(); }} data-cy="modal-backdrop">
+      <div className="modal-box" onClick={e => e.stopPropagation()} data-cy="modal-box">
 
         {/* Header */}
         <div className="modal-header">
@@ -60,6 +60,7 @@ function Modal({
             onClick={onClose}
             disabled={confirmLoading}
             aria-label="Close"
+            data-cy="modal-close"
           >
             <span className="material-symbols-outlined">close</span>
           </button>
@@ -87,6 +88,7 @@ function Modal({
               className="modal-btn modal-btn-cancel"
               onClick={onClose}
               disabled={confirmLoading}
+              data-cy="modal-cancel"
             >
               {cancelLabel}
             </button>
@@ -94,6 +96,7 @@ function Modal({
               className={`modal-btn ${confirmClass}`}
               onClick={onConfirm}
               disabled={confirmLoading}
+              data-cy="modal-confirm"
             >
               {confirmLoading
                 ? <><span className="modal-spinner" />Working…</>

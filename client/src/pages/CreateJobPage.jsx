@@ -268,6 +268,7 @@ function CreateJobPage() {
                                 value={form.title}
                                 onChange={handleChange}
                                 autoFocus
+                                data-cy="create-job-title"
                             />
                             {fieldErrors.title && (
                                 <span className="cj-field-error">{fieldErrors.title}</span>
@@ -286,6 +287,7 @@ function CreateJobPage() {
                                 placeholder="e.g. Acme Corp"
                                 value={form.company}
                                 onChange={handleChange}
+                                data-cy="create-job-company"
                             />
                             {fieldErrors.company && (
                                 <span className="cj-field-error">{fieldErrors.company}</span>
@@ -306,6 +308,7 @@ function CreateJobPage() {
                             value={form.description}
                             onChange={handleChange}
                             rows={5}
+                            data-cy="create-job-description"
                         />
                         {fieldErrors.description && (
                             <span className="cj-field-error">{fieldErrors.description}</span>
@@ -426,7 +429,7 @@ function CreateJobPage() {
                         >
                             Cancel
                         </button>
-                        <button type="submit" className="cj-btn-primary" disabled={loading}>
+                        <button type="submit" className="cj-btn-primary" disabled={loading} data-cy="create-job-submit">
                             {loading ? (
                                 <>
                                     <span className="cj-spinner" /> Posting…

@@ -134,7 +134,102 @@ BACKEND_URL = http://127.0.0.7:5004
 - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`: Cloudinary credentials for uploads.
 - `BACKEND_URL`: Backend URL used by the Vite config and Docker build defaults.
 
-## Live URL
+## E2E Testing with Cypress
+
+The project includes a comprehensive Cypress E2E test suite that validates core platform flows for students, recruiters, and admins.
+
+### Prerequisites
+
+Ensure both frontend and backend are running before starting E2E tests:
+
+```bash
+# Terminal 1: Start backend IN TEST MODE (disables rate limiting)
+cd server && npm run dev
+# or for non-development mode:
+# CYPRESS_TEST=true set this in your env file
+
+# Terminal 2: Start frontend (from root or client directory)
+npm run client
+# or
+cd client && npm run dev
+```
+
+MongoDB must also be running. Update `MONGO_URI` in `server/.env` if using a non-default connection.
+
+### Seed Test Data
+
+Before running tests, populate the database with E2E test accounts and sample jobs:
+
+```bash
+cd server
+npm run seed:e2e
+```
+
+This creates:
+- **Student**: `student.e2e@giu-nexus.com` / `Password123!`
+- **Recruiter**: `recruiter.e2e@giu-nexus.com` / `Password123!`
+- **Admin**: `admin.e2e@giu-nexus.com` / `Password123!`
+- **Sample jobs** created by seeded recruiter
+- **Sample applications** from seeded student to first job
+
+### Run Cypress Tests Interactively
+
+Opens the Cypress Test Runner (recommended for development):
+
+```bash
+cd client
+npm run cy:open
+```
+
+Then select **E2E Testing** and choose your browser (Chrome, Firefox, Edge).
+
+### Run Cypress Tests Headless
+
+Runs all tests in headless mode without UI (useful for CI/CD):
+
+```bash
+cd client
+npm run cy:run
+# or
+npm run test:e2e
+```
+
+### Available Test Suites
+
+| Test File | Coverage | Status |
+|-----------|----------|--------|
+| `auth.cy.js` | Login flows for all roles + validation | ✓ Student, Recruiter, Admin |
+| `student-job-flow.cy.js` | Browse jobs, view details, save, apply | ✓ Uses seeded jobs |
+| `recruiter-job-flow.cy.js` | Create job post, view dashboard | ✓ Creates unique job with timestamp |
+| `recruiter-applicants-flow.cy.js` | View applicants, manage status | ✓ Uses seeded applications |
+| `admin-flow.cy.js` | Admin dashboard, moderation pages | ✓ Users, Jobs, Recruiters |
+
+### Cypress Configuration
+
+Key files:
+- `client/cypress.config.js` - Main Cypress configuration
+- `client/cypress.env.json` - Test credentials and environment URLs
+- `client/cypress/support/commands.js` - Custom login commands
+- `client/cypress/support/e2e.js` - Global test setup
+
+### Test Data Selectors
+
+All E2E tests use `data-cy` attributes for stable element selection:
+
+- Forms: `data-cy="login-email"`, `data-cy="create-job-title"`, etc.
+- Buttons: `data-cy="job-apply-button"`, `data-cy="recruiter-create-job"`, etc.
+- Cards/Rows: `data-cy="job-card-${jobId}"`, `data-cy="applicant-row-${appId}"`, etc.
+- Modals: `data-cy="modal-box"`, `data-cy="modal-confirm"`, etc.
+
+### Notes
+
+- Tests use seeded data that is recreated each run (non-destructive)
+- Email delivery is not tested (OTP, password reset) - focuses on platform flows only  
+- Cloudinary uploads are mocked in test data (not required for E2E)
+- Tests run sequentially to avoid race conditions
+- Screenshots and videos are saved on failure in `client/cypress/screenshots` and `client/cypress/videos`
+
+##  Live URL
 - The application is deployed and can be accessed [here](https://giu-nexus.up.railway.app/). 
 - Back and front end are deployed together on Railway, with the backend serving the frontend assets in production.
 - We deployed frontend on Railway because we ran out of Netlify credits </3

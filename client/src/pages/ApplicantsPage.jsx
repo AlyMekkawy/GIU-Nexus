@@ -180,7 +180,7 @@ function ApplicantsPage() {
                                 </thead>
                                 <tbody>
                                     {applications.map(app => (
-                                        <tr key={app._id} className="ap-row">
+                                        <tr key={app._id} className="ap-row" data-cy={`applicant-row-${app._id}`}>
 
                                             {/* Applicant */}
                                             <td className="ap-td">

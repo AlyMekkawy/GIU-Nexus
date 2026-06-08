@@ -22,7 +22,8 @@
   "scripts": {
     "test": "jest --runInBand",
     "dev": "nodemon --exec \"node --env-file=.env\" server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed:e2e": "node tests/seedE2E.js"
   },
   "repository": {
     "type": "git",

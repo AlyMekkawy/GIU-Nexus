@@ -192,6 +192,7 @@ function RecruiterDashboard() {
                         onClick={() => navigate("/recruiter/jobs/create")}
                         disabled={!jobCtaState.isAvailable}
                         title={jobCtaState.isPending ? "Account pending approval" : "Create a job post"}
+                        data-cy="recruiter-create-job"
                     >
                         <span className="rd-button-icon">{jobCtaState.isPending ? "🔒" : "+"}</span>
                         {jobCtaState.isPending ? "Pending Approval" : "Create Job Post"}
@@ -298,6 +299,7 @@ function RecruiterDashboard() {
                                         tabIndex={0}
                                         onClick={() => navigate(`/recruiter/applicants/${job._id}`)}
                                         onKeyDown={(e) => { if (e.key === "Enter") navigate(`/recruiter/applicants/${job._id}`); }}
+                                        data-cy={`recruiter-job-row-${job._id}`}
                                     >
                                         <div className="rd-job-title">
                                             <span>{job.title}</span>
@@ -335,6 +337,7 @@ function RecruiterDashboard() {
                                                 type="button"
                                                 className="rd-link"
                                                 onClick={(e) => { e.stopPropagation(); navigate(`/recruiter/applicants/${job._id}`); }}
+                                                data-cy={`recruiter-view-applicants-${job._id}`}
                                             >
                                                 Applicants
                                             </button>

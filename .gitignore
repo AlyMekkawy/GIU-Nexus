@@ -8,6 +8,7 @@
 # environment variables file ignored (requirement for project)
 .env
 .env.*
+cypress.env.json
 # IDE specific files ignored
 # Webstorm IDE files (if anyone uses another IDE, please add the relevant files to this list)
 /.idea/

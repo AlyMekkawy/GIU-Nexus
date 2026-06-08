@@ -280,7 +280,7 @@ function JobDetailPage() {
                                     </button>
                                 )}
                                 {isJobSeeker && !myApplication && job.status === 'open' && (
-                                    <button className="jd-btn-apply-full" onClick={() => setModalOpen(true)}>
+                                    <button className="jd-btn-apply-full" onClick={() => setModalOpen(true)} data-cy="job-apply-button">
                                         Apply Now →
                                     </button>
                                 )}
@@ -292,6 +292,7 @@ function JobDetailPage() {
                                         className={`jd-btn-save-full ${saved ? 'saved' : ''}`}
                                         onClick={handleSaveToggle}
                                         disabled={saveLoading || job.status !== 'open'}
+                                        data-cy="job-save-button"
                                     >
                                         {saved ? '🔖 Saved' : '🔖 Save Job'}
                                     </button>
@@ -399,6 +400,7 @@ function JobDetailPage() {
                                 placeholder="Tell the recruiter why you're a great fit..."
                                 value={coverLetter}
                                 onChange={e => setCoverLetter(e.target.value)}
+                                data-cy="application-cover-letter"
                             />
                         </div>
                         {applyError && <p className="jd-apply-error">{applyError}</p>}
@@ -413,6 +415,7 @@ function JobDetailPage() {
                                 className="jd-btn-apply-modal"
                                 onClick={handleApply}
                                 disabled={applying}
+                                data-cy="application-submit"
                             >
                                 {applying ? 'Submitting...' : 'Submit Application'}
                             </button>

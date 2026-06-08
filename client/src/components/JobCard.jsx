@@ -25,7 +25,7 @@ function JobCard({ job, isSaved, onToggleSave }) {
   const canToggleSave = typeof onToggleSave === 'function';
 
   return (
-      <article className="rj-card">
+      <article className="rj-card" data-cy={`job-card-${job._id}`}>
 
         {/* Card header */}
         <div className="rj-card__head">
@@ -67,7 +67,7 @@ function JobCard({ job, isSaved, onToggleSave }) {
 
         {/* Card footer */}
         <div className="rj-card__foot">
-          <Link to={`/jobs/${job._id}`} className="rj-card__link">
+          <Link to={`/jobs/${job._id}`} className="rj-card__link" data-cy={`job-card-details-${job._id}`}>
             View Details →
           </Link>
           <button
@@ -77,6 +77,7 @@ function JobCard({ job, isSaved, onToggleSave }) {
               disabled={!canToggleSave}
               aria-pressed={saved}
               type="button"
+              data-cy={`job-card-save-${job._id}`}
           >
           <span
               className="material-symbols-outlined"
