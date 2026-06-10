@@ -37,13 +37,29 @@ async function classifyJobCategory(description) {
   }
 }
 
+// ── Helper: Mean-pool token embeddings into one sentence vector ────
+// The HF inference API sometimes returns [n_tokens × 384] instead of
+// a single pooled [384] vector. This collapses it either way.
+const meanPool = (embedding) => {
+  if (!Array.isArray(embedding) || embedding.length === 0) return embedding;
+  if (!Array.isArray(embedding[0])) return embedding; // already 1-D
+  const dims = embedding[0].length;
+  const pooled = new Array(dims).fill(0);
+  for (const tokenVec of embedding) {
+    for (let i = 0; i < dims; i++) pooled[i] += tokenVec[i];
+  }
+  return pooled.map(v => v / embedding.length);
+};
+
 // ── Helper: Cosine Similarity ──────────────────────────────────────
 const cosineSimilarity = (vecA, vecB) => {
-  if (!vecA || !vecB || vecA.length === 0 || vecB.length === 0) return 0;
+  const a = meanPool(vecA);
+  const b = meanPool(vecB);
+  if (!a || !b || a.length === 0 || b.length === 0) return 0;
 
-  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
-  const magnitudeA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
-  const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+  const dotProduct = a.reduce((sum, ai, i) => sum + ai * b[i], 0);
+  const magnitudeA = Math.sqrt(a.reduce((sum, ai) => sum + ai * ai, 0));
+  const magnitudeB = Math.sqrt(b.reduce((sum, bi) => sum + bi * bi, 0));
 
   if (magnitudeA === 0 || magnitudeB === 0) return 0;
   return dotProduct / (magnitudeA * magnitudeB);
@@ -370,16 +386,18 @@ const getRecommendedJobs = async (req, res, next) => {
     }
 
     // ── Keyword fallback scorer (no AI needed) ────────────────────────
-    // Counts how many user skills appear in the job requirements (case-insensitive).
+    // Returns fraction of job requirements matched by user skills.
     const keywordScore = (job) => {
-      const reqs = (job.requirements || []).join(' ').toLowerCase();
-      return userSkills.reduce((count, skill) =>
-        reqs.includes(skill.toLowerCase()) ? count + 1 : count, 0
-      );
+      const jobReqs = job.requirements || [];
+      if (jobReqs.length === 0) return 0;
+      const matched = jobReqs.filter(req =>
+        userSkills.some(skill => req.toLowerCase().includes(skill.toLowerCase()) || skill.toLowerCase().includes(req.toLowerCase()))
+      ).length;
+      return matched / jobReqs.length;
     };
 
     // ── Try AI embeddings, fall back to keyword matching if HF is down ─
-    const userSkillsText = userSkills.join(' ');
+    const userSkillsText = `Experienced developer with skills in ${userSkills.join(', ')}.`;
     let useEmbeddings = true;
     let userEmbedding;
 
@@ -398,12 +416,12 @@ const getRecommendedJobs = async (req, res, next) => {
     const jobsWithScores = await Promise.all(
       jobs.map(async (job) => {
         if (!useEmbeddings) {
-          const score = keywordScore(job) / userSkills.length;
-          return { ...job, score };
+          return { ...job, score: keywordScore(job) };
         }
 
-        const jobRequirementsText = (job.requirements || []).join(' ');
-        if (!jobRequirementsText.trim()) return { ...job, score: 0 };
+        const reqs = job.requirements || [];
+        if (reqs.length === 0) return { ...job, score: 0 };
+        const jobRequirementsText = `This role requires experience with ${reqs.join(', ')}.`;
 
         try {
           const jobEmbedding = await hf.featureExtraction({
@@ -414,7 +432,7 @@ const getRecommendedJobs = async (req, res, next) => {
           return { ...job, score: cosineSimilarity(userEmbedding, jobEmbedding) };
         } catch (err) {
           // Single job embedding failed — fall back to keyword for this job
-          return { ...job, score: keywordScore(job) / userSkills.length };
+          return { ...job, score: keywordScore(job) };
         }
       })
     );
@@ -455,6 +473,154 @@ const getJobApplicants = async (req, res, next) => {
       .lean();
 
     res.status(200).json({ success: true, applications });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ── GET /api/v1/jobs/:jobId/applicant-summary ─────────────────────
+// Recruiter only. Scores each applicant via cosine similarity and
+// returns an aggregate summary for the job posting.
+const getApplicantSummary = async (req, res, next) => {
+  try {
+    const { jobId } = req.params;
+
+    if (!jobId || !mongoose.isValidObjectId(jobId)) {
+      return res.status(400).json({ success: false, message: 'Invalid job id' });
+    }
+
+    const job = await JobPost.findById(jobId).lean();
+    if (!job) return res.status(404).json({ success: false, message: 'Job not found' });
+    if (job.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Not authorized — you do not own this job' });
+    }
+
+    const applications = await Application.find({ job: jobId })
+      .populate('user', 'name email skills')
+      .select('status user')
+      .lean();
+
+    if (applications.length === 0) {
+      return res.status(200).json({
+        success: true,
+        summary: {
+          total: 0, strong: 0, medium: 0, weak: 0,
+          topSkills: [], missingSkills: [], averageScore: 0,
+          recommended: []
+        }
+      });
+    }
+
+    const reqs = job.requirements || [];
+    const jobRequirementsText = reqs.length > 0
+      ? `This role requires experience with ${reqs.join(', ')}.`
+      : '';
+
+    // ── Keyword fallback scorer ───────────────────────────────────
+    const keywordScore = (skills) => {
+      if (!skills || skills.length === 0 || reqs.length === 0) return 0;
+      const reqsLower = reqs.map(r => r.toLowerCase());
+      const matches = skills.filter(s => reqsLower.some(r => r.includes(s.toLowerCase()) || s.toLowerCase().includes(r))).length;
+      return matches / reqs.length;
+    };
+
+    // ── Try HuggingFace embeddings ────────────────────────────────
+    let useEmbeddings = true;
+    let jobEmbedding;
+
+    if (jobRequirementsText) {
+      try {
+        jobEmbedding = await hf.featureExtraction({
+          model: 'sentence-transformers/all-MiniLM-L6-v2',
+          inputs: jobRequirementsText,
+          options: { wait_for_model: true }
+        });
+      } catch (err) {
+        console.warn('[Summary] HF unavailable, using keyword fallback:', err.message);
+        useEmbeddings = false;
+      }
+    } else {
+      useEmbeddings = false;
+    }
+
+    // ── Score each applicant ──────────────────────────────────────
+    const scored = await Promise.all(
+      applications.map(async (app) => {
+        const skills = app.user?.skills || [];
+        let score = 0;
+
+        if (useEmbeddings && skills.length > 0) {
+          try {
+            const userEmbedding = await hf.featureExtraction({
+              model: 'sentence-transformers/all-MiniLM-L6-v2',
+              inputs: `Experienced developer with skills in ${skills.join(', ')}.`,
+              options: { wait_for_model: true }
+            });
+            score = cosineSimilarity(userEmbedding, jobEmbedding);
+          } catch {
+            score = keywordScore(skills);
+          }
+        } else {
+          score = keywordScore(skills);
+        }
+
+        return { app, skills, score };
+      })
+    );
+
+    // ── Aggregate stats ───────────────────────────────────────────
+    const STRONG = 0.55, MEDIUM = 0.35;
+    let strong = 0, medium = 0, weak = 0, scoreSum = 0;
+
+    const skillFreq = {};
+    scored.forEach(({ skills, score }) => {
+      scoreSum += score;
+      if (score >= STRONG) strong++;
+      else if (score >= MEDIUM) medium++;
+      else weak++;
+
+      skills.forEach(s => {
+        const key = s.toLowerCase();
+        skillFreq[key] = (skillFreq[key] || 0) + 1;
+      });
+    });
+
+    const topSkills = Object.entries(skillFreq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([skill, count]) => ({ skill, count }));
+
+    // Skills in job requirements not commonly held by applicants
+    const missingSkills = (job.requirements || []).filter(req => {
+      const count = skillFreq[req.toLowerCase()] || 0;
+      return count < applications.length * 0.5;
+    });
+
+    const recommended = scored
+      .filter(({ score }) => score >= MEDIUM)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map(({ app, score }) => ({
+        _id: app._id,
+        name: app.user?.name || 'Unknown',
+        email: app.user?.email || '',
+        score: Math.round(score * 100),
+        skills: app.user?.skills || []
+      }));
+
+    res.status(200).json({
+      success: true,
+      summary: {
+        total: applications.length,
+        strong,
+        medium,
+        weak,
+        topSkills,
+        missingSkills,
+        averageScore: Math.round((scoreSum / applications.length) * 100),
+        recommended
+      }
+    });
   } catch (error) {
     next(error);
   }
@@ -781,6 +947,7 @@ module.exports = {
   updateJob,
   getRecommendedJobs,
   getJobApplicants,
+  getApplicantSummary,
   getSavedJobs,
   getMyJobs,
   toggleSaveJob,

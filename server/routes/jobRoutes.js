@@ -1,7 +1,7 @@
 const express = require("express");
 
 
-const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, toggleSaveJob, reportJob, applyToJob, getCoverLetterSuggestion } = require("../controllers/jobController");
+const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, getApplicantSummary, toggleSaveJob, reportJob, applyToJob, getCoverLetterSuggestion } = require("../controllers/jobController");
 
 const { protect, authorize } = require("../middleware/auth");
 
@@ -635,6 +635,9 @@ router.patch("/:id", protect, authorize("recruiter", "admin"), updateJob);
  */
 // Recruiter only: GET /api/v1/jobs/:jobId/applicants
 router.get("/:jobId/applicants", protect, authorize("recruiter"), getJobApplicants);
+
+// Recruiter only: GET /api/v1/jobs/:jobId/applicant-summary
+router.get("/:jobId/applicant-summary", protect, authorize("recruiter"), getApplicantSummary);
 
 /**
  * @openapi
