@@ -578,8 +578,7 @@ const reportJob = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: "Job reported",
-      reported: true,
-      reportCount: updatedJob.reports.length
+      reported: true
     });
   } catch (error) {
     next(error);

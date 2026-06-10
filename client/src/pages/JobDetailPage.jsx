@@ -50,6 +50,11 @@ function JobDetailPage() {
     const [applySuccess, setApplySuccess]   = useState(false);
     const [suggesting, setSuggesting]       = useState(false);
     const [suggestionError, setSuggestionError] = useState('');
+    const [shareCopied, setShareCopied] = useState(false);
+    const [reporting, setReporting] = useState(false);
+    const [reportMessage, setReportMessage] = useState('');
+    const [reported, setReported] = useState(false);
+    const [reportError, setReportError] = useState('');
 
     const isJobSeeker = isAuthenticated && user?.role === 'jobSeeker';
 
@@ -144,6 +149,39 @@ function JobDetailPage() {
             setSuggestionError(err.message || 'Failed to generate a cover letter suggestion.');
         } finally {
             setSuggesting(false);
+        }
+    }
+
+    async function handleShare() {
+        const url = window.location.href;
+
+        try {
+            await navigator.clipboard.writeText(url);
+            setShareCopied(true);
+            setTimeout(() => setShareCopied(false), 1800);
+        } catch (err) {
+            console.error('Copy link failed:', err.message);
+        }
+    }
+
+    async function handleReport() {
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
+        if (reporting || reported) return;
+
+        setReporting(true);
+        setReportError('');
+
+        try {
+            await api.post(`/jobs/${id}/report`);
+            setReported(true);
+        } catch (err) {
+            setReportError(err.message || 'Report failed');
+        } finally {
+            setReporting(false);
         }
     }
 
@@ -353,8 +391,17 @@ function JobDetailPage() {
                             </div>
 
                             <div className="jd-card-footer">
-                                <button className="jd-footer-btn">↗ Share</button>
-                                <button className="jd-footer-btn">⚑ Report</button>
+                                <button className="jd-footer-btn" onClick={handleShare}>
+                                    {shareCopied ? '✓ Link Copied' : '↗ Share'}
+                                </button>
+
+                                <button
+                                    className="jd-footer-btn"
+                                    onClick={handleReport}
+                                    disabled={reporting || reported}
+                                >
+                                    {reporting ? 'Reporting...' : reported ? '✓ Reported' : '⚑ Report'}
+                                </button>
                             </div>
                         </div>
                     </div>
