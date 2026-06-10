@@ -18,6 +18,7 @@ import ChangePasswordPage from "./pages/ChangePasswordPage";
 import JobListPage from "./pages/JobListPage";
 import JobDetailPage from "./pages/JobDetailPage";
 import RecommendedJobsPage from "./pages/RecommendedJobsPage";
+import MarketTrendsPage from "./pages/MarketTrendsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import MyApplicationsPage from "./pages/MyApplicationsPage";
 
@@ -62,6 +63,9 @@ function App() {
       } />
       <Route path="/jobs/recommended" element={
         <RoleRoute allowedRoles={["jobSeeker"]}><RecommendedJobsPage /></RoleRoute>
+      } />
+      <Route path="/jobs/market-trends" element={
+        <RoleRoute allowedRoles={["jobSeeker"]}><MarketTrendsPage /></RoleRoute>
       } />
       <Route path="/jobs/saved" element={
         <RoleRoute allowedRoles={["jobSeeker"]}><SavedJobsPage /></RoleRoute>
