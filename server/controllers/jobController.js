@@ -557,6 +557,35 @@ const toggleSaveJob = async (req, res, next) => {
   }
 };
 
+// POST /api/v1/jobs/:id/report
+const reportJob = async (req, res, next) => {
+  try {
+    const jobId = req.params.id;
+    if (!mongoose.isValidObjectId(jobId)) {
+      return res.status(400).json({ success: false, message: "Invalid job id" });
+    }
+
+    const updatedJob = await JobPost.findByIdAndUpdate(
+      jobId,
+      { $addToSet: { reports: req.user._id } },
+      { returnDocument: "after", runValidators: true }
+    ).select("reports");
+
+    if (!updatedJob) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Job reported",
+      reported: true,
+      reportCount: updatedJob.reports.length
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // ── POST /api/v1/jobs/:jobId/apply ──────────────────────────────────
 const applyToJob = async (req, res, next) => {
   try {
@@ -756,6 +785,7 @@ module.exports = {
   getSavedJobs,
   getMyJobs,
   toggleSaveJob,
+  reportJob,
   applyToJob,
   getCoverLetterSuggestion
 };

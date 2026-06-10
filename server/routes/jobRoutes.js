@@ -1,7 +1,7 @@
 const express = require("express");
 
 
-const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, toggleSaveJob, applyToJob, getCoverLetterSuggestion } = require("../controllers/jobController");
+const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, toggleSaveJob, reportJob, applyToJob, getCoverLetterSuggestion } = require("../controllers/jobController");
 
 const { protect, authorize } = require("../middleware/auth");
 
@@ -665,6 +665,9 @@ router.get("/:jobId/applicants", protect, authorize("recruiter"), getJobApplican
  */
 // Job Seeker only: POST /api/v1/jobs/:id/save
 router.post("/:id/save", protect, authorize("jobSeeker"), toggleSaveJob);
+
+// Authenticated users: POST /api/v1/jobs/:id/report
+router.post("/:id/report", protect, reportJob);
 
 /**
  * @openapi
