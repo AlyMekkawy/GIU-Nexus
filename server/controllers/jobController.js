@@ -902,6 +902,106 @@ const getCoverLetterSuggestion = async (req, res, next) => {
   }
 };
 
+// ── POST /api/v1/jobs/rewrite-requirements ────────────────────────
+// Recruiter only (approved). Rewrites rough requirements into polished
+// professional bullet points using the same Qwen model as cover letters.
+const rewriteRequirements = async (req, res, next) => {
+  try {
+    if (req.user.status !== 'approved') {
+      return res.status(403).json({
+        success: false,
+        message: 'Your account is pending approval.',
+      });
+    }
+
+    const { title, description, requirements } = req.body || {};
+
+    if (!Array.isArray(requirements) || requirements.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'requirements must be a non-empty array of strings.',
+      });
+    }
+
+    if (!process.env.HF_TOKEN) {
+      return res.status(503).json({
+        success: false,
+        message: 'Hugging Face API token is not configured.',
+      });
+    }
+
+    const requirementsText = requirements
+      .filter((r) => typeof r === 'string' && r.trim())
+      .map((r) => `- ${r.trim()}`)
+      .join('\n');
+
+    const messages = [
+      {
+        role: 'system',
+        content:
+          'You are Nexi, a recruiter assistant for GIU Nexus. ' +
+          'Rewrite rough job requirements into clear, professional, concise bullet points ' +
+          'suitable for a job posting. Keep the meaning intact. ' +
+          'Do not invent unrealistic requirements. ' +
+          'Return ONLY the improved requirements as a list — one per line starting with a dash. ' +
+          'No explanations, no headers, no extra text.',
+      },
+      {
+        role: 'user',
+        content:
+          `Job Title: ${(title || '').trim()}\n` +
+          `Job Description: ${(description || '').trim()}\n` +
+          `Requirements:\n${requirementsText}`,
+      },
+    ];
+
+    let result;
+    try {
+      result = await hf.chatCompletion({
+        model: 'Qwen/Qwen2.5-7B-Instruct:fastest',
+        messages,
+        max_new_tokens: 400,
+        temperature: 0.5,
+        top_p: 0.9,
+      });
+    } catch (err) {
+      console.error('[rewriteRequirements] HF error:', err.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Nexi could not polish this job post right now.',
+      });
+    }
+
+    const raw = result?.choices?.[0]?.message?.content;
+    if (!raw || typeof raw !== 'string' || !raw.trim()) {
+      return res.status(500).json({
+        success: false,
+        message: 'Nexi could not polish this job post right now.',
+      });
+    }
+
+    // Parse lines: strip leading dashes, bullets, numbers, whitespace
+    const rewrittenRequirements = raw
+      .split('\n')
+      .map((line) => line.replace(/^[\s\-\*\•\d\.]+/, '').trim())
+      .filter(Boolean);
+
+    if (rewrittenRequirements.length === 0) {
+      return res.status(500).json({
+        success: false,
+        message: 'Nexi could not polish this job post right now.',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      rewrittenRequirements,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // ── Helper: Cover Letter Prompt ───────────────────────────────────
 function buildCoverLetterPrompt({ studentBio, jobTitle, company, jobType, location, requirements, jobDescription }) {
   return [
@@ -953,5 +1053,6 @@ module.exports = {
   toggleSaveJob,
   reportJob,
   applyToJob,
-  getCoverLetterSuggestion
+  getCoverLetterSuggestion,
+  rewriteRequirements,
 };

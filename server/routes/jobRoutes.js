@@ -1,7 +1,7 @@
 const express = require("express");
 
 
-const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, getApplicantSummary, toggleSaveJob, reportJob, applyToJob, getCoverLetterSuggestion } = require("../controllers/jobController");
+const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, getApplicantSummary, toggleSaveJob, reportJob, applyToJob, getCoverLetterSuggestion, rewriteRequirements } = require("../controllers/jobController");
 
 const { protect, authorize } = require("../middleware/auth");
 
@@ -338,6 +338,10 @@ router.get("/saved", protect, authorize("jobSeeker"), getSavedJobs);
 // Private - Recruiter only: GET /api/v1/jobs/my-jobs
 // Must come BEFORE the /:id route to avoid conflict
 router.get("/my-jobs", protect, authorize("recruiter"), getMyJobs);
+
+// Recruiter only: POST /api/v1/jobs/rewrite-requirements
+// Must come BEFORE /:id to avoid route conflict
+router.post("/rewrite-requirements", protect, authorize("recruiter"), rewriteRequirements);
 
 /**
  * @openapi
