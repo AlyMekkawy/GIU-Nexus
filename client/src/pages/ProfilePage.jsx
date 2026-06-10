@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
@@ -373,6 +373,27 @@ function ProfilePage() {
                   Add Skill
                 </button>
               )}
+            </div>
+          </section>
+
+          {/* Nexi Market Trends card */}
+          <section className="pf-card pf-nexi-trends-card">
+            <div className="pf-nexi-trends__inner">
+              <div className="pf-nexi-trends__img-wrap">
+                <img src="/Nexi/Nexi_Summarize.png" alt="Nexi" className="pf-nexi-trends__img" />
+              </div>
+              <div className="pf-nexi-trends__body">
+                <h2 className="pf-nexi-trends__title">Not sure what to learn next?</h2>
+                <p className="pf-nexi-trends__sub">
+                  Nexi will scan every open role and tell you exactly which in-demand skills you're missing — personalized to your profile.
+                </p>
+              </div>
+              <Link to="/jobs/market-trends" className="pf-nexi-trends__btn">
+                <span className="material-symbols-outlined" style={{ fontSize: '16px', fontVariationSettings: "'FILL' 1" }}>
+                  trending_up
+                </span>
+                Let Nexi Analyze
+              </Link>
             </div>
           </section>
 

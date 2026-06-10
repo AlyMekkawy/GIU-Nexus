@@ -1002,6 +1002,122 @@ const rewriteRequirements = async (req, res, next) => {
   }
 };
 
+// ── GET /api/v1/jobs/market-trends ───────────────────────────────
+// Job seeker only. Aggregates open job requirements into skill/category
+// frequency data and asks Nexi for a market insight paragraph.
+const getMarketTrends = async (req, res, next) => {
+  try {
+    const jobs = await JobPost.find({ status: 'open' }).select('requirements category').lean();
+
+    if (!jobs.length) {
+      return res.status(200).json({
+        success: true,
+        topSkills: [],
+        topCategories: [],
+        recommendedSkills: [],
+        insight: 'No open jobs found at the moment. Check back soon!',
+      });
+    }
+
+    // Aggregate skill frequencies across all requirements arrays
+    const skillFreq = {};
+    const categoryFreq = {};
+
+    for (const job of jobs) {
+      // Category counts
+      const cat = job.category || 'Other';
+      categoryFreq[cat] = (categoryFreq[cat] || 0) + 1;
+
+      // Skill counts (each requirement treated as a skill token)
+      for (const req of job.requirements || []) {
+        const key = req.trim().toLowerCase();
+        if (key) skillFreq[key] = (skillFreq[key] || 0) + 1;
+      }
+    }
+
+    const topSkills = Object.entries(skillFreq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([skill, count]) => ({ skill, count }));
+
+    const topCategories = Object.entries(categoryFreq)
+      .sort((a, b) => b[1] - a[1])
+      .map(([category, count]) => ({ category, count }));
+
+    // Recommended = in-demand skills the user does NOT already have
+    const userDoc = await User.findById(req.user._id).select('skills').lean();
+    const userSkillSet = new Set(
+      (userDoc?.skills || []).map(s => s.trim().toLowerCase())
+    );
+
+    const recommendedSkills = Object.entries(skillFreq)
+      .filter(([skill, count]) => count >= 2 && !userSkillSet.has(skill))
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([skill]) => skill);
+
+    // Generate Nexi insight via HF if token present
+    let insight = '';
+    if (process.env.HF_TOKEN) {
+      try {
+        const top5 = topSkills.slice(0, 5).map(s => s.skill).join(', ');
+        const topCat = topCategories.slice(0, 3).map(c => c.category).join(', ');
+        const lacking = recommendedSkills.slice(0, 4).join(', ');
+
+        const messages = [
+          {
+            role: 'system',
+            content:
+              'You are Nexi, an AI career assistant for GIU Nexus. ' +
+              'Write a single paragraph (3-4 sentences) summarizing job market trends for students. ' +
+              'Be helpful, friendly, and specific. No lists. No headers. Just a paragraph.',
+          },
+          {
+            role: 'user',
+            content:
+              `Based on ${jobs.length} open jobs on the platform:\n` +
+              `Top skills employers want: ${top5}.\n` +
+              `Most active hiring categories: ${topCat}.\n` +
+              `Skills the user is missing that employers want: ${lacking || 'varied'}.\n` +
+              `Summarize what this specific student should focus on learning next.`,
+          },
+        ];
+
+        const result = await hf.chatCompletion({
+          model: 'Qwen/Qwen2.5-7B-Instruct:fastest',
+          messages,
+          max_new_tokens: 180,
+          temperature: 0.6,
+          top_p: 0.9,
+        });
+
+        const raw = result?.choices?.[0]?.message?.content;
+        if (raw && typeof raw === 'string' && raw.trim()) {
+          insight = raw.trim();
+        }
+      } catch (err) {
+        console.error('[getMarketTrends] HF insight error:', err.message);
+      }
+    }
+
+    if (!insight) {
+      const top3 = topSkills.slice(0, 3).map(s => s.skill).join(', ');
+      const missing = recommendedSkills.slice(0, 3).join(', ');
+      insight = `Across ${jobs.length} open roles, the most in-demand skills are ${top3}.${missing ? ` Based on your profile, consider learning ${missing} to stand out.` : ' Keep building your skills to maximize your chances.'}`;
+    }
+
+    return res.status(200).json({
+      success: true,
+      topSkills,
+      topCategories,
+      recommendedSkills,
+      insight,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // ── Helper: Cover Letter Prompt ───────────────────────────────────
 function buildCoverLetterPrompt({ studentBio, jobTitle, company, jobType, location, requirements, jobDescription }) {
   return [
@@ -1055,4 +1171,5 @@ module.exports = {
   applyToJob,
   getCoverLetterSuggestion,
   rewriteRequirements,
+  getMarketTrends,
 };

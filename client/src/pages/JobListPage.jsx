@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { gsap } from "gsap";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
@@ -317,6 +317,27 @@ function JobListPage() {
           )}
         </div>
       </div>
+
+      {/* ── Nexi Market Trends banner (job seekers only) ──────── */}
+      {canSaveJobs && (
+        <div className="jl-nexi-banner">
+          <div className="jl-nexi-banner__img-wrap">
+            <img src="/Nexi/Nexi_Summarize.png" alt="Nexi" className="jl-nexi-banner__img" />
+          </div>
+          <div className="jl-nexi-banner__body">
+            <span className="jl-nexi-banner__title">Wondering what skills to build next?</span>
+            <span className="jl-nexi-banner__sub">
+              Nexi analyzed every open role to tell you exactly what employers want — and what you're missing.
+            </span>
+          </div>
+          <Link to="/jobs/market-trends" className="jl-nexi-banner__btn">
+            <span className="material-symbols-outlined" style={{ fontSize: '16px', fontVariationSettings: "'FILL' 1" }}>
+              trending_up
+            </span>
+            Let Nexi Analyze
+          </Link>
+        </div>
+      )}
 
       {/* ── Main content ──────────────────────────────────────── */}
       <main className="jl-content">
