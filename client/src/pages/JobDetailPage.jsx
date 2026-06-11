@@ -336,6 +336,22 @@ function JobDetailPage() {
                                 )}
                             </div>
 
+                            {/* Nexi Interview Simulator entry */}
+                            {isJobSeeker && (
+                                <div className="jd-nexi-interview-card" onClick={() => navigate(`/jobs/${id}/interview`)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate(`/jobs/${id}/interview`)}>
+                                    <div className="jd-nexi-interview-card__inner">
+                                        <div className="jd-nexi-cl-img-wrap">
+                                            <img src="/Nexi/Nexi_InsightB.png" alt="Nexi" className="jd-nexi-cl-img" />
+                                        </div>
+                                        <div className="jd-nexi-cl-text">
+                                            <span className="jd-nexi-cl-label">Practice with Nexi</span>
+                                            <span className="jd-nexi-cl-sub">Simulate a real interview for this role before you apply</span>
+                                        </div>
+                                        <span className="jd-nexi-interview-card__arrow material-symbols-outlined">arrow_forward</span>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="jd-overview">
                                 <h4 className="jd-overview-title">Job Overview</h4>
                                 <div className="jd-overview-rows">

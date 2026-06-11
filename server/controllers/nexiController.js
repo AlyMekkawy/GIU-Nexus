@@ -7,6 +7,7 @@ const hf          = require('../services/hfService');
 function detectIntent(message) {
   const msg = message.toLowerCase();
   if (/cover\s*letter/.test(msg))                               return 'cover_letter_help';
+  if (/\b(interview|mock interview|practice interview|prepare for interview|interview prep)\b/.test(msg)) return 'interview_prep';
   if (/\b(job|jobs|recommend|apply|internship|opportunit)\b/.test(msg)) return 'find_jobs';
   if (/\b(profile|bio|skills|improve|strengthen)\b/.test(msg)) return 'profile_advice';
   if (/\b(market|trend|demand|popular skill|in.?demand)\b/.test(msg)) return 'market_trends';
@@ -162,6 +163,8 @@ function scriptedFallback(intent, data) {
       const { pending, shortlisted, rejected } = data.counts;
       return `You have **${data.total}** application${data.total !== 1 ? 's' : ''} total: **${shortlisted}** shortlisted, **${pending}** pending review, and **${rejected}** rejected. Keep applying — consistency is key!`;
     }
+    case 'interview_prep':
+      return "I can run a full **mock interview** tailored to any job posting! Open any job listing and click **Practice with Nexi** — I'll generate 6 questions based on the real job requirements, evaluate your answers live, and give you detailed feedback with scores. It's the best way to prepare before the real thing.";
     case 'cover_letter_help':
       return "To generate a cover letter, open any job listing and click **Generate Cover Letter**. Nexi will write it based on your profile bio and the job requirements. Make sure your bio is detailed before generating!";
     default:
@@ -252,7 +255,8 @@ const nexiChat = async (req, res, next) => {
 
     // For structured data intents, scripted response is always reliable;
     // only call HF for general/conversational intents.
-    const useScripted = intent === 'application_summary' || intent === 'find_jobs';
+    const useScripted = intent === 'application_summary' || intent === 'find_jobs'
+      || intent === 'cover_letter_help' || intent === 'interview_prep';
     let answer = useScripted ? null : await generateNexiResponse(trimmed, intent, data);
     if (!answer) answer = scriptedFallback(intent, data);
 
