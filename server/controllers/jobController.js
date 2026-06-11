@@ -468,7 +468,7 @@ const getJobApplicants = async (req, res, next) => {
     }
 
     const applications = await Application.find({ job: jobId })
-      .populate('user', 'name email skills')
+      .populate('user', 'name email skills academicInformation')
       .select('status coverLetter appliedAt user')
       .lean();
 
@@ -496,7 +496,7 @@ const getApplicantSummary = async (req, res, next) => {
     }
 
     const applications = await Application.find({ job: jobId })
-      .populate('user', 'name email skills')
+      .populate('user', 'name email skills academicInformation')
       .select('status user')
       .lean();
 
@@ -605,8 +605,24 @@ const getApplicantSummary = async (req, res, next) => {
         name: app.user?.name || 'Unknown',
         email: app.user?.email || '',
         score: Math.round(score * 100),
-        skills: app.user?.skills || []
+        skills: app.user?.skills || [],
+        academicInformation: app.user?.academicInformation || null,
       }));
+
+    // Build a compact academic context string for Nexi insight
+    const topCandidateAcademic = recommended[0]?.academicInformation;
+    let academicContext = '';
+    if (topCandidateAcademic?.gpa) {
+      academicContext += ` The top candidate maintains a GPA of ${topCandidateAcademic.gpa.toFixed(2)}`;
+      if (topCandidateAcademic.major) academicContext += ` while pursuing ${topCandidateAcademic.major}`;
+      if (topCandidateAcademic.degree) academicContext += ` (${topCandidateAcademic.degree})`;
+      academicContext += '.';
+    }
+    const avgGpa = (() => {
+      const gpas = scored.map(s => s.app.user?.academicInformation?.gpa).filter(g => g != null && g > 0);
+      if (!gpas.length) return null;
+      return (gpas.reduce((a, b) => a + b, 0) / gpas.length).toFixed(2);
+    })();
 
     res.status(200).json({
       success: true,
@@ -618,7 +634,9 @@ const getApplicantSummary = async (req, res, next) => {
         topSkills,
         missingSkills,
         averageScore: Math.round((scoreSum / applications.length) * 100),
-        recommended
+        recommended,
+        academicContext,
+        avgGpa,
       }
     });
   } catch (error) {

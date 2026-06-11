@@ -376,6 +376,76 @@ function ProfilePage() {
             </div>
           </section>
 
+          {/* Academic Information Card */}
+          <section className="pf-card">
+            <div className="pf-card__header">
+              <div>
+                <h2 className="pf-card__title">Academic Information</h2>
+                <p className="pf-card__subtitle">Your educational background for recruiters</p>
+              </div>
+              <Link to="/profile/edit" className="pf-card__action">Edit</Link>
+            </div>
+
+            {profile.academicInformation?.university || profile.academicInformation?.degree || profile.academicInformation?.major || profile.academicInformation?.gpa != null || profile.academicInformation?.graduationDate ? (
+              <dl className="pf-academic-list">
+                {profile.academicInformation.university && (
+                  <div className="pf-academic-row">
+                    <dt className="pf-academic-label">
+                      <span className="material-symbols-outlined">school</span>
+                      University
+                    </dt>
+                    <dd className="pf-academic-value">{profile.academicInformation.university}</dd>
+                  </div>
+                )}
+                {profile.academicInformation.degree && (
+                  <div className="pf-academic-row">
+                    <dt className="pf-academic-label">
+                      <span className="material-symbols-outlined">workspace_premium</span>
+                      Degree
+                    </dt>
+                    <dd className="pf-academic-value">{profile.academicInformation.degree}</dd>
+                  </div>
+                )}
+                {profile.academicInformation.major && (
+                  <div className="pf-academic-row">
+                    <dt className="pf-academic-label">
+                      <span className="material-symbols-outlined">menu_book</span>
+                      Major
+                    </dt>
+                    <dd className="pf-academic-value">{profile.academicInformation.major}</dd>
+                  </div>
+                )}
+                {profile.academicInformation.gpa != null && (
+                  <div className="pf-academic-row">
+                    <dt className="pf-academic-label">
+                      <span className="material-symbols-outlined">grade</span>
+                      GPA
+                    </dt>
+                    <dd className="pf-academic-value">
+                      <span className="pf-gpa-badge">{Number(profile.academicInformation.gpa).toFixed(2)}</span>
+                      <span className="pf-gpa-scale"> / 4.00</span>
+                    </dd>
+                  </div>
+                )}
+                {profile.academicInformation.graduationDate && (
+                  <div className="pf-academic-row">
+                    <dt className="pf-academic-label">
+                      <span className="material-symbols-outlined">event</span>
+                      Expected Graduation
+                    </dt>
+                    <dd className="pf-academic-value">
+                      {new Date(profile.academicInformation.graduationDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            ) : (
+              <p className="pf-bio-empty">
+                No academic information yet. Click <strong>Edit</strong> to add your university and degree.
+              </p>
+            )}
+          </section>
+
           {/* Nexi Market Trends card */}
           <section className="pf-card pf-nexi-trends-card">
             <div className="pf-nexi-trends__inner">

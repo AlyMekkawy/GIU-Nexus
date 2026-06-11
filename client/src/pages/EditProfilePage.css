@@ -125,6 +125,40 @@
 .ep-progress { height: 5px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-bottom: 0.6rem; }
 .ep-progress__fill { height: 100%; background: var(--red); border-radius: 999px; transition: width 0.5s ease; }
 
+/* ── Academic section divider ──────────────────────────────────────────────── */
+.ep-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.75rem 0 1.25rem;
+}
+.ep-section-divider::before,
+.ep-section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.ep-section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Two-column field row ──────────────────────────────────────────────────── */
+.ep-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0;
+}
+@media (max-width: 540px) {
+  .ep-field-row { grid-template-columns: 1fr; }
+}
+
 /* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 600px) {
   .ep-main { padding: 6rem 1rem 4rem; }

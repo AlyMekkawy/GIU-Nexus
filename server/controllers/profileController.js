@@ -17,7 +17,7 @@ const getProfile = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'Invalid user id format' });
         }
 
-        const user = await User.findById(userId).select('name email bio skills profilePicture role status');
+        const user = await User.findById(userId).select('name email bio skills profilePicture role status academicInformation');
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
@@ -44,13 +44,28 @@ const updateProfile=async(req,res,next)=>{
       }
 
       const { name, bio, profilePicture, skills } = req.body;
-      
+
+      // academicInformation may arrive as a JSON string when sent via FormData
+      let academicInformation = req.body.academicInformation;
+      if (typeof academicInformation === 'string') {
+        try { academicInformation = JSON.parse(academicInformation); } catch { academicInformation = undefined; }
+      }
+
       // Build update object with only provided fields
       const updateData = {};
       if (name !== undefined) updateData.name = name;
       if (bio !== undefined) updateData.bio = bio;
       if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
       if (skills !== undefined) updateData.skills = skills;
+
+      if (academicInformation !== undefined && typeof academicInformation === 'object') {
+        const ai = academicInformation;
+        if (ai.university  !== undefined) updateData['academicInformation.university']     = ai.university;
+        if (ai.degree      !== undefined) updateData['academicInformation.degree']         = ai.degree;
+        if (ai.major       !== undefined) updateData['academicInformation.major']          = ai.major;
+        if (ai.gpa         !== undefined) updateData['academicInformation.gpa']            = ai.gpa;
+        if (ai.graduationDate !== undefined) updateData['academicInformation.graduationDate'] = ai.graduationDate;
+      }
 
       if (req.file?.path) {
           const uploadResult = await uploadToCloudinary(req.file.path, {

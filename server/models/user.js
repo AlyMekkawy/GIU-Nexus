@@ -83,6 +83,14 @@ const userSchema = new mongoose.Schema({
         select: false,
     },
 
+    academicInformation: {
+        university:     { type: String, default: "" },
+        degree:         { type: String, default: "" },
+        major:          { type: String, default: "" },
+        gpa:            { type: Number, default: null },
+        graduationDate: { type: Date,   default: null },
+    },
+
 })
 
 userSchema.path("savedJobs").default(() => [])

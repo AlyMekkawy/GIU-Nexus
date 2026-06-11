@@ -137,9 +137,10 @@ function ApplicantsPage() {
         if (!summary) return '';
         const size = summary.total < 5 ? 'Small' : summary.total < 15 ? 'Moderate' : 'Large';
         const gaps = summary.missingSkills.slice(0, 3).join(', ');
-        return summary.strong > 0
+        const base = summary.strong > 0
             ? `${size} applicant pool — ${summary.strong === 1 ? 'one candidate shows' : `${summary.strong} candidates show`} strong alignment with this role.${gaps ? ` Main gaps across the pool: ${gaps}.` : ''}`
             : `${size} applicant pool with no standout signals yet.${gaps ? ` Most applicants are missing ${gaps}.` : ''}`;
+        return base + (summary.academicContext || '');
     })();
 
     /* ── Main ────────────────────────────────────────────────────────────── */
@@ -359,6 +360,7 @@ function ApplicantsPage() {
                                 <thead>
                                     <tr>
                                         <th>Applicant</th>
+                                        <th>Academic</th>
                                         <th>Skills</th>
                                         <th>Status</th>
                                         <th className="ap-th-right">Actions</th>
@@ -379,6 +381,36 @@ function ApplicantsPage() {
                                                         <div className="ap-email">{app.user?.email || ''}</div>
                                                     </div>
                                                 </div>
+                                            </td>
+
+                                            {/* Academic snapshot */}
+                                            <td className="ap-td">
+                                                {app.user?.academicInformation?.university || app.user?.academicInformation?.major || app.user?.academicInformation?.gpa != null ? (
+                                                    <div className="ap-academic-snap">
+                                                        {(app.user.academicInformation.university || app.user.academicInformation.major) && (
+                                                            <span className="ap-academic-snap__school">
+                                                                {app.user.academicInformation.university || app.user.academicInformation.major}
+                                                            </span>
+                                                        )}
+                                                        {app.user.academicInformation.major && app.user.academicInformation.university && (
+                                                            <span className="ap-academic-snap__major">{app.user.academicInformation.major}</span>
+                                                        )}
+                                                        <div className="ap-academic-snap__meta">
+                                                            {app.user.academicInformation.gpa != null && (
+                                                                <span className="ap-academic-snap__gpa">
+                                                                    GPA {Number(app.user.academicInformation.gpa).toFixed(2)}
+                                                                </span>
+                                                            )}
+                                                            {app.user.academicInformation.graduationDate && (
+                                                                <span className="ap-academic-snap__grad">
+                                                                    Grad {new Date(app.user.academicInformation.graduationDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <span className="ap-no-skills">—</span>
+                                                )}
                                             </td>
 
                                             {/* Skills */}
@@ -474,6 +506,26 @@ function ApplicantsPage() {
                                             {app.status?.charAt(0).toUpperCase() + app.status?.slice(1)}
                                         </span>
                                     </div>
+
+                                    {(app.user?.academicInformation?.university || app.user?.academicInformation?.major || app.user?.academicInformation?.gpa != null) && (
+                                        <div className="ap-academic-snap ap-academic-snap--mobile">
+                                            {(app.user.academicInformation.university || app.user.academicInformation.major) && (
+                                                <span className="ap-academic-snap__school">
+                                                    {app.user.academicInformation.university || app.user.academicInformation.major}
+                                                </span>
+                                            )}
+                                            <div className="ap-academic-snap__meta">
+                                                {app.user.academicInformation.gpa != null && (
+                                                    <span className="ap-academic-snap__gpa">GPA {Number(app.user.academicInformation.gpa).toFixed(2)}</span>
+                                                )}
+                                                {app.user.academicInformation.graduationDate && (
+                                                    <span className="ap-academic-snap__grad">
+                                                        Grad {new Date(app.user.academicInformation.graduationDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
 
                                     <div className="ap-skills-wrap ap-mobile-skills">
                                         {(app.user?.skills ?? []).slice(0, 3).map((skill, i) => (
