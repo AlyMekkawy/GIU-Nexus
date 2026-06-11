@@ -91,6 +91,11 @@ const userSchema = new mongoose.Schema({
         graduationDate: { type: Date,   default: null },
     },
 
+    hasCompletedOnboarding: {
+        type: Boolean,
+        default: false,
+    },
+
 })
 
 userSchema.path("savedJobs").default(() => [])

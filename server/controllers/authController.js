@@ -15,11 +15,12 @@ const signToken = (user) =>
 
 // Helper — builds the user object returned in register response
 const registerPayload = (user) => ({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    status: user.status,
+    _id:                    user._id,
+    name:                   user.name,
+    email:                  user.email,
+    role:                   user.role,
+    status:                 user.status,
+    hasCompletedOnboarding: user.hasCompletedOnboarding ?? false,
 });
 
 // Helper — builds the user object returned in every auth response
