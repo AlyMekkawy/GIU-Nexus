@@ -617,4 +617,108 @@
     color: #16a34a;
 }
 
+/* ── Nexi Cover Letter Card ──────────────────────────────────────────────── */
+.jd-nexi-cl-card {
+    margin-top: 1rem;
+    border-radius: 14px;
+    background: rgba(123, 38, 49, 0.09);
+    border: 1px solid rgba(123, 38, 49, 0.25);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.jd-nexi-cl-card:hover {
+    box-shadow: 0 4px 20px rgba(123, 38, 49, 0.18);
+}
+
+.jd-nexi-cl-card__inner {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+}
+
+.jd-nexi-cl-img-wrap {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7B2631 0%, #531720 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(123, 38, 49, 0.4);
+}
+
+.jd-nexi-cl-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.jd-nexi-cl-img--spin {
+    animation: jd-nexi-spin 1.4s linear infinite;
+}
+
+@keyframes jd-nexi-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.jd-nexi-cl-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.jd-nexi-cl-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+.jd-nexi-cl-sub {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+.jd-nexi-cl-btn {
+    flex-shrink: 0;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #7B2631 0%, #531720 100%);
+    border: none;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s, transform 0.12s;
+}
+
+.jd-nexi-cl-btn:hover:not(:disabled) {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+
+.jd-nexi-cl-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.jd-nexi-cl-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: jd-nexi-spin 0.7s linear infinite;
+    vertical-align: middle;
+}
+
 

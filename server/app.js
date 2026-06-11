@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors')
 
 const adminRoutes = require('./routes/adminRoutes.js');
+const nexiRoutes  = require('./routes/nexiRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const authRoutes = require('./routes/authRoutes');
 const jobRoutes = require('./routes/jobRoutes');
@@ -30,6 +31,7 @@ app.use('/api/v1/jobs', jobRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/nexi',  nexiRoutes);
 app.use("/api-docs", serve,
     setup(swaggerSpec, {
         swaggerOptions: {

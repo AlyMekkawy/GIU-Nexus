@@ -856,8 +856,11 @@ const getCoverLetterSuggestion = async (req, res, next) => {
             .join(", ")
         : "";
 
+    const studentName = typeof req.user?.name === "string" ? req.user.name.trim() : "";
+
     const prompt = buildCoverLetterPrompt({
       studentBio,
+      studentName,
       jobTitle: job.title,
       company: job.company,
       jobType: job.type,
@@ -1137,16 +1140,23 @@ const getMarketTrends = async (req, res, next) => {
 };
 
 // ── Helper: Cover Letter Prompt ───────────────────────────────────
-function buildCoverLetterPrompt({ studentBio, jobTitle, company, jobType, location, requirements, jobDescription }) {
+function buildCoverLetterPrompt({ studentBio, studentName, jobTitle, company, jobType, location, requirements, jobDescription }) {
+  const signoff = studentName
+    ? `End the letter with:\nSincerely,\n${studentName}`
+    : `End the letter with "Sincerely," followed by the applicant's name from their bio. Never write "[Your Name]" or any placeholder.`;
+
   return [
     {
       role: "system",
       content:
-          "You are a professional cover letter writer. Write concise, tailored cover letters in first person. Return only the cover letter text — no explanations, no greetings, no meta-commentary.",
+          "You are a professional cover letter writer. Write concise, tailored cover letters in first person. Return only the cover letter text — no explanations, no greetings, no meta-commentary. Never use placeholder text like [Your Name].",
     },
     {
       role: "user",
       content: `Write a concise professional cover letter for a student applying to this job.
+
+Student name:
+${studentName || "Not provided"}
 
 Student bio:
 ${studentBio}
@@ -1169,7 +1179,7 @@ ${requirements || ""}
 Job description:
 ${jobDescription}
 
-The cover letter should be polite, specific to the job, written in first person, and no longer than 250 words. Do not invent experience that is not supported by the student bio. Return only the cover letter text. Do not include  /n new lines in the response`,
+The cover letter should be polite, specific to the job, written in first person, and no longer than 250 words. Do not invent experience that is not supported by the student bio. Return only the cover letter text. Do not include /n new lines in the response. ${signoff}`,
     },
   ];
 }

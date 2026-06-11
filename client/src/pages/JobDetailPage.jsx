@@ -426,15 +426,36 @@ function JobDetailPage() {
                         <p className="jd-apply-subtitle">
                             Posted by <strong>{job.createdBy?.name}</strong>
                         </p>
-                        <button
-                            className="jd-btn-secondary"
-                            onClick={handleSuggestCoverLetter}
-                            disabled={suggesting || applying}
-                            type="button"
-                            style={{ marginBottom: '12px' }}
-                        >
-                            {suggesting ? 'Generating suggestion...' : 'Suggest cover letter'}
-                        </button>
+                        {/* Nexi cover letter card */}
+                        <div className="jd-nexi-cl-card">
+                            <div className="jd-nexi-cl-card__inner">
+                                <div className="jd-nexi-cl-img-wrap">
+                                    <img
+                                        src={suggesting ? '/Nexi/Nexi_InsightB.png' : '/Nexi/Nexi_Summarize.png'}
+                                        alt="Nexi"
+                                        className={`jd-nexi-cl-img${suggesting ? ' jd-nexi-cl-img--spin' : ''}`}
+                                    />
+                                </div>
+                                <div className="jd-nexi-cl-text">
+                                    <span className="jd-nexi-cl-label">Draft with Nexi</span>
+                                    <span className="jd-nexi-cl-sub">
+                                        {suggesting
+                                            ? 'Crafting your cover letter…'
+                                            : 'Generate a personalized cover letter from your bio'}
+                                    </span>
+                                </div>
+                                <button
+                                    className="jd-nexi-cl-btn"
+                                    onClick={handleSuggestCoverLetter}
+                                    disabled={suggesting || applying}
+                                    type="button"
+                                >
+                                    {suggesting
+                                        ? <span className="jd-nexi-cl-spinner" />
+                                        : 'Generate'}
+                                </button>
+                            </div>
+                        </div>
                         {suggestionError && <p className="jd-apply-error">{suggestionError}</p>}
                         <div className="jd-form-group">
                             <label className="jd-label">
