@@ -50,6 +50,11 @@ function JobDetailPage() {
     const [applySuccess, setApplySuccess]   = useState(false);
     const [suggesting, setSuggesting]       = useState(false);
     const [suggestionError, setSuggestionError] = useState('');
+    const [shareCopied, setShareCopied] = useState(false);
+    const [reporting, setReporting] = useState(false);
+    const [reportMessage, setReportMessage] = useState('');
+    const [reported, setReported] = useState(false);
+    const [reportError, setReportError] = useState('');
 
     const isJobSeeker = isAuthenticated && user?.role === 'jobSeeker';
 
@@ -144,6 +149,39 @@ function JobDetailPage() {
             setSuggestionError(err.message || 'Failed to generate a cover letter suggestion.');
         } finally {
             setSuggesting(false);
+        }
+    }
+
+    async function handleShare() {
+        const url = window.location.href;
+
+        try {
+            await navigator.clipboard.writeText(url);
+            setShareCopied(true);
+            setTimeout(() => setShareCopied(false), 1800);
+        } catch (err) {
+            console.error('Copy link failed:', err.message);
+        }
+    }
+
+    async function handleReport() {
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
+        if (reporting || reported) return;
+
+        setReporting(true);
+        setReportError('');
+
+        try {
+            await api.post(`/jobs/${id}/report`);
+            setReported(true);
+        } catch (err) {
+            setReportError(err.message || 'Report failed');
+        } finally {
+            setReporting(false);
         }
     }
 
@@ -298,6 +336,22 @@ function JobDetailPage() {
                                 )}
                             </div>
 
+                            {/* Nexi Interview Simulator entry */}
+                            {isJobSeeker && (
+                                <div className="jd-nexi-interview-card" onClick={() => navigate(`/jobs/${id}/interview`)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate(`/jobs/${id}/interview`)}>
+                                    <div className="jd-nexi-interview-card__inner">
+                                        <div className="jd-nexi-cl-img-wrap">
+                                            <img src="/Nexi/Nexi_InsightB.png" alt="Nexi" className="jd-nexi-cl-img" />
+                                        </div>
+                                        <div className="jd-nexi-cl-text">
+                                            <span className="jd-nexi-cl-label">Practice with Nexi</span>
+                                            <span className="jd-nexi-cl-sub">Simulate a real interview for this role before you apply</span>
+                                        </div>
+                                        <span className="jd-nexi-interview-card__arrow material-symbols-outlined">arrow_forward</span>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="jd-overview">
                                 <h4 className="jd-overview-title">Job Overview</h4>
                                 <div className="jd-overview-rows">
@@ -353,8 +407,17 @@ function JobDetailPage() {
                             </div>
 
                             <div className="jd-card-footer">
-                                <button className="jd-footer-btn">↗ Share</button>
-                                <button className="jd-footer-btn">⚑ Report</button>
+                                <button className="jd-footer-btn" onClick={handleShare}>
+                                    {shareCopied ? '✓ Link Copied' : '↗ Share'}
+                                </button>
+
+                                <button
+                                    className="jd-footer-btn"
+                                    onClick={handleReport}
+                                    disabled={reporting || reported}
+                                >
+                                    {reporting ? 'Reporting...' : reported ? '✓ Reported' : '⚑ Report'}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -379,15 +442,36 @@ function JobDetailPage() {
                         <p className="jd-apply-subtitle">
                             Posted by <strong>{job.createdBy?.name}</strong>
                         </p>
-                        <button
-                            className="jd-btn-secondary"
-                            onClick={handleSuggestCoverLetter}
-                            disabled={suggesting || applying}
-                            type="button"
-                            style={{ marginBottom: '12px' }}
-                        >
-                            {suggesting ? 'Generating suggestion...' : 'Suggest cover letter'}
-                        </button>
+                        {/* Nexi cover letter card */}
+                        <div className="jd-nexi-cl-card">
+                            <div className="jd-nexi-cl-card__inner">
+                                <div className="jd-nexi-cl-img-wrap">
+                                    <img
+                                        src={suggesting ? '/Nexi/Nexi_InsightB.png' : '/Nexi/Nexi_Summarize.png'}
+                                        alt="Nexi"
+                                        className={`jd-nexi-cl-img${suggesting ? ' jd-nexi-cl-img--spin' : ''}`}
+                                    />
+                                </div>
+                                <div className="jd-nexi-cl-text">
+                                    <span className="jd-nexi-cl-label">Draft with Nexi</span>
+                                    <span className="jd-nexi-cl-sub">
+                                        {suggesting
+                                            ? 'Crafting your cover letter…'
+                                            : 'Generate a personalized cover letter from your bio'}
+                                    </span>
+                                </div>
+                                <button
+                                    className="jd-nexi-cl-btn"
+                                    onClick={handleSuggestCoverLetter}
+                                    disabled={suggesting || applying}
+                                    type="button"
+                                >
+                                    {suggesting
+                                        ? <span className="jd-nexi-cl-spinner" />
+                                        : 'Generate'}
+                                </button>
+                            </div>
+                        </div>
                         {suggestionError && <p className="jd-apply-error">{suggestionError}</p>}
                         <div className="jd-form-group">
                             <label className="jd-label">

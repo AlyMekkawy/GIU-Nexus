@@ -514,12 +514,498 @@
 }
 
 /* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Ask Nexi button — card style ────────────────────────────────────────── */
+.ap-btn-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 1.15rem 0.55rem 0.55rem;
+    background: linear-gradient(135deg, #7B2631 0%, #531720 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s;
+    box-shadow: 0 2px 10px rgba(123, 38, 49, 0.35);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* top-left shimmer highlight */
+.ap-btn-summary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.ap-btn-summary:hover:not(:disabled)::before { opacity: 1; }
+
+.ap-btn-summary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(123, 38, 49, 0.5), 0 0 0 1px rgba(255,255,255,0.12);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+.ap-btn-summary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(123, 38, 49, 0.35);
+}
+
+.ap-btn-summary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.ap-nexi-btn-img-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.ap-nexi-btn-img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.ap-nexi-btn-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.ap-nexi-btn-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+}
+
+.ap-nexi-btn-sub {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1;
+}
+
+@keyframes ap-nexi-pulse {
+    0%, 100% { opacity: 1;   transform: scale(1);    }
+    50%       { opacity: 0.65; transform: scale(0.88); }
+}
+
+.ap-btn-nexi-spin { animation: ap-nexi-pulse 1.4s ease-in-out infinite; }
+
+/* ── Nexi summary panel ──────────────────────────────────────────────────── */
+.ap-summary-panel {
+    background: var(--surface);
+    border: 1px solid rgba(123, 38, 49, 0.22);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    box-shadow:
+        0 0 0 1px rgba(123, 38, 49, 0.06),
+        0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* floating close button */
+.ap-summary-close {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 8px;
+    transition: color 0.15s, background 0.15s;
+    z-index: 1;
+}
+
+.ap-summary-close:hover { color: var(--text); background: var(--surface-2); }
+.ap-summary-close .material-symbols-outlined { font-size: 18px; }
+
+/* two-column grid */
+.ap-summary-layout {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ── Left column: mascot + speech bubble ─────────────────────────────────── */
+.ap-nexi-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.25rem;
+}
+
+.ap-nexi-large {
+    width: 116px;
+    height: 116px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 16px rgba(123, 38, 49, 0.22));
+}
+
+.ap-nexi-bubble {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px 14px 14px 4px;
+    padding: 0.85rem 0.9rem;
+    font-size: 0.79rem;
+    line-height: 1.55;
+    color: var(--text);
+    position: relative;
+}
+
+/* upward-pointing tail */
+.ap-nexi-bubble::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left:  10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--border);
+}
+
+.ap-nexi-bubble::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left:  9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid var(--bg);
+}
+
+.ap-nexi-bubble p { margin: 0; }
+
+/* ── Right column: content ───────────────────────────────────────────────── */
+.ap-summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    min-width: 0;
+    /* leave space for the close button in the top-right corner */
+    padding-right: 2rem;
+}
+
+.ap-summary-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
+}
+
+/* ── Stats row ───────────────────────────────────────────────────────────── */
+.ap-summary-stats {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.ap-stat-card {
+    flex: 1;
+    min-width: 88px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.85rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    text-align: center;
+}
+
+.ap-stat-value {
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1;
+    font-family: var(--font-family-display), ui-serif, Georgia, serif;
+}
+
+.ap-stat-label {
+    font-size: 0.67rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    line-height: 1.2;
+}
+
+.ap-stat-total  .ap-stat-value { color: var(--text); }
+.ap-stat-strong .ap-stat-value { color: #22c55e; }
+.ap-stat-medium .ap-stat-value { color: #f59e0b; }
+.ap-stat-weak   .ap-stat-value { color: var(--red); }
+.ap-stat-avg    .ap-stat-value { color: var(--text); }
+
+/* ── Nexi verdict card ───────────────────────────────────────────────────── */
+.ap-verdict-card {
+    background: linear-gradient(135deg, rgba(123,38,49,0.07) 0%, rgba(123,38,49,0.03) 100%);
+    border: 1px solid rgba(123, 38, 49, 0.18);
+    border-radius: 12px;
+    padding: 0.95rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.ap-verdict-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+}
+
+.ap-verdict-label .material-symbols-outlined { font-size: 13px; }
+
+.ap-verdict-text {
+    font-size: 0.875rem;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────────── */
+.ap-summary-body { display: flex; flex-direction: column; gap: 1.1rem; }
+
+.ap-summary-section { display: flex; flex-direction: column; gap: 0.55rem; }
+
+.ap-summary-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+}
+
+.ap-nexi-section-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.ap-summary-skills { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+.ap-summary-skill-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(123, 38, 49, 0.07);
+    border: 1px solid rgba(123, 38, 49, 0.18);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.79rem;
+    font-weight: 500;
+}
+
+.ap-summary-skill-count {
+    background: rgba(123, 38, 49, 0.15);
+    color: var(--red);
+    border-radius: 999px;
+    padding: 0 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.ap-summary-skill-missing {
+    background: rgba(239, 68, 68, 0.07);
+    border-color: rgba(239, 68, 68, 0.22);
+    color: var(--text-muted);
+}
+
+.ap-summary-empty { font-size: 0.84rem; color: var(--text-muted); margin: 0; }
+
+/* ── Recommended list ────────────────────────────────────────────────────── */
+.ap-recommended-list { display: flex; flex-direction: column; gap: 0.45rem; }
+
+.ap-recommended-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.85rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.15s;
+}
+
+.ap-recommended-item:hover { border-color: rgba(123, 38, 49, 0.3); }
+
+.ap-recommended-rank {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.ap-avatar-sm { width: 32px; height: 32px; font-size: 0.72rem; flex-shrink: 0; }
+
+.ap-recommended-info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+
+.ap-recommended-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ap-recommended-email {
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ap-score-badge {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.77rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 760px) {
+    .ap-summary-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .ap-nexi-col {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .ap-nexi-large {
+        width: 72px;
+        height: 72px;
+        flex-shrink: 0;
+    }
+
+    .ap-nexi-bubble {
+        border-radius: 14px 14px 14px 4px;
+        flex: 1;
+    }
+
+    /* bubble tail now points left toward the mascot */
+    .ap-nexi-bubble::before {
+        top: 50%;
+        left: -10px;
+        transform: translateY(-50%);
+        border-top:    9px solid transparent;
+        border-bottom: 9px solid transparent;
+        border-right:  10px solid var(--border);
+        border-left: none;
+    }
+
+    .ap-nexi-bubble::after {
+        top: 50%;
+        left: -8px;
+        transform: translateY(-50%);
+        border-top:    8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right:  9px solid var(--bg);
+        border-left: none;
+    }
+
+    .ap-summary-content { padding-right: 0; }
+}
+
 @media (max-width: 600px) {
     .ap-container { padding-top: 6rem; }
     .ap-title { font-size: 1.5rem; }
     .ap-header { flex-direction: column; align-items: flex-start; }
     .ap-header-actions { width: 100%; }
     .ap-btn-back { width: 100%; justify-content: center; }
+    .ap-btn-summary { width: 100%; }
+    .ap-summary-stats { gap: 0.5rem; }
+    .ap-stat-card { min-width: calc(50% - 0.25rem); }
+    .ap-summary-panel { padding: 1.25rem; }
+}
+
+/* ── Academic snapshot ────────────────────────────────────────────────────── */
+.ap-academic-snap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+}
+.ap-academic-snap__school {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+}
+.ap-academic-snap__major {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+.ap-academic-snap__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.15rem;
+}
+.ap-academic-snap__gpa {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(123,38,49,0.1);
+    border: 1px solid rgba(123,38,49,0.22);
+    color: var(--red);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+.ap-academic-snap__grad {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--surface-2, rgba(255,255,255,0.06));
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+.ap-academic-snap--mobile {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
 }
 
 

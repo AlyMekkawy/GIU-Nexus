@@ -18,6 +18,14 @@ function EditProfilePage() {
   const [profilePicture, setProfilePicture] = useState(null);
   const [previewUrl, setPreviewUrl]   = useState(null);
 
+  // Academic fields
+  const [university,      setUniversity]      = useState('');
+  const [degree,          setDegree]          = useState('');
+  const [major,           setMajor]           = useState('');
+  const [gpa,             setGpa]             = useState('');
+  const [graduationDate,  setGraduationDate]  = useState('');
+  const [academicError,   setAcademicError]   = useState('');
+
   const [loading, setLoading]         = useState(true);
   const [saving, setSaving]           = useState(false);
   const [error, setError]             = useState('');
@@ -35,6 +43,16 @@ function EditProfilePage() {
           setName(profileData.name || '');
           setBio(profileData.bio || '');
           setProfilePicture(profileData.profilePicture || null);
+          const ai = profileData.academicInformation || {};
+          setUniversity(ai.university || '');
+          setDegree(ai.degree || '');
+          setMajor(ai.major || '');
+          setGpa(ai.gpa != null ? String(ai.gpa) : '');
+          setGraduationDate(
+            ai.graduationDate
+              ? new Date(ai.graduationDate).toISOString().split('T')[0]
+              : ''
+          );
         }
       } catch {
         if (mounted && user) {
@@ -64,9 +82,29 @@ function EditProfilePage() {
 
   async function handleSave(e) {
     e.preventDefault();
+    setAcademicError('');
+    setError('');
+
+    // Validate GPA
+    if (gpa !== '') {
+      const gpaNum = parseFloat(gpa);
+      if (isNaN(gpaNum) || gpaNum < 0 || gpaNum > 4.0) {
+        setAcademicError('GPA must be a number between 0 and 4.0.');
+        return;
+      }
+    }
+
+    // Validate graduation date (must be in the future)
+    if (graduationDate) {
+      const gradTime = new Date(graduationDate).getTime();
+      if (gradTime <= Date.now()) {
+        setAcademicError('Expected graduation date must be in the future.');
+        return;
+      }
+    }
+
     try {
       setSaving(true);
-      setError('');
       setSuccess('');
 
       const formData = new FormData();
@@ -74,6 +112,16 @@ function EditProfilePage() {
       formData.append('bio', bio.trim());
       const photoFile = fileInputRef.current?.files?.[0];
       if (photoFile) formData.append('profilePicture', photoFile);
+
+      // Academic info sent as JSON string (FormData can't nest objects)
+      const academicInformation = {
+        university:     university.trim(),
+        degree:         degree.trim(),
+        major:          major.trim(),
+        gpa:            gpa !== '' ? parseFloat(gpa) : null,
+        graduationDate: graduationDate || null,
+      };
+      formData.append('academicInformation', JSON.stringify(academicInformation));
 
       await api.patch('/profile', formData);
       setSuccess('Profile updated successfully!');
@@ -218,6 +266,81 @@ function EditProfilePage() {
                   Recruiters use your bio to understand your unique value proposition beyond just skills.
                 </p>
               </div>
+
+              {/* Academic Information */}
+              <div className="ep-section-divider">
+                <span className="ep-section-label">Academic Information</span>
+              </div>
+
+              <div className="ep-field-row">
+                <div className="ep-field">
+                  <label className="ep-label" htmlFor="ep-university">University</label>
+                  <input
+                    id="ep-university"
+                    className="ep-input"
+                    type="text"
+                    value={university}
+                    onChange={e => setUniversity(e.target.value)}
+                    placeholder="e.g. German International University"
+                  />
+                </div>
+                <div className="ep-field">
+                  <label className="ep-label" htmlFor="ep-degree">Degree</label>
+                  <input
+                    id="ep-degree"
+                    className="ep-input"
+                    type="text"
+                    value={degree}
+                    onChange={e => setDegree(e.target.value)}
+                    placeholder="e.g. Bachelor of Science"
+                  />
+                </div>
+              </div>
+
+              <div className="ep-field-row">
+                <div className="ep-field">
+                  <label className="ep-label" htmlFor="ep-major">Major</label>
+                  <input
+                    id="ep-major"
+                    className="ep-input"
+                    type="text"
+                    value={major}
+                    onChange={e => setMajor(e.target.value)}
+                    placeholder="e.g. Computer Science & AI"
+                  />
+                </div>
+                <div className="ep-field">
+                  <label className="ep-label" htmlFor="ep-gpa">
+                    GPA
+                    <span style={{ float: 'right', fontWeight: 400, color: 'var(--text-dim)', fontSize: '0.78rem' }}>0 – 4.0</span>
+                  </label>
+                  <input
+                    id="ep-gpa"
+                    className="ep-input"
+                    type="number"
+                    min="0"
+                    max="4.0"
+                    step="0.01"
+                    value={gpa}
+                    onChange={e => setGpa(e.target.value)}
+                    placeholder="e.g. 3.72"
+                  />
+                </div>
+              </div>
+
+              <div className="ep-field">
+                <label className="ep-label" htmlFor="ep-graddate">Expected Graduation Date</label>
+                <input
+                  id="ep-graddate"
+                  className="ep-input"
+                  type="date"
+                  value={graduationDate}
+                  onChange={e => setGraduationDate(e.target.value)}
+                />
+                <p className="ep-hint">Must be a future date.</p>
+              </div>
+
+              {academicError && <div className="ep-error">{academicError}</div>}
 
               {/* Banners */}
               {error   && <div className="ep-error">{error}</div>}

@@ -24,6 +24,9 @@ function ApplicantsPage() {
     const [error,        setError]        = useState('');
     const [updatingId,   setUpdatingId]   = useState(null);
     const [updateError,  setUpdateError]  = useState('');
+    const [summary,      setSummary]      = useState(null);
+    const [summaryLoading, setSummaryLoading] = useState(false);
+    const [summaryError,   setSummaryError]   = useState('');
 
     useEffect(() => {
         let isMounted = true;
@@ -58,6 +61,20 @@ function ApplicantsPage() {
             { y: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: 'power3.out' }
         );
     }, [loading]);
+
+    async function handleGenerateSummary() {
+        setSummaryLoading(true);
+        setSummaryError('');
+        setSummary(null);
+        try {
+            const res = await api.get(`/jobs/${jobId}/applicant-summary`);
+            setSummary(res.data.summary);
+        } catch (err) {
+            setSummaryError(err.response?.data?.message || err.message || 'Failed to generate summary.');
+        } finally {
+            setSummaryLoading(false);
+        }
+    }
 
     async function handleStatusChange(applicationId, newStatus) {
         setUpdatingId(applicationId);
@@ -110,6 +127,22 @@ function ApplicantsPage() {
         );
     }
 
+    /* ── Nexi display helpers (pure presentation, no logic) ─────────────── */
+    const nexiSpeech = summary
+        ? summary.strong > 0
+            ? `I scanned this pool and found ${summary.strong} high-signal candidate${summary.strong !== 1 ? 's' : ''} worth reviewing first.`
+            : `I scanned this pool. No standout candidates yet — here's what I found.`
+        : '';
+    const nexiVerdict = (() => {
+        if (!summary) return '';
+        const size = summary.total < 5 ? 'Small' : summary.total < 15 ? 'Moderate' : 'Large';
+        const gaps = summary.missingSkills.slice(0, 3).join(', ');
+        const base = summary.strong > 0
+            ? `${size} applicant pool — ${summary.strong === 1 ? 'one candidate shows' : `${summary.strong} candidates show`} strong alignment with this role.${gaps ? ` Main gaps across the pool: ${gaps}.` : ''}`
+            : `${size} applicant pool with no standout signals yet.${gaps ? ` Most applicants are missing ${gaps}.` : ''}`;
+        return base + (summary.academicContext || '');
+    })();
+
     /* ── Main ────────────────────────────────────────────────────────────── */
     return (
         <div className="ap-page">
@@ -143,8 +176,162 @@ function ApplicantsPage() {
                             <span className="material-symbols-outlined">arrow_back</span>
                             Dashboard
                         </button>
+                        {applications.length > 0 && (
+                            <button
+                                className="ap-btn-summary"
+                                onClick={handleGenerateSummary}
+                                disabled={summaryLoading}
+                            >
+                                <div className="ap-nexi-btn-img-wrap">
+                                    <img
+                                        src={summaryLoading ? '/Nexi/Nexi_InsightB.png' : '/Nexi/Nexi_Summarize.png'}
+                                        alt="Nexi"
+                                        className={`ap-nexi-btn-img${summaryLoading ? ' ap-btn-nexi-spin' : ''}`}
+                                    />
+                                </div>
+                                <div className="ap-nexi-btn-text">
+                                    <span className="ap-nexi-btn-label">
+                                        {summaryLoading ? 'Analyzing…' : 'Ask Nexi'}
+                                    </span>
+                                    <span className="ap-nexi-btn-sub">
+                                        {summaryLoading ? 'Scanning the applicant pool' : 'Analyze applicants'}
+                                    </span>
+                                </div>
+                            </button>
+                        )}
                     </div>
                 </header>
+
+                {/* Nexi summary panel */}
+                {summaryError && (
+                    <div className="ap-update-error" role="alert">
+                        <span className="material-symbols-outlined">warning</span>
+                        {summaryError}
+                    </div>
+                )}
+                {summary && (
+                    <div className="ap-summary-panel">
+
+                        {/* Floating close */}
+                        <button className="ap-summary-close" onClick={() => setSummary(null)} aria-label="Close">
+                            <span className="material-symbols-outlined">close</span>
+                        </button>
+
+                        {/* Two-column: Nexi assistant left, content right */}
+                        <div className="ap-summary-layout">
+
+                            {/* ── Left: mascot + speech bubble ── */}
+                            <div className="ap-nexi-col">
+                                <img src="/Nexi/Nexi_Summarize.png" alt="Nexi" className="ap-nexi-large" />
+                                <div className="ap-nexi-bubble">
+                                    <p>{nexiSpeech}</p>
+                                </div>
+                            </div>
+
+                            {/* ── Right: all content ── */}
+                            <div className="ap-summary-content">
+
+                                {/* Title */}
+                                <h2 className="ap-summary-title">Nexi Applicant Intel</h2>
+
+                                {/* Stats */}
+                                <div className="ap-summary-stats">
+                                    <div className="ap-stat-card ap-stat-total">
+                                        <span className="ap-stat-value">{summary.total}</span>
+                                        <span className="ap-stat-label">Pool Size</span>
+                                    </div>
+                                    <div className="ap-stat-card ap-stat-strong">
+                                        <span className="ap-stat-value">{summary.strong}</span>
+                                        <span className="ap-stat-label">Ready to Review</span>
+                                    </div>
+                                    <div className="ap-stat-card ap-stat-medium">
+                                        <span className="ap-stat-value">{summary.medium}</span>
+                                        <span className="ap-stat-label">Maybe Later</span>
+                                    </div>
+                                    <div className="ap-stat-card ap-stat-weak">
+                                        <span className="ap-stat-value">{summary.weak}</span>
+                                        <span className="ap-stat-label">Needs Development</span>
+                                    </div>
+                                    <div className="ap-stat-card ap-stat-avg">
+                                        <span className="ap-stat-value">{summary.averageScore}%</span>
+                                        <span className="ap-stat-label">Overall Fit</span>
+                                    </div>
+                                </div>
+
+                                {/* Nexi verdict card */}
+                                <div className="ap-verdict-card">
+                                    <span className="ap-verdict-label">
+                                        <span className="material-symbols-outlined">verified</span>
+                                        Nexi Verdict
+                                    </span>
+                                    <p className="ap-verdict-text">{nexiVerdict}</p>
+                                </div>
+
+                                {/* Sections */}
+                                <div className="ap-summary-body">
+
+                                    {/* Top skills */}
+                                    <div className="ap-summary-section">
+                                        <h3 className="ap-summary-section-title">
+                                            <img src="/Nexi/Nexi_Insight.png" alt="" className="ap-nexi-section-icon" />
+                                            What Nexi noticed
+                                        </h3>
+                                        {summary.topSkills.length > 0 ? (
+                                            <div className="ap-summary-skills">
+                                                {summary.topSkills.map(({ skill, count }) => (
+                                                    <span key={skill} className="ap-summary-skill-chip">
+                                                        {skill}
+                                                        <span className="ap-summary-skill-count">{count}</span>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        ) : <p className="ap-summary-empty">No skill data available.</p>}
+                                    </div>
+
+                                    {/* Missing skills */}
+                                    <div className="ap-summary-section">
+                                        <h3 className="ap-summary-section-title">
+                                            <img src="/Nexi/Nexi_Insight.png" alt="" className="ap-nexi-section-icon" />
+                                            Where the pool is weak
+                                        </h3>
+                                        {summary.missingSkills.length > 0 ? (
+                                            <div className="ap-summary-skills">
+                                                {summary.missingSkills.map(skill => (
+                                                    <span key={skill} className="ap-summary-skill-chip ap-summary-skill-missing">{skill}</span>
+                                                ))}
+                                            </div>
+                                        ) : <p className="ap-summary-empty">All requirements are well-covered.</p>}
+                                    </div>
+
+                                    {/* Recommended */}
+                                    <div className="ap-summary-section">
+                                        <h3 className="ap-summary-section-title">
+                                            <img src="/Nexi/Nexi_Discover.png" alt="" className="ap-nexi-section-icon" />
+                                            Who Nexi would review first
+                                        </h3>
+                                        {summary.recommended.length > 0 ? (
+                                            <div className="ap-recommended-list">
+                                                {summary.recommended.map((rec, i) => (
+                                                    <div key={rec._id} className="ap-recommended-item">
+                                                        <div className="ap-recommended-rank">#{i + 1}</div>
+                                                        <div className="ap-avatar ap-avatar-sm">{getInitials(rec.name)}</div>
+                                                        <div className="ap-recommended-info">
+                                                            <span className="ap-recommended-name">{rec.name}</span>
+                                                            <span className="ap-recommended-email">{rec.email}</span>
+                                                        </div>
+                                                        <div className="ap-recommended-score">
+                                                            <span className="ap-score-badge">{rec.score}%</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : <p className="ap-summary-empty">No strong candidates found.</p>}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Update error banner */}
                 {updateError && (
@@ -173,6 +360,7 @@ function ApplicantsPage() {
                                 <thead>
                                     <tr>
                                         <th>Applicant</th>
+                                        <th>Academic</th>
                                         <th>Skills</th>
                                         <th>Status</th>
                                         <th className="ap-th-right">Actions</th>
@@ -193,6 +381,36 @@ function ApplicantsPage() {
                                                         <div className="ap-email">{app.user?.email || ''}</div>
                                                     </div>
                                                 </div>
+                                            </td>
+
+                                            {/* Academic snapshot */}
+                                            <td className="ap-td">
+                                                {app.user?.academicInformation?.university || app.user?.academicInformation?.major || app.user?.academicInformation?.gpa != null ? (
+                                                    <div className="ap-academic-snap">
+                                                        {(app.user.academicInformation.university || app.user.academicInformation.major) && (
+                                                            <span className="ap-academic-snap__school">
+                                                                {app.user.academicInformation.university || app.user.academicInformation.major}
+                                                            </span>
+                                                        )}
+                                                        {app.user.academicInformation.major && app.user.academicInformation.university && (
+                                                            <span className="ap-academic-snap__major">{app.user.academicInformation.major}</span>
+                                                        )}
+                                                        <div className="ap-academic-snap__meta">
+                                                            {app.user.academicInformation.gpa != null && (
+                                                                <span className="ap-academic-snap__gpa">
+                                                                    GPA {Number(app.user.academicInformation.gpa).toFixed(2)}
+                                                                </span>
+                                                            )}
+                                                            {app.user.academicInformation.graduationDate && (
+                                                                <span className="ap-academic-snap__grad">
+                                                                    Grad {new Date(app.user.academicInformation.graduationDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <span className="ap-no-skills">—</span>
+                                                )}
                                             </td>
 
                                             {/* Skills */}
@@ -288,6 +506,26 @@ function ApplicantsPage() {
                                             {app.status?.charAt(0).toUpperCase() + app.status?.slice(1)}
                                         </span>
                                     </div>
+
+                                    {(app.user?.academicInformation?.university || app.user?.academicInformation?.major || app.user?.academicInformation?.gpa != null) && (
+                                        <div className="ap-academic-snap ap-academic-snap--mobile">
+                                            {(app.user.academicInformation.university || app.user.academicInformation.major) && (
+                                                <span className="ap-academic-snap__school">
+                                                    {app.user.academicInformation.university || app.user.academicInformation.major}
+                                                </span>
+                                            )}
+                                            <div className="ap-academic-snap__meta">
+                                                {app.user.academicInformation.gpa != null && (
+                                                    <span className="ap-academic-snap__gpa">GPA {Number(app.user.academicInformation.gpa).toFixed(2)}</span>
+                                                )}
+                                                {app.user.academicInformation.graduationDate && (
+                                                    <span className="ap-academic-snap__grad">
+                                                        Grad {new Date(app.user.academicInformation.graduationDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
 
                                     <div className="ap-skills-wrap ap-mobile-skills">
                                         {(app.user?.skills ?? []).slice(0, 3).map((skill, i) => (

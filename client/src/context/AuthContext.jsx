@@ -23,6 +23,12 @@ export function AuthProvider({ children }) {
         setUser(userData);
     }
 
+    function updateUser(patch) {
+        const updated = { ...user, ...patch };
+        localStorage.setItem("user", JSON.stringify(updated));
+        setUser(updated);
+    }
+
     async function logout() {
         try {
             await api.post("/auth/logout");
@@ -39,6 +45,7 @@ export function AuthProvider({ children }) {
         isAuthenticated: !!token,
         login,
         logout,
+        updateUser,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

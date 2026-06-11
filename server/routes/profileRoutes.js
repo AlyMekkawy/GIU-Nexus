@@ -1,7 +1,7 @@
 const express = require('express');
 const upload = require('../middleware/upload');
 const { protect, authorize } = require('../middleware/auth');
-const { getProfile, updateProfile, changePassword, extractSkills } = require('../controllers/profileController');
+const { getProfile, updateProfile, changePassword, extractSkills, completeOnboarding } = require('../controllers/profileController');
 const router = express.Router();
 
 /**
@@ -314,5 +314,6 @@ router.patch('/change-password', protect, changePassword);
  */
 // POST /api/v1/profile/extract-skills - private (jobSeeker only)
 router.post('/extract-skills', protect, authorize('jobSeeker'), extractSkills);
+router.patch('/complete-onboarding', protect, authorize('jobSeeker'), completeOnboarding);
 
 module.exports = router;

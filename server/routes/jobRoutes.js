@@ -1,7 +1,7 @@
 const express = require("express");
 
 
-const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, toggleSaveJob, applyToJob, getCoverLetterSuggestion } = require("../controllers/jobController");
+const { getJobs, createJob, getJobById, deleteJob, updateJob, getRecommendedJobs, getSavedJobs, getMyJobs, getJobApplicants, getApplicantSummary, toggleSaveJob, reportJob, applyToJob, getCoverLetterSuggestion, rewriteRequirements, getMarketTrends } = require("../controllers/jobController");
 
 const { protect, authorize } = require("../middleware/auth");
 
@@ -339,6 +339,14 @@ router.get("/saved", protect, authorize("jobSeeker"), getSavedJobs);
 // Must come BEFORE the /:id route to avoid conflict
 router.get("/my-jobs", protect, authorize("recruiter"), getMyJobs);
 
+// Recruiter only: POST /api/v1/jobs/rewrite-requirements
+// Must come BEFORE /:id to avoid route conflict
+router.post("/rewrite-requirements", protect, authorize("recruiter"), rewriteRequirements);
+
+// Job seeker only: GET /api/v1/jobs/market-trends
+// Must come BEFORE /:id to avoid route conflict
+router.get("/market-trends", protect, authorize("jobSeeker"), getMarketTrends);
+
 /**
  * @openapi
  * /api/v1/jobs/{id}:
@@ -636,6 +644,9 @@ router.patch("/:id", protect, authorize("recruiter", "admin"), updateJob);
 // Recruiter only: GET /api/v1/jobs/:jobId/applicants
 router.get("/:jobId/applicants", protect, authorize("recruiter"), getJobApplicants);
 
+// Recruiter only: GET /api/v1/jobs/:jobId/applicant-summary
+router.get("/:jobId/applicant-summary", protect, authorize("recruiter"), getApplicantSummary);
+
 /**
  * @openapi
  * /api/v1/jobs/{id}/save:
@@ -665,6 +676,9 @@ router.get("/:jobId/applicants", protect, authorize("recruiter"), getJobApplican
  */
 // Job Seeker only: POST /api/v1/jobs/:id/save
 router.post("/:id/save", protect, authorize("jobSeeker"), toggleSaveJob);
+
+// Authenticated users: POST /api/v1/jobs/:id/report
+router.post("/:id/report", protect, reportJob);
 
 /**
  * @openapi

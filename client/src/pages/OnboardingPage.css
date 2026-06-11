@@ -1,0 +1,701 @@
+/* ── OnboardingPage.css ─────────────────────────────────────────────────────── */
+
+/* ── Full-screen root ───────────────────────────────────────────────────────── */
+.ob-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Ambient glows ──────────────────────────────────────────────────────────── */
+.ob-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(120px);
+  opacity: 0.12;
+  background: radial-gradient(circle, #7B2631, transparent 70%);
+}
+
+.ob-glow--tl { top: -150px; left: -150px; }
+.ob-glow--br { bottom: -150px; right: -150px; }
+
+/* ── Card container ─────────────────────────────────────────────────────────── */
+.ob-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  background: var(--surface);
+  border: 1px solid rgba(123, 38, 49, 0.18);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar ────────────────────────────────────────────────────────────────── */
+.ob-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem 0.75rem;
+  gap: 1rem;
+}
+
+.ob-logo {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.ob-logo-dot { color: var(--red); }
+
+.ob-skip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.ob-skip-btn:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ── Progress bar ───────────────────────────────────────────────────────────── */
+.ob-progress {
+  height: 3px;
+  background: var(--border);
+  width: 100%;
+}
+
+.ob-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #7B2631, #531720);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Step dots ──────────────────────────────────────────────────────────────── */
+.ob-dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  justify-content: center;
+}
+
+.ob-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.ob-dot--done    { background: rgba(123, 38, 49, 0.45); }
+.ob-dot--active  { background: var(--red); transform: scale(1.4); }
+
+/* ── Nexi mascot & speech bubble ────────────────────────────────────────────── */
+.ob-nexi {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem 0;
+}
+
+.ob-nexi__frame {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7B2631 0%, #531720 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(123, 38, 49, 0.4);
+}
+
+.ob-nexi__frame img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.ob-nexi__img--pulse {
+  animation: ob-pulse-img 1.2s ease-in-out infinite;
+}
+
+@keyframes ob-pulse-img {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(0.92); }
+}
+
+.ob-nexi__bubble {
+  position: relative;
+  background: var(--surface-2, rgba(255,255,255,0.05));
+  border: 1px solid rgba(123, 38, 49, 0.2);
+  border-radius: 14px;
+  border-top-left-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.5;
+  flex: 1;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Thinking dots inside bubble ────────────────────────────────────────────── */
+.ob-nexi__dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.ob-nexi__dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  opacity: 0.4;
+  animation: ob-dot-think 1.2s ease-in-out infinite;
+}
+
+.ob-nexi__dots span:nth-child(2) { animation-delay: 0.2s; }
+.ob-nexi__dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes ob-dot-think {
+  0%, 80%, 100% { opacity: 0.4; transform: scale(0.85); }
+  40%            { opacity: 1;   transform: scale(1.2); }
+}
+
+/* ── Body ───────────────────────────────────────────────────────────────────── */
+.ob-body {
+  padding: 1.25rem 1.5rem 1.75rem;
+  flex: 1;
+}
+
+.ob-step { display: flex; flex-direction: column; gap: 1rem; }
+
+.ob-step--center {
+  align-items: center;
+  text-align: center;
+}
+
+/* ── Titles ─────────────────────────────────────────────────────────────────── */
+.ob-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.15;
+}
+
+.ob-sub {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+.ob-step-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ── Feature list (welcome) ─────────────────────────────────────────────────── */
+.ob-feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 320px;
+  text-align: left;
+}
+
+.ob-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: var(--text);
+  background: var(--surface-2, rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.55rem 0.9rem;
+}
+
+.ob-feature__icon {
+  font-size: 17px;
+  color: var(--red);
+}
+
+/* ── Fields ─────────────────────────────────────────────────────────────────── */
+.ob-field { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.ob-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ob-label-hint { color: var(--text-muted); font-weight: 400; }
+
+.ob-input {
+  background: var(--surface-2, rgba(255,255,255,0.05));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.62rem 0.85rem;
+  font-size: 0.88rem;
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ob-input::placeholder { color: var(--text-muted); }
+.ob-input:focus { border-color: rgba(123, 38, 49, 0.5); }
+
+.ob-textarea {
+  background: var(--surface-2, rgba(255,255,255,0.05));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.62rem 0.85rem;
+  font-size: 0.88rem;
+  color: var(--text);
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.ob-textarea::placeholder { color: var(--text-muted); }
+.ob-textarea:focus { border-color: rgba(123, 38, 49, 0.5); }
+
+.ob-char-count {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin: 0;
+}
+
+.ob-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .ob-grid-2 { grid-template-columns: 1fr; }
+}
+
+.ob-muted { color: var(--text-muted); }
+
+/* ── Photo ──────────────────────────────────────────────────────────────────── */
+.ob-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ob-photo-circle {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(123,38,49,0.15) 0%, rgba(83,23,32,0.1) 100%);
+  border: 2px dashed rgba(123, 38, 49, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.ob-photo-circle:hover {
+  border-color: rgba(123, 38, 49, 0.7);
+  background: rgba(123, 38, 49, 0.12);
+}
+
+.ob-photo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.ob-photo-circle__icon {
+  font-size: 24px;
+  color: var(--red);
+  opacity: 0.7;
+}
+
+.ob-photo-hint p { margin: 0 0 0.15rem; font-size: 0.85rem; color: var(--text); }
+
+/* ── Skills ─────────────────────────────────────────────────────────────────── */
+.ob-skills-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.ob-skills-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.ob-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ob-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(123, 38, 49, 0.1);
+  border: 1px solid rgba(123, 38, 49, 0.22);
+  color: var(--red);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.ob-chip__rm {
+  background: none;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.ob-chip__rm:hover { opacity: 1; }
+
+.ob-manual-skill {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ── Job cards (discover) ───────────────────────────────────────────────────── */
+.ob-job-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ob-job-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--surface-2, rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+}
+
+.ob-job-card__title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.ob-job-card__company {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0.1rem 0 0;
+}
+
+.ob-job-card__match {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #4ade80;
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.22);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+}
+
+.ob-job-card__badge {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+/* ── Job picker (apply step) ────────────────────────────────────────────────── */
+.ob-job-picker {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ob-job-pick-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  background: var(--surface-2, rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  flex: 1;
+  min-width: 130px;
+}
+
+.ob-job-pick-btn--active {
+  border-color: rgba(123, 38, 49, 0.5);
+  background: rgba(123, 38, 49, 0.1);
+}
+
+.ob-job-pick-btn__title { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+.ob-job-pick-btn__co    { font-size: 0.72rem; color: var(--text-muted); }
+
+/* ── Cover letter card (apply step) ─────────────────────────────────────────── */
+.ob-cl-card {
+  border-radius: 12px;
+  background: rgba(123, 38, 49, 0.08);
+  border: 1px solid rgba(123, 38, 49, 0.22);
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.12s;
+  outline: none;
+}
+
+.ob-cl-card:hover { box-shadow: 0 4px 18px rgba(123, 38, 49, 0.18); transform: translateY(-1px); }
+
+.ob-cl-card__inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+}
+
+.ob-cl-card__img-wrap {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7B2631 0%, #531720 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ob-cl-card__img-wrap img { width: 24px; height: 24px; object-fit: contain; }
+
+.ob-cl-card__text { flex: 1; display: flex; flex-direction: column; gap: 0.1rem; }
+.ob-cl-card__label { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+.ob-cl-card__sub   { font-size: 0.74rem; color: var(--text-muted); }
+
+.ob-cl-card__icon {
+  font-size: 18px;
+  color: var(--red);
+  flex-shrink: 0;
+}
+
+/* ── Apply success ──────────────────────────────────────────────────────────── */
+.ob-apply-success {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.22);
+  border-radius: 12px;
+  color: #4ade80;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.ob-apply-success__icon { font-size: 22px; }
+
+/* ── Loading / empty ────────────────────────────────────────────────────────── */
+.ob-jobs-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  padding: 1rem 0;
+}
+
+.ob-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 0;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.ob-empty__icon { font-size: 32px; opacity: 0.4; }
+.ob-empty p { margin: 0; font-size: 0.88rem; max-width: 320px; }
+
+/* ── Done step ──────────────────────────────────────────────────────────────── */
+.ob-done-check {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(74,222,128,0.12);
+  border: 2px solid rgba(74,222,128,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ob-done-check .material-symbols-outlined {
+  font-size: 38px;
+  color: #4ade80;
+  font-variation-settings: "'FILL' 1";
+}
+
+.ob-done-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.ob-done-pill {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(123,38,49,0.1);
+  border: 1px solid rgba(123,38,49,0.22);
+  color: var(--red);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────────── */
+.ob-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.ob-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, transform 0.12s;
+}
+
+.ob-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.ob-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.ob-btn--primary {
+  background: linear-gradient(135deg, #7B2631 0%, #531720 100%);
+  color: #fff;
+}
+
+.ob-btn--ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.ob-btn--lg {
+  padding: 0.75rem 1.75rem;
+  font-size: 0.95rem;
+}
+
+/* ── Spinner ────────────────────────────────────────────────────────────────── */
+.ob-spinner {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ob-spin 0.7s linear infinite;
+}
+
+.ob-spinner--dark {
+  border-color: var(--border);
+  border-top-color: var(--text-muted);
+}
+
+@keyframes ob-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Error ──────────────────────────────────────────────────────────────────── */
+.ob-error {
+  font-size: 0.82rem;
+  color: var(--red);
+  background: rgba(123,38,49,0.08);
+  border: 1px solid rgba(123,38,49,0.2);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+}
+
+/* ── Pulse animation (cover letter img) ─────────────────────────────────────── */
+.ob-pulse {
+  animation: ob-pulse-img 1s ease-in-out infinite;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .ob-root { padding: 0; align-items: flex-start; }
+  .ob-card { border-radius: 0; min-height: 100vh; border: none; }
+  .ob-actions { flex-direction: column; }
+  .ob-btn { width: 100%; justify-content: center; }
+}

@@ -69,6 +69,9 @@ function CreateJobPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [fieldErrors, setFieldErrors] = useState({});
+    const [polishing,    setPolishing]    = useState(false);
+    const [polishError,  setPolishError]  = useState("");
+    const [nexiPolished, setNexiPolished] = useState(false);
     const isPendingRecruiter = isRecruiterPending(user);
 
     function handleChange(e) {
@@ -76,6 +79,39 @@ function CreateJobPage() {
         setForm((prev) => ({ ...prev, [name]: value }));
         if (fieldErrors[name]) {
             setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+        }
+        // If the recruiter manually edits requirements after polishing, clear the badge
+        if (name === "requirements") setNexiPolished(false);
+    }
+
+    async function handlePolish() {
+        setPolishing(true);
+        setPolishError("");
+        try {
+            const requirementsArray = form.requirements
+                .split(",")
+                .map((r) => r.trim())
+                .filter(Boolean);
+
+            const res = await api.post("/jobs/rewrite-requirements", {
+                title:        form.title.trim(),
+                description:  form.description.trim(),
+                requirements: requirementsArray,
+            });
+
+            const rewritten = res.data?.rewrittenRequirements ?? [];
+            if (rewritten.length > 0) {
+                setForm((prev) => ({ ...prev, requirements: rewritten.join(", ") }));
+                setNexiPolished(true);
+            }
+        } catch (err) {
+            setPolishError(
+                err.response?.data?.message ||
+                err.message ||
+                "Nexi could not polish this job post right now."
+            );
+        } finally {
+            setPolishing(false);
         }
     }
 
@@ -322,12 +358,62 @@ function CreateJobPage() {
                             id="requirements"
                             name="requirements"
                             type="text"
-                            className="cj-input"
+                            className={`cj-input${nexiPolished ? " cj-input-polished" : ""}`}
                             placeholder="e.g. React, Node.js, 3+ years experience"
                             value={form.requirements}
                             onChange={handleChange}
                         />
                     </div>
+
+                    {/* Nexi Polish card */}
+                    <div className="cj-nexi-card">
+                        <div className="cj-nexi-card-inner">
+                            <div className="cj-nexi-img-wrap">
+                                <img
+                                    src={polishing ? "/Nexi/Nexi_InsightB.png" : "/Nexi/Nexi_Summarize.png"}
+                                    alt="Nexi"
+                                    className={`cj-nexi-img${polishing ? " cj-nexi-pulse" : ""}`}
+                                />
+                            </div>
+                            <div className="cj-nexi-text">
+                                <span className="cj-nexi-label">Polish with Nexi</span>
+                                <span className="cj-nexi-sub">
+                                    {polishing
+                                        ? "Nexi is polishing your job post…"
+                                        : nexiPolished
+                                        ? "Requirements rewritten. Edit them above if needed."
+                                        : "Turn rough notes into recruiter-ready requirements"}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="cj-nexi-action">
+                            {nexiPolished ? (
+                                <span className="cj-nexi-polished-badge">
+                                    <span className="material-symbols-outlined">check_circle</span>
+                                    Polished
+                                </span>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="cj-nexi-btn"
+                                    onClick={handlePolish}
+                                    disabled={polishing || !form.requirements.trim()}
+                                >
+                                    {polishing ? (
+                                        <>
+                                            <span className="cj-nexi-spinner" />
+                                            Polishing…
+                                        </>
+                                    ) : (
+                                        "Polish"
+                                    )}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                    {polishError && (
+                        <p className="cj-nexi-error" role="alert">{polishError}</p>
+                    )}
 
                     {/* Row 2: Location + Type */}
                     <div className="cj-row">

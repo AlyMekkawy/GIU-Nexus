@@ -22,7 +22,7 @@ function RegisterPage() {
   const [formError,        setFormError]        = useState("");
   const [pendingStatus,    setPendingStatus]    = useState(null);
 
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
   const formRef  = useRef(null);
@@ -30,8 +30,16 @@ function RegisterPage() {
 
   /* ── Redirect if already authenticated ─────────────────────── */
   useEffect(() => {
-    if (isAuthenticated) navigate("/", { replace: true });
-  }, [isAuthenticated, navigate]);
+    if (!isAuthenticated) return;
+    // Pending recruiters stay on this page to see the approval notice
+    if (user?.status === "pending") return;
+    // New jobSeekers who haven't completed onboarding go to the guided flow
+    if (user?.role === "jobSeeker" && !user?.hasCompletedOnboarding) {
+      navigate("/onboarding", { replace: true });
+    } else {
+      navigate("/", { replace: true });
+    }
+  }, [isAuthenticated, user?.role, user?.status, user?.hasCompletedOnboarding, navigate]);
 
   /* ── Entrance animation ─────────────────────────────────────── */
   useEffect(() => {
@@ -91,7 +99,7 @@ function RegisterPage() {
       });
       login(data.token, data.user);
       setPendingStatus(data.user?.status ?? null);
-      if (data.user?.status !== "pending") navigate("/");
+      // Navigation is handled by the isAuthenticated useEffect above
     } catch (err) {
       setFormError(
         err?.response?.data?.message ?? err.message ?? "Unable to create account. Please try again."
