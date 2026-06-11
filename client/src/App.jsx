@@ -20,6 +20,7 @@ import JobListPage from "./pages/JobListPage";
 import JobDetailPage from "./pages/JobDetailPage";
 import RecommendedJobsPage from "./pages/RecommendedJobsPage";
 import MarketTrendsPage from "./pages/MarketTrendsPage";
+import InterviewPage from "./pages/InterviewPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import MyApplicationsPage from "./pages/MyApplicationsPage";
 
@@ -53,6 +54,9 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
         <Route path="/jobs"    element={<JobListPage />} />
+        <Route path="/jobs/:id/interview" element={
+          <RoleRoute allowedRoles={["jobSeeker"]}><InterviewPage /></RoleRoute>
+        } />
         <Route path="/jobs/:id" element={<JobDetailPage />} />
 
         {/* ── Job seeker ──────────────────────────────────────────── */}

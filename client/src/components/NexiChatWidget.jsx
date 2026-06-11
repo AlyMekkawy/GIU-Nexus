@@ -11,7 +11,7 @@ const CHIPS_BY_ROLE = {
     { label: 'Improve my profile',            message: 'How can I improve my profile?' },
     { label: 'What skills are trending?',     message: 'What skills are trending right now?' },
     { label: 'My applications',               message: 'Summarize my applications' },
-    { label: 'Help with cover letter',        message: 'Help me with a cover letter' },
+    { label: 'Interview practice tips',       message: 'How can I prepare for my interviews?' },
   ],
   recruiter: [
     { label: 'Market trends',                 message: 'What skills are trending right now?' },
